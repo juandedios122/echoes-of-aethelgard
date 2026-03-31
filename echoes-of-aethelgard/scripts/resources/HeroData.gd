@@ -79,10 +79,10 @@ func get_rarity_label() -> String:
 
 func get_rarity_color() -> Color:
 	match rarity:
-		Rarity.COMUN:      return Color.GRAY
-		Rarity.RARO:       return Color("4da6ff")   # Azul
-		Rarity.EPICO:      return Color("a855f7")   # Morado
-		Rarity.LEGENDARIO: return Color("f59e0b")   # Dorado
+		Rarity.COMUN:      return Color(0.5, 0.48, 0.45, 1)   # Hierro/gris piedra
+		Rarity.RARO:       return Color(0.55, 0.6, 0.65, 1)   # Plata envejecida
+		Rarity.EPICO:      return Color(0.65, 0.5, 0.4, 1)    # Cobre oxidado
+		Rarity.LEGENDARIO: return Color(0.7, 0.6, 0.45, 1)    # Bronce antiguo
 	return Color.WHITE
 
 func get_faction_label() -> String:

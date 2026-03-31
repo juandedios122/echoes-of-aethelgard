@@ -3,65 +3,116 @@
 [ext_resource type="Script" path="res://scripts/ui/HeroRosterCard.gd" id="1_card"]
 
 [node name="HeroRosterCard" type="Button"]
-custom_minimum_size = Vector2(180, 240)
+custom_minimum_size = Vector2(220, 300)
 script = ExtResource("1_card")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="CardPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 5
+mouse_filter = 2
 
-[node name="PortraitPanel" type="PanelContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CardPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PortraitPanel" type="PanelContainer" parent="CardPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Portrait" type="TextureRect" parent="VBoxContainer/PortraitPanel"]
+[node name="Portrait" type="TextureRect" parent="CardPanel/VBoxContainer/PortraitPanel"]
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="LockedOverlay" type="ColorRect" parent="VBoxContainer/PortraitPanel"]
+[node name="GlowEffect" type="ColorRect" parent="CardPanel/VBoxContainer/PortraitPanel"]
 visible = false
 layout_mode = 2
-color = Color(0, 0, 0, 0.7)
+color = Color(1, 0.8, 0.3, 0.3)
 
-[node name="LockIcon" type="Label" parent="VBoxContainer/PortraitPanel/LockedOverlay"]
+[node name="LockedOverlay" type="ColorRect" parent="CardPanel/VBoxContainer/PortraitPanel"]
+visible = false
+layout_mode = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="LockIcon" type="Label" parent="CardPanel/VBoxContainer/PortraitPanel/LockedOverlay"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 48
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 32
 text = "🔒"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NameLabel" type="Label" parent="VBoxContainer"]
+[node name="StarsContainer" type="HBoxContainer" parent="CardPanel/VBoxContainer/PortraitPanel"]
+layout_mode = 2
+offset_top = 5.0
+offset_right = 180.0
+offset_bottom = 25.0
+alignment = 1
+
+[node name="StarsLabel" type="Label" parent="CardPanel/VBoxContainer/PortraitPanel/StarsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
+text = "⭐⭐⭐"
+horizontal_alignment = 1
+
+[node name="InfoPanel" type="PanelContainer" parent="CardPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="InfoVBox" type="VBoxContainer" parent="CardPanel/VBoxContainer/InfoPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="NameLabel" type="Label" parent="CardPanel/VBoxContainer/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 18
 text = "Nombre"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="RarityLabel" type="Label" parent="VBoxContainer"]
+[node name="RarityLabel" type="Label" parent="CardPanel/VBoxContainer/InfoPanel/InfoVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Rareza"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="VBoxContainer"]
+[node name="LevelLabel" type="Label" parent="CardPanel/VBoxContainer/InfoPanel/InfoVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.6)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 16
 text = "Nv. 1"
 horizontal_alignment = 1
+
+[node name="SelectionBorder" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 3.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.7, 0.6, 0.45, 1)
