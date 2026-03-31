@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b56xv8rer7q6i" path="res://assets/sprites/Aldric/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "aldric_archimago"
+hero_name = "Aldric"
+title = "El Archimago"
+lore_text = "Líder del Cónclave Arcano, maestro de la magia."
+faction = 2
+rarity = 3
+role = 3
+element = 2
+portrait = ExtResource("2")
+base_hp = 950
+base_atk = 160
+base_def = 45
+base_spd = 85

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bdrbtc5w3hquo" path="res://assets/sprites/Varra/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "varra_mercenaria"
+hero_name = "Varra"
+title = "La Mercenaria"
+lore_text = "Guerrera a sueldo sin lealtades."
+faction = 3
+rarity = 2
+role = 5
+element = 5
+portrait = ExtResource("2")
+base_hp = 1050
+base_atk = 125
+base_def = 55
+base_spd = 85

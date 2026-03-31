@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bgnk2qnw2ycqj" path="res://assets/sprites/Aethan/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "aethan_paladin"
+hero_name = "Aethan"
+title = "El Último Paladín"
+lore_text = "Guardián de la Orden del Alba, juró proteger a los inocentes."
+faction = 0
+rarity = 3
+role = 0
+element = 0
+portrait = ExtResource("2")
+base_hp = 1500
+base_atk = 120
+base_def = 80
+base_spd = 70

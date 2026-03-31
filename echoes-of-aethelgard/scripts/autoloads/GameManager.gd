@@ -56,7 +56,7 @@ func save_game() -> void:
 	print("[GameManager] Partida guardada.")
 
 func _new_game() -> void:
-	player_data.amber_shards    = 1000  # Moneda gacha de inicio
+	player_data.amber_shards    = 10000  # Moneda gacha de inicio (aumentada para pruebas)
 	player_data.gold            = 500
 	player_data.current_chapter = 1
 	player_data.current_stage   = 1

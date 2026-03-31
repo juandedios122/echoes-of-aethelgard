@@ -127,4 +127,4 @@ func _set_buttons_enabled(enabled: bool) -> void:
 	pull_10x_btn.disabled = not enabled
 
 func _on_back_pressed() -> void:
-	GameManager.go_to_scene("hub_camp")
+	GameManager.go_to_scene("main_menu")

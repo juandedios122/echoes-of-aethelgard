@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d9vq8y7x3m4n6q"]
+[gd_scene load_steps=5 format=3 uid="uid://d9vq8y7x3m4n6q"]
 
 [ext_resource type="Script" path="res://scripts/ui/ExplorationMap.gd" id="1_exploration"]
 [ext_resource type="SpriteFrames" path="res://resources/aethan_frames.tres" id="2_frames"]
+[ext_resource type="PackedScene" uid="uid://dpx9k8m4n6p3s" path="res://scenes/ui/PauseMenu.tscn" id="3_pause"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 20.0
@@ -58,4 +59,6 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 24
 text = "Usa WASD o las flechas para moverte
-Explora el mapa medieval"
+Presiona ESC para abrir el menú"
+
+[node name="PauseMenu" parent="." instance=ExtResource("3_pause")]

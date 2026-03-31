@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://7jua3wcumm5f" path="res://assets/sprites/Gorn/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "gorn_barbaro"
+hero_name = "Gorn"
+title = "El Bárbaro"
+lore_text = "Guerrero salvaje de las tierras del norte."
+faction = 3
+rarity = 1
+role = 1
+element = 5
+portrait = ExtResource("2")
+base_hp = 1300
+base_atk = 140
+base_def = 55
+base_spd = 65

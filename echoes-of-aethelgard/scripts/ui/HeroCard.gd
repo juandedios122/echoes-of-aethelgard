@@ -22,9 +22,15 @@ func setup(hero: HeroData, is_duplicate: bool) -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = hero.get_rarity_color()
 	style.bg_color.a = 0.3
-	style.border_width_all = 2
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
 	style.border_color = hero.get_rarity_color()
-	style.corner_radius_all = 8
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
 	add_theme_stylebox_override("panel", style)
 
 func _get_rarity_stars(rarity: HeroData.Rarity) -> String:

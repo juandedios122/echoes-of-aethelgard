@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c7iolamy1ncd5" path="res://assets/sprites/Kael/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "kael_soldado"
+hero_name = "Kael"
+title = "El Soldado Veterano"
+lore_text = "Guerrero experimentado de la Orden del Alba."
+faction = 0
+rarity = 1
+role = 1
+element = 5
+portrait = ExtResource("2")
+base_hp = 1100
+base_atk = 110
+base_def = 60
+base_spd = 75

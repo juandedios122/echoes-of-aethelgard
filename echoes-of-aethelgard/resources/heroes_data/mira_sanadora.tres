@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dqhowiju23l4c" path="res://assets/sprites/Mira/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "mira_sanadora"
+hero_name = "Mira"
+title = "La Sanadora"
+lore_text = "Clérigo devota que cura a los heridos."
+faction = 0
+rarity = 0
+role = 4
+element = 0
+portrait = ExtResource("2")
+base_hp = 800
+base_atk = 70
+base_def = 50
+base_spd = 80

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://fq3e5684edc0" path="res://assets/sprites/Vex/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "vex_nigromante"
+hero_name = "Vex"
+title = "El Nigromante"
+lore_text = "Maestro de las artes oscuras, controla las sombras."
+faction = 3
+rarity = 3
+role = 3
+element = 4
+portrait = ExtResource("2")
+base_hp = 1000
+base_atk = 150
+base_def = 50
+base_spd = 90

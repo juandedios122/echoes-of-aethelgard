@@ -34,8 +34,8 @@ func _ready() -> void:
 	_load_hero_pools()
 
 func _load_hero_pools() -> void:
-	## Carga todos los HeroData desde res://resources/heroes/
-	var dir := DirAccess.open("res://resources/heroes/")
+	## Carga todos los HeroData desde res://resources/heroes_data/
+	var dir := DirAccess.open("res://resources/heroes_data/")
 	if dir == null:
 		push_warning("[GachaSystem] Directorio de héroes no encontrado.")
 		return
@@ -43,7 +43,7 @@ func _load_hero_pools() -> void:
 	var file_name := dir.get_next()
 	while file_name != "":
 		if file_name.ends_with(".tres"):
-			var path := "res://resources/heroes/" + file_name
+			var path := "res://resources/heroes_data/" + file_name
 			var hero := load(path) as HeroData
 			if hero:
 				_add_to_pool(hero)

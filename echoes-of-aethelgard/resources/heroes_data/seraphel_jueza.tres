@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://q8fpgqs66ndw" path="res://assets/sprites/Seraphel/frames/idle_00.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+hero_id = "seraphel_jueza"
+hero_name = "Seraphel"
+title = "La Jueza Divina"
+lore_text = "Ángel caído que juzga a los mortales."
+faction = 0
+rarity = 3
+role = 3
+element = 0
+portrait = ExtResource("2")
+base_hp = 1100
+base_atk = 145
+base_def = 60
+base_spd = 95
