@@ -1,0 +1,47 @@
+[gd_resource type="SpriteFrames" load_steps=18 format=3]
+
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv01" path="res://assets/sprites/Aethan/frames/idle_00.png" id="1_idle0"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv02" path="res://assets/sprites/Aethan/frames/idle_01.png" id="2_idle1"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv03" path="res://assets/sprites/Aethan/frames/idle_02.png" id="3_idle2"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv04" path="res://assets/sprites/Aethan/frames/idle_03.png" id="4_idle3"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv05" path="res://assets/sprites/Aethan/frames/walk_00.png" id="5_walk0"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv06" path="res://assets/sprites/Aethan/frames/walk_01.png" id="6_walk1"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv07" path="res://assets/sprites/Aethan/frames/walk_02.png" id="7_walk2"]
+[ext_resource type="Texture2D" uid="uid://bqxqvxqvxqv08" path="res://assets/sprites/Aethan/frames/walk_03.png" id="8_walk3"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_idle0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_idle1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_idle2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_idle3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_walk0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_walk1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_walk2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_walk3")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

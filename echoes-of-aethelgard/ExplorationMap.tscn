@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://d9vq8y7x3m4n6q"]
+
+[ext_resource type="Script" path="res://scripts/ui/ExplorationMap.gd" id="1_exploration"]
+[ext_resource type="SpriteFrames" path="res://resources/aethan_frames.tres" id="2_frames"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 20.0
+height = 60.0
+
+[node name="ExplorationMap" type="Node2D"]
+script = ExtResource("1_exploration")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -2000.0
+offset_top = -2000.0
+offset_right = 2000.0
+offset_bottom = 2000.0
+color = Color(0.25, 0.35, 0.25, 1)
+
+[node name="Ground" type="ColorRect" parent="."]
+offset_left = -1500.0
+offset_top = -1000.0
+offset_right = 1500.0
+offset_bottom = 1000.0
+color = Color(0.3, 0.45, 0.3, 1)
+
+[node name="Path" type="ColorRect" parent="."]
+offset_left = -200.0
+offset_top = -600.0
+offset_right = 200.0
+offset_bottom = 600.0
+color = Color(0.5, 0.4, 0.3, 1)
+
+[node name="Hero" type="CharacterBody2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Hero"]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hero"]
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Instructions" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "Usa WASD o las flechas para moverte
+Explora el mapa medieval"

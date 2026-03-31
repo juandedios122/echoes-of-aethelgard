@@ -15,11 +15,12 @@ const VERSION   := "0.1.0"
 
 # ─── Escenas Principales ─────────────────────────────────────────────────────
 const SCENES := {
-	"main_menu"    : "res://scenes/ui/main_menu.tscn",
-	"gacha_screen" : "res://scenes/ui/gacha_screen.tscn",
-	"battle_scene" : "res://scenes/combat/battle_scene.tscn",
-	"hub_camp"     : "res://scenes/ui/hub_camp.tscn",
-	"hero_roster"  : "res://scenes/ui/hero_roster.tscn",
+	"main_menu"        : "res://MainMenu.tscn",
+	"exploration_map"  : "res://ExplorationMap.tscn",
+	"gacha_screen"     : "res://scenes/ui/gacha_screen.tscn",
+	"battle_scene"     : "res://scenes/combat/battle_scene.tscn",
+	"hub_camp"         : "res://scenes/ui/hub_camp.tscn",
+	"hero_roster"      : "res://scenes/ui/hero_roster.tscn",
 }
 
 # ─── Estado de la Partida en Curso ───────────────────────────────────────────

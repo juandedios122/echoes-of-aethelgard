@@ -17,6 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Echoes of Aethelgard"
 config/description="Juego gacha medieval 2D para móvil"
 config/version="0.1.0"
+run/main_scene="res://MainMenu.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
