@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://cm5x30yce42rl"]
+
+[ext_resource type="Texture2D" uid="uid://baw68ibwhlbnv" path="res://assets/sprites/Mira/frames/attack_00.png" id="1_y735j"]
+[ext_resource type="Texture2D" uid="uid://bqq0j57vc08tf" path="res://assets/sprites/Mira/frames/attack_01.png" id="2_5fceb"]
+[ext_resource type="Texture2D" uid="uid://dk68fae17dejp" path="res://assets/sprites/Mira/frames/attack_02.png" id="3_scj4m"]
+[ext_resource type="Texture2D" uid="uid://c7la0o2ekoyj8" path="res://assets/sprites/Mira/frames/attack_03.png" id="4_n04kk"]
+[ext_resource type="Texture2D" uid="uid://drtq8x41d7esn" path="res://assets/sprites/Mira/frames/death_00.png" id="5_3wt8o"]
+[ext_resource type="Texture2D" uid="uid://bf3nfddb1oyfo" path="res://assets/sprites/Mira/frames/death_01.png" id="6_icqdn"]
+[ext_resource type="Texture2D" uid="uid://drf62h34e651d" path="res://assets/sprites/Mira/frames/death_02.png" id="7_tmjwm"]
+[ext_resource type="Texture2D" uid="uid://bwkpfprfr2i28" path="res://assets/sprites/Mira/frames/hurt_00.png" id="8_4nf7q"]
+[ext_resource type="Texture2D" uid="uid://bm23pyi7m5rim" path="res://assets/sprites/Mira/frames/hurt_01.png" id="9_ttyqp"]
+[ext_resource type="Texture2D" uid="uid://dqhowiju23l4c" path="res://assets/sprites/Mira/frames/idle_00.png" id="10_sjguv"]
+[ext_resource type="Texture2D" uid="uid://cb77geuya2acl" path="res://assets/sprites/Mira/frames/idle_01.png" id="11_kx8c8"]
+[ext_resource type="Texture2D" uid="uid://cprwtjjw7bdnb" path="res://assets/sprites/Mira/frames/idle_02.png" id="12_ptq10"]
+[ext_resource type="Texture2D" uid="uid://4x1tkhcau3dx" path="res://assets/sprites/Mira/frames/idle_03.png" id="13_g4fpg"]
+[ext_resource type="Texture2D" uid="uid://c8i847arkc0xg" path="res://assets/sprites/Mira/frames/walk_00.png" id="14_0rfl2"]
+[ext_resource type="Texture2D" uid="uid://d0bar1uwu211g" path="res://assets/sprites/Mira/frames/walk_01.png" id="15_cock6"]
+[ext_resource type="Texture2D" uid="uid://c6purw2wqll66" path="res://assets/sprites/Mira/frames/walk_02.png" id="16_2ysb0"]
+[ext_resource type="Texture2D" uid="uid://0g84gy5fykbj" path="res://assets/sprites/Mira/frames/walk_03.png" id="17_xh2cm"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_y735j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_5fceb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_scj4m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_n04kk")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_3wt8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_icqdn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_tmjwm")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_4nf7q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ttyqp")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_sjguv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_kx8c8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ptq10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_g4fpg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_0rfl2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_cock6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_2ysb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_xh2cm")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://cuhkdas2s3pgf"]
+
+[ext_resource type="Texture2D" uid="uid://cvu5rlgyva2rx" path="res://assets/sprites/Kael/frames/attack_00.png" id="1_mh88k"]
+[ext_resource type="Texture2D" uid="uid://clm37p3eu8i0g" path="res://assets/sprites/Kael/frames/attack_01.png" id="2_gwevp"]
+[ext_resource type="Texture2D" uid="uid://8djc1fqgptms" path="res://assets/sprites/Kael/frames/attack_02.png" id="3_lqbr6"]
+[ext_resource type="Texture2D" uid="uid://dyct40a81l4bw" path="res://assets/sprites/Kael/frames/attack_03.png" id="4_ys4ed"]
+[ext_resource type="Texture2D" uid="uid://dqypcfv5j5rrl" path="res://assets/sprites/Kael/frames/death_00.png" id="5_h67ng"]
+[ext_resource type="Texture2D" uid="uid://dq40evmv0fvlh" path="res://assets/sprites/Kael/frames/death_01.png" id="6_b8cmx"]
+[ext_resource type="Texture2D" uid="uid://lp866j46yymj" path="res://assets/sprites/Kael/frames/death_02.png" id="7_onxd6"]
+[ext_resource type="Texture2D" uid="uid://d1l80vwjuc75s" path="res://assets/sprites/Kael/frames/hurt_00.png" id="8_7m755"]
+[ext_resource type="Texture2D" uid="uid://ca3ryqmppr4f0" path="res://assets/sprites/Kael/frames/hurt_01.png" id="9_ay0vd"]
+[ext_resource type="Texture2D" uid="uid://c7iolamy1ncd5" path="res://assets/sprites/Kael/frames/idle_00.png" id="10_53ffq"]
+[ext_resource type="Texture2D" uid="uid://b5n7v7a1kir3v" path="res://assets/sprites/Kael/frames/idle_01.png" id="11_peesn"]
+[ext_resource type="Texture2D" uid="uid://kuhi5ajgegw" path="res://assets/sprites/Kael/frames/idle_02.png" id="12_q4aj1"]
+[ext_resource type="Texture2D" uid="uid://c24dwxf4cdmuf" path="res://assets/sprites/Kael/frames/idle_03.png" id="13_7xwph"]
+[ext_resource type="Texture2D" uid="uid://cwl1j554e74r1" path="res://assets/sprites/Kael/frames/walk_00.png" id="14_rde0o"]
+[ext_resource type="Texture2D" uid="uid://dfgjg5hryjx3q" path="res://assets/sprites/Kael/frames/walk_01.png" id="15_d0tax"]
+[ext_resource type="Texture2D" uid="uid://btkcnjekrquwh" path="res://assets/sprites/Kael/frames/walk_02.png" id="16_p72ai"]
+[ext_resource type="Texture2D" uid="uid://c8ge67ba8dbj3" path="res://assets/sprites/Kael/frames/walk_03.png" id="17_1ggj4"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mh88k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_gwevp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lqbr6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ys4ed")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_h67ng")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_b8cmx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_onxd6")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_7m755")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ay0vd")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_53ffq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_peesn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_q4aj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_7xwph")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_rde0o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_d0tax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_p72ai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_1ggj4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://cq8jcg621t6l"]
+
+[ext_resource type="Texture2D" uid="uid://bu21hn27k1np1" path="res://assets/sprites/Varra/frames/attack_00.png" id="1_ae44w"]
+[ext_resource type="Texture2D" uid="uid://d4e1vp32soqw" path="res://assets/sprites/Varra/frames/attack_01.png" id="2_6j0dc"]
+[ext_resource type="Texture2D" uid="uid://b60fb5oq7ascc" path="res://assets/sprites/Varra/frames/attack_02.png" id="3_mq668"]
+[ext_resource type="Texture2D" uid="uid://dh1jvs4fcsx7c" path="res://assets/sprites/Varra/frames/attack_03.png" id="4_h54jm"]
+[ext_resource type="Texture2D" uid="uid://cbffxeip5rud8" path="res://assets/sprites/Varra/frames/death_00.png" id="5_0gni8"]
+[ext_resource type="Texture2D" uid="uid://df5bryj7sja4q" path="res://assets/sprites/Varra/frames/death_01.png" id="6_ft66t"]
+[ext_resource type="Texture2D" uid="uid://cs74y35jvhv3b" path="res://assets/sprites/Varra/frames/death_02.png" id="7_6wno2"]
+[ext_resource type="Texture2D" uid="uid://du047mxuwcrr8" path="res://assets/sprites/Varra/frames/hurt_00.png" id="8_yd2yq"]
+[ext_resource type="Texture2D" uid="uid://d3s0talqdt0ck" path="res://assets/sprites/Varra/frames/hurt_01.png" id="9_0esqb"]
+[ext_resource type="Texture2D" uid="uid://bdrbtc5w3hquo" path="res://assets/sprites/Varra/frames/idle_00.png" id="10_cfbde"]
+[ext_resource type="Texture2D" uid="uid://cemwoo30gkkok" path="res://assets/sprites/Varra/frames/idle_01.png" id="11_yuseg"]
+[ext_resource type="Texture2D" uid="uid://brdw53eepn5fa" path="res://assets/sprites/Varra/frames/idle_02.png" id="12_xc6g5"]
+[ext_resource type="Texture2D" uid="uid://bb1iqugb3dk38" path="res://assets/sprites/Varra/frames/idle_03.png" id="13_qfm44"]
+[ext_resource type="Texture2D" uid="uid://cpty88d35vey4" path="res://assets/sprites/Varra/frames/walk_00.png" id="14_q1ymj"]
+[ext_resource type="Texture2D" uid="uid://cq6xvw0fti5pw" path="res://assets/sprites/Varra/frames/walk_01.png" id="15_31334"]
+[ext_resource type="Texture2D" uid="uid://c40p7jmumk5su" path="res://assets/sprites/Varra/frames/walk_02.png" id="16_5fr55"]
+[ext_resource type="Texture2D" uid="uid://de8nrtal25rky" path="res://assets/sprites/Varra/frames/walk_03.png" id="17_yep5s"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ae44w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_6j0dc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_mq668")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_h54jm")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_0gni8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ft66t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_6wno2")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_yd2yq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0esqb")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_cfbde")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_yuseg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_xc6g5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_qfm44")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_q1ymj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_31334")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_5fr55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_yep5s")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

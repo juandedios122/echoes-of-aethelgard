@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bgth8sil3f5vq"]
+
+[ext_resource type="Texture2D" uid="uid://c2h0yck2jth32" path="res://assets/sprites/Theron/frames/attack_00.png" id="1_pemyn"]
+[ext_resource type="Texture2D" uid="uid://dehwi4x0qxugh" path="res://assets/sprites/Theron/frames/attack_01.png" id="2_c2q8q"]
+[ext_resource type="Texture2D" uid="uid://q7x4lukcf2pi" path="res://assets/sprites/Theron/frames/attack_02.png" id="3_sq101"]
+[ext_resource type="Texture2D" uid="uid://dgbh4r3o2bejj" path="res://assets/sprites/Theron/frames/attack_03.png" id="4_hhujq"]
+[ext_resource type="Texture2D" uid="uid://cdsf3b0c5cpxv" path="res://assets/sprites/Theron/frames/death_00.png" id="5_0wk81"]
+[ext_resource type="Texture2D" uid="uid://c2x6io05wkxvt" path="res://assets/sprites/Theron/frames/death_01.png" id="6_ccmfa"]
+[ext_resource type="Texture2D" uid="uid://dbonf1qprjggu" path="res://assets/sprites/Theron/frames/death_02.png" id="7_nccrc"]
+[ext_resource type="Texture2D" uid="uid://dq6uu1mocd0x5" path="res://assets/sprites/Theron/frames/hurt_00.png" id="8_erpc3"]
+[ext_resource type="Texture2D" uid="uid://puxhm2ljoqp1" path="res://assets/sprites/Theron/frames/hurt_01.png" id="9_ms5l8"]
+[ext_resource type="Texture2D" uid="uid://bcoxyqeptdwdk" path="res://assets/sprites/Theron/frames/idle_00.png" id="10_k1s6g"]
+[ext_resource type="Texture2D" uid="uid://crb01xb8chdrs" path="res://assets/sprites/Theron/frames/idle_01.png" id="11_j1jqk"]
+[ext_resource type="Texture2D" uid="uid://dtysnxuslp56m" path="res://assets/sprites/Theron/frames/idle_02.png" id="12_qijkh"]
+[ext_resource type="Texture2D" uid="uid://4ukhvttrlmhv" path="res://assets/sprites/Theron/frames/idle_03.png" id="13_hmyry"]
+[ext_resource type="Texture2D" uid="uid://jlejein5cki7" path="res://assets/sprites/Theron/frames/walk_00.png" id="14_blgug"]
+[ext_resource type="Texture2D" uid="uid://rejlaf2bjxyu" path="res://assets/sprites/Theron/frames/walk_01.png" id="15_18y43"]
+[ext_resource type="Texture2D" uid="uid://dvgc5r2e6ac40" path="res://assets/sprites/Theron/frames/walk_02.png" id="16_24v5t"]
+[ext_resource type="Texture2D" uid="uid://b0gbp0y0v2813" path="res://assets/sprites/Theron/frames/walk_03.png" id="17_ksjui"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_pemyn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_c2q8q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_sq101")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hhujq")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_0wk81")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ccmfa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_nccrc")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_erpc3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ms5l8")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_k1s6g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_j1jqk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_qijkh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_hmyry")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_blgug")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_18y43")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_24v5t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ksjui")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

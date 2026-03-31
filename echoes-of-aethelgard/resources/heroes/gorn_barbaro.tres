@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://kqwtwiijs0y2"]
+
+[ext_resource type="Texture2D" uid="uid://d3x05flpkr3d2" path="res://assets/sprites/Gorn/frames/attack_00.png" id="1_uiweh"]
+[ext_resource type="Texture2D" uid="uid://taqa4dq5fwwj" path="res://assets/sprites/Gorn/frames/attack_01.png" id="2_7u2ys"]
+[ext_resource type="Texture2D" uid="uid://dae1r26sof2rl" path="res://assets/sprites/Gorn/frames/attack_02.png" id="3_uqp3y"]
+[ext_resource type="Texture2D" uid="uid://cfs7h6cp4e7l0" path="res://assets/sprites/Gorn/frames/attack_03.png" id="4_746ab"]
+[ext_resource type="Texture2D" uid="uid://dna8mul6g1bgl" path="res://assets/sprites/Gorn/frames/death_00.png" id="5_6k8kw"]
+[ext_resource type="Texture2D" uid="uid://c4163t4afb6c5" path="res://assets/sprites/Gorn/frames/death_01.png" id="6_r2vr8"]
+[ext_resource type="Texture2D" uid="uid://ccrn3c7y5ay05" path="res://assets/sprites/Gorn/frames/death_02.png" id="7_tfg1q"]
+[ext_resource type="Texture2D" uid="uid://cdrreoxyiaioh" path="res://assets/sprites/Gorn/frames/hurt_00.png" id="8_dwvtt"]
+[ext_resource type="Texture2D" uid="uid://bibmy4f3tbkij" path="res://assets/sprites/Gorn/frames/hurt_01.png" id="9_a8prk"]
+[ext_resource type="Texture2D" uid="uid://7jua3wcumm5f" path="res://assets/sprites/Gorn/frames/idle_00.png" id="10_syiuu"]
+[ext_resource type="Texture2D" uid="uid://dv2jfdbr2t5lj" path="res://assets/sprites/Gorn/frames/idle_01.png" id="11_ata8d"]
+[ext_resource type="Texture2D" uid="uid://ce5bqo4tefwf8" path="res://assets/sprites/Gorn/frames/idle_02.png" id="12_tpvy6"]
+[ext_resource type="Texture2D" uid="uid://cu1pk24ywfvo5" path="res://assets/sprites/Gorn/frames/idle_03.png" id="13_5urdd"]
+[ext_resource type="Texture2D" uid="uid://d2cha4sow6smm" path="res://assets/sprites/Gorn/frames/walk_00.png" id="14_5f3ea"]
+[ext_resource type="Texture2D" uid="uid://d4h2piggxkyte" path="res://assets/sprites/Gorn/frames/walk_01.png" id="15_8q2ct"]
+[ext_resource type="Texture2D" uid="uid://chexjgxvomh55" path="res://assets/sprites/Gorn/frames/walk_02.png" id="16_rffur"]
+[ext_resource type="Texture2D" uid="uid://de4353nj14wrx" path="res://assets/sprites/Gorn/frames/walk_03.png" id="17_pb3a6"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_uiweh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7u2ys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_uqp3y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_746ab")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_6k8kw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_r2vr8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_tfg1q")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_dwvtt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_a8prk")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_syiuu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ata8d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_tpvy6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5urdd")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_5f3ea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_8q2ct")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_rffur")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_pb3a6")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

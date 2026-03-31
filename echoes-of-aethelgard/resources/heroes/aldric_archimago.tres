@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://e76ifo6h53en"]
+
+[ext_resource type="Texture2D" uid="uid://cx5ratmrygqo5" path="res://assets/sprites/Aldric/frames/attack_00.png" id="1_yxo6r"]
+[ext_resource type="Texture2D" uid="uid://buqricxsyp4ql" path="res://assets/sprites/Aldric/frames/attack_01.png" id="2_qg0lq"]
+[ext_resource type="Texture2D" uid="uid://dkuagmyt3nbtm" path="res://assets/sprites/Aldric/frames/attack_02.png" id="3_3smna"]
+[ext_resource type="Texture2D" uid="uid://dpgu5stg7yxvn" path="res://assets/sprites/Aldric/frames/attack_03.png" id="4_8cksb"]
+[ext_resource type="Texture2D" uid="uid://m3xwjy1s88gx" path="res://assets/sprites/Aldric/frames/death_00.png" id="5_4asum"]
+[ext_resource type="Texture2D" uid="uid://db5cbxy1d4v5y" path="res://assets/sprites/Aldric/frames/death_01.png" id="6_q5jyt"]
+[ext_resource type="Texture2D" uid="uid://c2gc1l1l8bg3j" path="res://assets/sprites/Aldric/frames/death_02.png" id="7_eahtu"]
+[ext_resource type="Texture2D" uid="uid://bljdwjlkw68gb" path="res://assets/sprites/Aldric/frames/hurt_00.png" id="8_wgtg3"]
+[ext_resource type="Texture2D" uid="uid://b144idmesng1l" path="res://assets/sprites/Aldric/frames/hurt_01.png" id="9_3aipa"]
+[ext_resource type="Texture2D" uid="uid://b56xv8rer7q6i" path="res://assets/sprites/Aldric/frames/idle_00.png" id="10_7hld4"]
+[ext_resource type="Texture2D" uid="uid://gwb0c6bynfvi" path="res://assets/sprites/Aldric/frames/idle_01.png" id="11_rqb5f"]
+[ext_resource type="Texture2D" uid="uid://dckgmtamktop2" path="res://assets/sprites/Aldric/frames/idle_02.png" id="12_co8sd"]
+[ext_resource type="Texture2D" uid="uid://hbh2dmyuyiy7" path="res://assets/sprites/Aldric/frames/idle_03.png" id="13_j2txy"]
+[ext_resource type="Texture2D" uid="uid://e65bft5hw47h" path="res://assets/sprites/Aldric/frames/walk_00.png" id="14_nn1yt"]
+[ext_resource type="Texture2D" uid="uid://dle0lfudx2o75" path="res://assets/sprites/Aldric/frames/walk_01.png" id="15_oebtn"]
+[ext_resource type="Texture2D" uid="uid://bv4qn1bidhnxv" path="res://assets/sprites/Aldric/frames/walk_02.png" id="16_3yp6o"]
+[ext_resource type="Texture2D" uid="uid://brvu2ix0m2py4" path="res://assets/sprites/Aldric/frames/walk_03.png" id="17_hr3sf"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_yxo6r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_qg0lq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3smna")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8cksb")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_4asum")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_q5jyt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_eahtu")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_wgtg3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_3aipa")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_7hld4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_rqb5f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_co8sd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_j2txy")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_nn1yt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_oebtn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_3yp6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_hr3sf")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

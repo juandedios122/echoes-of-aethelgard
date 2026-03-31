@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://b81mryr7iis6u"]
+
+[ext_resource type="Texture2D" uid="uid://drmjoih5qgu1q" path="res://assets/sprites/Vex/frames/attack_00.png" id="1_4yucs"]
+[ext_resource type="Texture2D" uid="uid://b5dsk85foyeov" path="res://assets/sprites/Vex/frames/attack_01.png" id="2_olf3r"]
+[ext_resource type="Texture2D" uid="uid://b1kcv276blhpd" path="res://assets/sprites/Vex/frames/attack_02.png" id="3_003mx"]
+[ext_resource type="Texture2D" uid="uid://uwgy5e65wuxf" path="res://assets/sprites/Vex/frames/attack_03.png" id="4_bskjf"]
+[ext_resource type="Texture2D" uid="uid://dqud3m0fha06b" path="res://assets/sprites/Vex/frames/death_00.png" id="5_ffbrv"]
+[ext_resource type="Texture2D" uid="uid://cjeno0gfenvr0" path="res://assets/sprites/Vex/frames/death_01.png" id="6_pcr7q"]
+[ext_resource type="Texture2D" uid="uid://dnbcr22thl23m" path="res://assets/sprites/Vex/frames/death_02.png" id="7_vpar8"]
+[ext_resource type="Texture2D" uid="uid://c1t6pg5xoat1p" path="res://assets/sprites/Vex/frames/hurt_00.png" id="8_ab1pm"]
+[ext_resource type="Texture2D" uid="uid://5tvvoauuhgao" path="res://assets/sprites/Vex/frames/hurt_01.png" id="9_e5jo7"]
+[ext_resource type="Texture2D" uid="uid://fq3e5684edc0" path="res://assets/sprites/Vex/frames/idle_00.png" id="10_nnfrw"]
+[ext_resource type="Texture2D" uid="uid://c71f20ifnxlgn" path="res://assets/sprites/Vex/frames/idle_01.png" id="11_4k25b"]
+[ext_resource type="Texture2D" uid="uid://ctyyux6shu50x" path="res://assets/sprites/Vex/frames/idle_02.png" id="12_yu28n"]
+[ext_resource type="Texture2D" uid="uid://btgsj726rwf1r" path="res://assets/sprites/Vex/frames/idle_03.png" id="13_elkbn"]
+[ext_resource type="Texture2D" uid="uid://dedt1w1bn81gx" path="res://assets/sprites/Vex/frames/walk_00.png" id="14_7cgw6"]
+[ext_resource type="Texture2D" uid="uid://cisudhca5vbdf" path="res://assets/sprites/Vex/frames/walk_01.png" id="15_4ir4x"]
+[ext_resource type="Texture2D" uid="uid://du4r2rkyfbh2l" path="res://assets/sprites/Vex/frames/walk_02.png" id="16_e5rae"]
+[ext_resource type="Texture2D" uid="uid://dq5pimqx7gqos" path="res://assets/sprites/Vex/frames/walk_03.png" id="17_cbh5d"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4yucs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_olf3r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_003mx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bskjf")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_ffbrv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pcr7q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_vpar8")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_ab1pm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_e5jo7")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_nnfrw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4k25b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_yu28n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_elkbn")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_7cgw6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_4ir4x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_e5rae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_cbh5d")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

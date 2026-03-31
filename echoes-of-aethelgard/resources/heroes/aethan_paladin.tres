@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://3btcd2kpxnxs"]
+
+[ext_resource type="Texture2D" uid="uid://c1sxpbg4xdrka" path="res://assets/sprites/Aethan/frames/attack_00.png" id="1_pmjlj"]
+[ext_resource type="Texture2D" uid="uid://b8rm3y46km6uo" path="res://assets/sprites/Aethan/frames/attack_01.png" id="2_8tv5e"]
+[ext_resource type="Texture2D" uid="uid://dpfk5reqdxkqx" path="res://assets/sprites/Aethan/frames/attack_02.png" id="3_5a64a"]
+[ext_resource type="Texture2D" uid="uid://byt6qcj7lpjkr" path="res://assets/sprites/Aethan/frames/attack_03.png" id="4_6sac8"]
+[ext_resource type="Texture2D" uid="uid://ctro6xtfb25ab" path="res://assets/sprites/Aethan/frames/death_00.png" id="5_1ish3"]
+[ext_resource type="Texture2D" uid="uid://dkwy6h07odlv0" path="res://assets/sprites/Aethan/frames/death_01.png" id="6_vrrih"]
+[ext_resource type="Texture2D" uid="uid://cy6rphjivc7ho" path="res://assets/sprites/Aethan/frames/death_02.png" id="7_q7aok"]
+[ext_resource type="Texture2D" uid="uid://csxj8pilngudm" path="res://assets/sprites/Aethan/frames/hurt_00.png" id="8_m6nj5"]
+[ext_resource type="Texture2D" uid="uid://qhb7d1rol1if" path="res://assets/sprites/Aethan/frames/hurt_01.png" id="9_1r0gv"]
+[ext_resource type="Texture2D" uid="uid://bgnk2qnw2ycqj" path="res://assets/sprites/Aethan/frames/idle_00.png" id="10_pp7l7"]
+[ext_resource type="Texture2D" uid="uid://vgae3xni18y6" path="res://assets/sprites/Aethan/frames/idle_01.png" id="11_5t2f8"]
+[ext_resource type="Texture2D" uid="uid://bwpa1o2i2j8n3" path="res://assets/sprites/Aethan/frames/idle_02.png" id="12_guea1"]
+[ext_resource type="Texture2D" uid="uid://bygqls6fjlwam" path="res://assets/sprites/Aethan/frames/idle_03.png" id="13_lo5al"]
+[ext_resource type="Texture2D" uid="uid://mt2xuw6kg4ev" path="res://assets/sprites/Aethan/frames/walk_00.png" id="14_4cg5l"]
+[ext_resource type="Texture2D" uid="uid://bj28v2aipgghs" path="res://assets/sprites/Aethan/frames/walk_01.png" id="15_2lt7a"]
+[ext_resource type="Texture2D" uid="uid://cjb6ny16d4a7w" path="res://assets/sprites/Aethan/frames/walk_02.png" id="16_7bkf2"]
+[ext_resource type="Texture2D" uid="uid://dr7fkqxl3lb56" path="res://assets/sprites/Aethan/frames/walk_03.png" id="17_uk1ld"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_pmjlj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_8tv5e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5a64a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6sac8")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_1ish3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_vrrih")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q7aok")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_m6nj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_1r0gv")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_pp7l7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_5t2f8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_guea1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_lo5al")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_4cg5l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_2lt7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_7bkf2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_uk1ld")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

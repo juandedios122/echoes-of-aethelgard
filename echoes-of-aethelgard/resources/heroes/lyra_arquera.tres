@@ -1,0 +1,98 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://c2bmoa3sxq656"]
+
+[ext_resource type="Texture2D" uid="uid://dg7ollxwmkkm0" path="res://assets/sprites/Lyra/frames/attack_00.png" id="1_gjf3i"]
+[ext_resource type="Texture2D" uid="uid://c0gjpimloy2ra" path="res://assets/sprites/Lyra/frames/attack_01.png" id="2_vclw0"]
+[ext_resource type="Texture2D" uid="uid://bgnikiyq3u43l" path="res://assets/sprites/Lyra/frames/attack_02.png" id="3_ummaf"]
+[ext_resource type="Texture2D" uid="uid://dgpngaod0fqvj" path="res://assets/sprites/Lyra/frames/attack_03.png" id="4_35f52"]
+[ext_resource type="Texture2D" uid="uid://dofsc8tohapiv" path="res://assets/sprites/Lyra/frames/death_00.png" id="5_mt82c"]
+[ext_resource type="Texture2D" uid="uid://0f7d06vnv3q0" path="res://assets/sprites/Lyra/frames/death_01.png" id="6_eu663"]
+[ext_resource type="Texture2D" uid="uid://cuf2dyjohvjjd" path="res://assets/sprites/Lyra/frames/death_02.png" id="7_p4lkl"]
+[ext_resource type="Texture2D" uid="uid://urg5e3tdvdp4" path="res://assets/sprites/Lyra/frames/hurt_00.png" id="8_alv44"]
+[ext_resource type="Texture2D" uid="uid://d0a8wy4hd5el7" path="res://assets/sprites/Lyra/frames/hurt_01.png" id="9_r0mue"]
+[ext_resource type="Texture2D" uid="uid://nu3cblg3oaae" path="res://assets/sprites/Lyra/frames/idle_00.png" id="10_k161g"]
+[ext_resource type="Texture2D" uid="uid://b78qhno246rqe" path="res://assets/sprites/Lyra/frames/idle_01.png" id="11_2pad3"]
+[ext_resource type="Texture2D" uid="uid://v63e2hm4n60y" path="res://assets/sprites/Lyra/frames/idle_02.png" id="12_ondhn"]
+[ext_resource type="Texture2D" uid="uid://bia86a0l6g6h" path="res://assets/sprites/Lyra/frames/idle_03.png" id="13_dxt8t"]
+[ext_resource type="Texture2D" uid="uid://elunjgo56w82" path="res://assets/sprites/Lyra/frames/walk_00.png" id="14_rulm4"]
+[ext_resource type="Texture2D" uid="uid://bn54cdfgd40c0" path="res://assets/sprites/Lyra/frames/walk_01.png" id="15_m43bi"]
+[ext_resource type="Texture2D" uid="uid://cxjykcgsfe7a8" path="res://assets/sprites/Lyra/frames/walk_02.png" id="16_j6gyj"]
+[ext_resource type="Texture2D" uid="uid://376wrfr8acra" path="res://assets/sprites/Lyra/frames/walk_03.png" id="17_r3fsr"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gjf3i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_vclw0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ummaf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_35f52")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_mt82c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_eu663")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_p4lkl")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_alv44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_r0mue")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_k161g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_2pad3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ondhn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_dxt8t")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_rulm4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_m43bi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_j6gyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_r3fsr")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]

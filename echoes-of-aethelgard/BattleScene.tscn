@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bj8636t51uxn0"]
+
+[ext_resource type="Script" uid="uid://b4wv4tvdenoum" path="res://scripts/combat/BattleScene.gd" id="1_b278l"]
+[ext_resource type="Script" uid="uid://cugo6etcy6xe7" path="res://scripts/systems/CombatManager.gd" id="2_hvnqj"]
+
+[node name="BattleScene" type="Node2D" unique_id=334750029]
+script = ExtResource("1_b278l")
+
+[node name="Transition" type="ColorRect" parent="." unique_id=759784166]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="PlayerUnitsContainer" type="Node2D" parent="." unique_id=1096569658]
+
+[node name="EnemyUnitsContainer" type="Node2D" parent="." unique_id=575477546]
+
+[node name="CombatManager" type="Node" parent="." unique_id=904766308]
+script = ExtResource("2_hvnqj")
+
+[node name="BattleUI" type="CanvasLayer" parent="." unique_id=10089070]
+
+[node name="SkillBar" type="HBoxContainer" parent="BattleUI" unique_id=1499880408]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SpeedToggle" type="Button" parent="BattleUI" unique_id=204766007]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="AutoToggle" type="Button" parent="BattleUI" unique_id=1589243336]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="ResultPanel" type="Panel" parent="BattleUI" unique_id=917257010]
+offset_right = 40.0
+offset_bottom = 40.0

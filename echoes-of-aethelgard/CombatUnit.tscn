@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c3ixvhmdk8vf5"]
+
+[ext_resource type="Script" uid="uid://ch7s5n1h2q0a8" path="res://scripts/combat/CombatUnit.gd" id="1_efns5"]
+[ext_resource type="SpriteFrames" uid="uid://b81mryr7iis6u" path="res://resources/heroes/vex_nigromante.tres" id="2_a6grj"]
+
+[node name="CombatUnit" type="Node2D" unique_id=558098438]
+script = ExtResource("1_efns5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1744529286]
+scale = Vector2(1.5, 1.5)
+sprite_frames = ExtResource("2_a6grj")
+animation = &"walk"
+
+[node name="HpBar" type="ProgressBar" parent="." unique_id=1949718376]
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="EnergyBar" type="ProgressBar" parent="." unique_id=1616742052]
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2039399774]
+
+[node name="StatusIcons" type="HBoxContainer" parent="." unique_id=530822457]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DamageNumbers" type="Node2D" parent="." unique_id=1175658125]
