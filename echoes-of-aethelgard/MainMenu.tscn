@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8vq7x3m4n5p"]
+[gd_scene format=3 uid="uid://c8vq7x3m4n5p"]
 
-[ext_resource type="Script" path="res://scripts/ui/MainMenu.gd" id="1_mainmenu"]
-[ext_resource type="Texture2D" uid="uid://bchgwcye04qdc" path="res://Icono_Nuevo.png" id="2_icon"]
+[ext_resource type="Script" uid="uid://bqk0ejlbniu6v" path="res://scripts/ui/MainMenu.gd" id="1_mainmenu"]
+[ext_resource type="Texture2D" uid="uid://c5vq8x4n6o7q" path="res://assets/ui/background_main_blurred.png" id="2_background"]
+[ext_resource type="Texture2D" uid="uid://btxh7tls5jkvv" path="res://assets/ui/Button_Jugar.png" id="3_button_jugar"]
+[ext_resource type="Texture2D" uid="uid://b2jlgpughmkhp" path="res://assets/ui/Button_Invocar.png" id="4_button_invocar"]
+[ext_resource type="Texture2D" uid="uid://c6nuegxdlwjf6" path="res://assets/ui/Button_Heroes.png" id="5_button_heroes"]
+[ext_resource type="Texture2D" uid="uid://dwampd6y506f2" path="res://Icono_Nuevo.png" id="6_icon"]
+[ext_resource type="Texture2D" uid="uid://xb8cwh4qj0xu" path="res://assets/ui/title_main.png" id="7_cqjrg"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1723565334]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,68 +17,75 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mainmenu")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="BackgroundTexture" type="TextureRect" parent="." unique_id=2049347208]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.15, 0.1, 0.2, 1)
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1749181598]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 785.0
+offset_top = -76.0
+offset_right = 585.0
+offset_bottom = 1946.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.50670004, 0.4060347)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1917782267]
 layout_mode = 2
-theme_override_constants/separation = 25
+theme_override_constants/separation = 15
 
-[node name="IconTexture" type="TextureRect" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(120, 120)
+[node name="PlayButton" type="TextureButton" parent="CenterContainer/VBoxContainer" unique_id=958972755]
+custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("2_icon")
+texture_normal = ExtResource("3_button_jugar")
+stretch_mode = 5
+
+[node name="GachaButton" type="TextureButton" parent="CenterContainer/VBoxContainer" unique_id=1806418046]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+texture_normal = ExtResource("4_button_invocar")
+stretch_mode = 5
+
+[node name="HeroesButton" type="TextureButton" parent="CenterContainer/VBoxContainer" unique_id=115266736]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+texture_normal = ExtResource("5_button_heroes")
+stretch_mode = 5
+
+[node name="BottomRightIcon" type="TextureRect" parent="." unique_id=1046423474]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -135.0
+offset_right = -28.0
+offset_bottom = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.2815024, 1.3517252)
+texture = ExtResource("6_icon")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_colors/font_outline_color = Color(0.2, 0.1, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 42
-text = "Echoes of Aethelgard"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(350, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.7, 1)
-theme_override_font_sizes/font_size = 32
-text = "Jugar"
-
-[node name="GachaButton" type="Button" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(350, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.7, 1)
-theme_override_font_sizes/font_size = 32
-text = "🔶 Invocaciones"
-
-[node name="HeroesButton" type="Button" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(350, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.7, 1)
-theme_override_font_sizes/font_size = 32
-text = "⚔️ Héroes"
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1039897770]
+layout_mode = 0
+offset_left = 104.000015
+offset_top = 275.0
+offset_right = 1640.0
+offset_bottom = 1299.0
+scale = Vector2(0.47999978, 0.5200002)
+texture = ExtResource("7_cqjrg")

@@ -50,6 +50,9 @@ func _ready() -> void:
 	_spawn_units()
 	_connect_signals()
 	combat_manager.start_battle()
+	
+	# Reproducir música de batalla
+	AudioManager.play_music("battle_theme", 1.0)
 
 func _spawn_units() -> void:
 	var pd := GameManager.player_data

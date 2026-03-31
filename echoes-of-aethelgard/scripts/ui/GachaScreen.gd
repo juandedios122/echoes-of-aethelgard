@@ -40,6 +40,9 @@ func _ready() -> void:
 	GameManager.gacha_system.pull_completed.connect(_on_pull_completed)
 	pull_1x_btn.text  = "Invocar x1\n🔶 %d" % GachaSystem.COST_SINGLE
 	pull_10x_btn.text = "Invocar x10\n🔶 %d" % GachaSystem.COST_MULTI
+	
+	# Reproducir música de gacha
+	AudioManager.play_music("gacha_theme", 1.5)
 
 # ─── UI ───────────────────────────────────────────────────────────────────────
 func _refresh_currency_ui() -> void:

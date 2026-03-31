@@ -24,6 +24,7 @@ config/icon="res://Icono_Nuevo.png"
 [autoload]
 
 GameManager="*uid://b4kfqfallkrmw"
+AudioManager="*res://scripts/autoloads/AudioManager.gd"
 
 [display]
 

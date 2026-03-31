@@ -1,0 +1,20 @@
+[gd_resource type="Theme" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" uid="uid://e7xr0z6p8q9s" path="res://assets/ui/buttons_set_fantasy.png" id="1_buttons"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_heroes"]
+texture = ExtResource("1_buttons")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
+region_rect = Rect2(200, 650, 830, 210)
+
+[resource]
+Button/styles/normal = SubResource("StyleBoxTexture_heroes")
+Button/styles/hover = SubResource("StyleBoxTexture_heroes")
+Button/styles/pressed = SubResource("StyleBoxTexture_heroes")
+Button/colors/font_color = Color(0.3, 0.25, 0.2, 1)
+Button/colors/font_hover_color = Color(0.2, 0.15, 0.1, 1)
+Button/colors/font_pressed_color = Color(0.4, 0.35, 0.3, 1)
+Button/font_sizes/font_size = 28

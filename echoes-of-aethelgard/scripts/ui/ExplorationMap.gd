@@ -12,6 +12,9 @@ func _ready() -> void:
 	# Configurar cámara para seguir al héroe
 	camera.position = hero.position
 	battle_button.pressed.connect(_on_battle_button_pressed)
+	
+	# Reproducir música de exploración
+	AudioManager.play_music("exploration_theme", 1.5)
 
 func _physics_process(delta: float) -> void:
 	var direction := Vector2.ZERO

@@ -44,7 +44,9 @@ func get_hero_level(hero_id: String) -> int:
 	return owned_heroes.get(hero_id, {}).get("level", 0)
 
 func get_hero_exp(hero_id: String) -> int:
-	return owned_heroes.get(hero_id, {}).get("exp", 0)
+	if not owned_heroes.has(hero_id):
+		return 0
+	return owned_heroes[hero_id].get("exp", 0)
 
 func get_exp_for_next_level(current_level: int) -> int:
 	# Fórmula exponencial tipo Dragon Ball Legends
@@ -164,3 +166,8 @@ func load_from_dict(data: Dictionary) -> void:
 	total_battles_won  = data.get("total_battles_won", 0)
 	total_battles_lost = data.get("total_battles_lost", 0)
 	play_time_seconds  = data.get("play_time_seconds", 0.0)
+	
+	# Asegurar que todos los héroes tengan el campo "exp"
+	for hero_id in owned_heroes.keys():
+		if not owned_heroes[hero_id].has("exp"):
+			owned_heroes[hero_id]["exp"] = 0

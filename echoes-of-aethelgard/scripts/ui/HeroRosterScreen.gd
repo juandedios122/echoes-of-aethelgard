@@ -24,6 +24,9 @@ func _ready() -> void:
 	_setup_animated_background()
 	_load_all_heroes()
 	_populate_hero_grid()
+	
+	# Reproducir música del menú (misma que main menu)
+	AudioManager.play_music("menu_theme", 1.0)
 
 func _setup_animated_background() -> void:
 	var gradient := Gradient.new()
