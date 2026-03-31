@@ -53,7 +53,7 @@ func _ready() -> void:
 
 func _spawn_units() -> void:
 	var pd := GameManager.player_data
-	var team := pd.active_team
+	var team: Array[String] = pd.active_team
 
 	var player_units: Array[CombatUnit] = []
 	for i in team.size():

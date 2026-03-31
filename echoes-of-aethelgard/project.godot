@@ -19,7 +19,7 @@ config/description="Juego gacha medieval 2D para móvil"
 config/version="0.1.0"
 run/main_scene="res://MainMenu.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://Icono_Nuevo.png"
 
 [autoload]
 
@@ -29,7 +29,9 @@ GameManager="*uid://b4kfqfallkrmw"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/mode="canvas_items"
+window/size/mode=2
+window/size/resizable=false
+window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/handheld/orientation="landscape"
 
@@ -80,4 +82,5 @@ ui_down={
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 2d/snap/snap_2d_vertices_to_pixel=true

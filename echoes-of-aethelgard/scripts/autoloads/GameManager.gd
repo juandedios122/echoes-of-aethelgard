@@ -18,9 +18,10 @@ const SCENES := {
 	"main_menu"        : "res://MainMenu.tscn",
 	"exploration_map"  : "res://ExplorationMap.tscn",
 	"gacha_screen"     : "res://scenes/ui/GachaScreen.tscn",
-	"battle_scene"     : "res://scenes/combat/battle_scene.tscn",
+	"battle_scene"     : "res://BattleScene.tscn",
 	"hub_camp"         : "res://scenes/ui/hub_camp.tscn",
-	"hero_roster"      : "res://scenes/ui/hero_roster.tscn",
+	"hero_roster"      : "res://scenes/ui/HeroRosterScreen.tscn",
+	"team_selection"   : "res://scenes/ui/TeamSelectionScreen.tscn",
 }
 
 # ─── Estado de la Partida en Curso ───────────────────────────────────────────
@@ -57,10 +58,16 @@ func save_game() -> void:
 
 func _new_game() -> void:
 	player_data.amber_shards    = 10000  # Moneda gacha de inicio (aumentada para pruebas)
-	player_data.gold            = 500
+	player_data.gold            = 5000   # Oro inicial para pruebas
 	player_data.current_chapter = 1
 	player_data.current_stage   = 1
 	player_data.pull_pity       = 0
+	
+	# Agregar algunos héroes de inicio para pruebas
+	player_data.add_hero("aethan_paladin")
+	player_data.add_hero("mira_sanadora")
+	player_data.add_hero("lyra_arquera")
+	
 	print("[GameManager] Nueva partida iniciada.")
 
 # ─── Cambio de Escena con Transición ─────────────────────────────────────────

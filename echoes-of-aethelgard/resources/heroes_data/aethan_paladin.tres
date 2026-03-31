@@ -1,19 +1,25 @@
-[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="HeroData" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bgnk2qnw2ycqj" path="res://assets/sprites/Aethan/frames/idle_00.png" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/aethan_basic.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/skills/aethan_active.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/skills/aethan_ultimate.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
 hero_id = "aethan_paladin"
 hero_name = "Aethan"
 title = "El Último Paladín"
-lore_text = "Guardián de la Orden del Alba, juró proteger a los inocentes."
+lore_text = "Último superviviente de la Orden del Alba tras la caída de la Ciudadela Sagrada. Aethan porta la espada bendita Amanecer y ha jurado restaurar la luz en un mundo sumido en sombras. Su fe inquebrantable lo convierte en un bastión contra las fuerzas oscuras."
 faction = 0
 rarity = 3
 role = 0
 element = 0
 portrait = ExtResource("2")
+skill_basic = ExtResource("3")
+skill_active = ExtResource("4")
+skill_ultimate = ExtResource("5")
 base_hp = 1500
 base_atk = 120
 base_def = 80

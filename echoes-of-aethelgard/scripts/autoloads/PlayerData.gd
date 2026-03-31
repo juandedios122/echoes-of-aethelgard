@@ -35,13 +35,46 @@ func add_hero(hero_id: String) -> void:
 	if hero_id in owned_heroes:
 		owned_heroes[hero_id]["copies"] += 1
 	else:
-		owned_heroes[hero_id] = {"level": 1, "copies": 1, "stars": 1}
+		owned_heroes[hero_id] = {"level": 1, "copies": 1, "stars": 1, "exp": 0}
 
 func has_hero(hero_id: String) -> bool:
 	return hero_id in owned_heroes
 
 func get_hero_level(hero_id: String) -> int:
 	return owned_heroes.get(hero_id, {}).get("level", 0)
+
+func get_hero_exp(hero_id: String) -> int:
+	return owned_heroes.get(hero_id, {}).get("exp", 0)
+
+func get_exp_for_next_level(current_level: int) -> int:
+	# Fórmula exponencial tipo Dragon Ball Legends
+	return int(100 * pow(1.15, current_level - 1))
+
+func add_hero_exp(hero_id: String, exp_amount: int) -> bool:
+	if not has_hero(hero_id):
+		return false
+	
+	var hero: Dictionary = owned_heroes[hero_id]
+	var current_level: int = hero.get("level", 1)
+	if current_level >= 60:
+		return false
+	
+	var current_exp: int = hero.get("exp", 0)
+	hero["exp"] = current_exp + exp_amount
+	
+	# Subir niveles automáticamente
+	var leveled_up := false
+	while current_level < 60:
+		var exp_needed: int = get_exp_for_next_level(current_level)
+		if hero["exp"] >= exp_needed:
+			hero["exp"] -= exp_needed
+			current_level += 1
+			hero["level"] = current_level
+			leveled_up = true
+		else:
+			break
+	
+	return leveled_up
 
 func level_up_hero(hero_id: String) -> bool:
 	if not has_hero(hero_id):
@@ -50,7 +83,42 @@ func level_up_hero(hero_id: String) -> bool:
 	if hero["level"] >= 60:
 		return false
 	hero["level"] += 1
+	hero["exp"] = 0
 	return true
+
+## Obtiene el oro necesario para subir al siguiente nivel
+func get_level_up_cost(hero_id: String) -> int:
+	var level := get_hero_level(hero_id)
+	if level >= 60:
+		return 0
+	return 100 + (level * 50)
+
+## Obtiene las copias necesarias para ascender estrellas
+func get_ascension_cost(hero_id: String) -> int:
+	if not has_hero(hero_id):
+		return 0
+	var stars: int = owned_heroes[hero_id].get("stars", 1)
+	match stars:
+		1: return 2  # 2 copias para 2 estrellas
+		2: return 3  # 3 copias para 3 estrellas
+		3: return 5  # 5 copias para 4 estrellas
+		4: return 10 # 10 copias para 5 estrellas
+	return 0
+
+## Intenta ascender un héroe si tiene suficientes copias
+func ascend_hero(hero_id: String) -> bool:
+	if not has_hero(hero_id):
+		return false
+	var hero: Dictionary = owned_heroes[hero_id]
+	var stars: int = hero.get("stars", 1)
+	if stars >= 5:
+		return false
+	var cost := get_ascension_cost(hero_id)
+	if hero["copies"] >= cost:
+		hero["copies"] -= cost
+		hero["stars"] += 1
+		return true
+	return false
 
 func set_active_team(team: Array[String]) -> void:
 	active_team = team.slice(0, 3)

@@ -4,12 +4,14 @@ extends Node2D
 
 @onready var hero: CharacterBody2D = $Hero
 @onready var camera: Camera2D = $Camera2D
+@onready var battle_button: Button = $UI/BattleButton
 
 const SPEED := 200.0
 
 func _ready() -> void:
 	# Configurar cámara para seguir al héroe
 	camera.position = hero.position
+	battle_button.pressed.connect(_on_battle_button_pressed)
 
 func _physics_process(delta: float) -> void:
 	var direction := Vector2.ZERO
@@ -49,3 +51,6 @@ func _update_hero_animation(direction: Vector2) -> void:
 	else:
 		if sprite.sprite_frames.has_animation("idle"):
 			sprite.play("idle")
+
+func _on_battle_button_pressed() -> void:
+	GameManager.go_to_scene("team_selection")
