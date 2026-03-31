@@ -17,13 +17,13 @@ class_name GachaScreen
 extends Control
 
 # ─── Nodos ────────────────────────────────────────────────────────────────────
-@onready var amber_label: Label          = $AmberLabel
+@onready var amber_label: Label          = $TopBar/AmberLabel
 @onready var pity_bar: ProgressBar       = $PityBar
-@onready var pity_label: Label           = $PityLabel
-@onready var rift_anim: AnimatedSprite2D = $RiftAnimation
+@onready var pity_label: Label           = $TopBar/PityLabel
+@onready var rift_anim: AnimatedSprite2D = $CenterContainer/VBoxContainer/RiftAnimation
 @onready var result_container: HBoxContainer = $ResultContainer
-@onready var pull_1x_btn: Button         = $PullButton1x
-@onready var pull_10x_btn: Button        = $PullButton10x
+@onready var pull_1x_btn: Button         = $CenterContainer/VBoxContainer/ButtonsContainer/PullButton1x
+@onready var pull_10x_btn: Button        = $CenterContainer/VBoxContainer/ButtonsContainer/PullButton10x
 @onready var skip_btn: Button            = $SkipButton
 
 const HeroCardScene: PackedScene = preload("res://scenes/ui/HeroCard.tscn")
@@ -77,11 +77,12 @@ func _on_pull_10x_pressed() -> void:
 # ─── Resultado ────────────────────────────────────────────────────────────────
 func _on_pull_completed(results: Array[HeroData]) -> void:
 	is_animating = true
-	skip_btn.visible = true
+	if skip_btn:
+		skip_btn.visible = true
 	_clear_results()
 
-	# Animación de la grieta
-	if rift_anim:
+	# Animación de la grieta (opcional)
+	if rift_anim and rift_anim.sprite_frames:
 		rift_anim.play("open")
 		await rift_anim.animation_finished
 
@@ -96,7 +97,8 @@ func _on_pull_completed(results: Array[HeroData]) -> void:
 		await get_tree().create_timer(0.15).timeout
 
 	is_animating = false
-	skip_btn.visible = false
+	if skip_btn:
+		skip_btn.visible = false
 	_set_buttons_enabled(true)
 
 func _clear_results() -> void:

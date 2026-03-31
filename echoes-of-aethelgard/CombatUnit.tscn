@@ -7,7 +7,7 @@
 script = ExtResource("1_efns5")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1744529286]
-scale = Vector2(1.5, 1.5)
+scale = Vector2(0.8, 0.8)
 sprite_frames = ExtResource("2_a6grj")
 animation = &"walk"
 

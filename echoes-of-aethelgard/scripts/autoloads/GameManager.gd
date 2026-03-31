@@ -17,7 +17,7 @@ const VERSION   := "0.1.0"
 const SCENES := {
 	"main_menu"        : "res://MainMenu.tscn",
 	"exploration_map"  : "res://ExplorationMap.tscn",
-	"gacha_screen"     : "res://scenes/ui/gacha_screen.tscn",
+	"gacha_screen"     : "res://scenes/ui/GachaScreen.tscn",
 	"battle_scene"     : "res://scenes/combat/battle_scene.tscn",
 	"hub_camp"         : "res://scenes/ui/hub_camp.tscn",
 	"hero_roster"      : "res://scenes/ui/hero_roster.tscn",

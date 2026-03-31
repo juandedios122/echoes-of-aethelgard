@@ -1,0 +1,153 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqx8k7m3n9p2r"]
+
+[ext_resource type="Script" path="res://scripts/ui/GachaScreen.gd" id="1_gacha"]
+
+[node name="GachaScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gacha")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.05, 0.15, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="AmberLabel" type="Label" parent="TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 32
+text = "🔶 1000"
+
+[node name="Spacer" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="PityLabel" type="Label" parent="TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "Pity: 0/90"
+
+[node name="PityBar" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 60.0
+offset_bottom = 80.0
+grow_horizontal = 2
+max_value = 90.0
+show_percentage = false
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
+theme_override_font_sizes/font_size = 48
+text = "La Grieta del Destino"
+horizontal_alignment = 1
+
+[node name="RiftAnimation" type="AnimatedSprite2D" parent="CenterContainer/VBoxContainer"]
+position = Vector2(200, 100)
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="PullButton1x" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(180, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
+theme_override_font_sizes/font_size = 24
+text = "Invocar x1
+🔶 160"
+
+[node name="PullButton10x" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(180, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
+theme_override_font_sizes/font_size = 24
+text = "Invocar x10
+🔶 1440"
+
+[node name="ResultContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -250.0
+offset_right = 500.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SkipButton" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Saltar"
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = -20.0
+grow_vertical = 0
+text = "← Volver"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonsContainer/PullButton1x" to="." method="_on_pull_1x_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonsContainer/PullButton10x" to="." method="_on_pull_10x_pressed"]
+[connection signal="pressed" from="SkipButton" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_pressed"]
