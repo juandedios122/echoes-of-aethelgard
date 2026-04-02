@@ -2,7 +2,7 @@
 ## Pantalla para seleccionar el equipo antes de entrar a batalla
 extends Control
 
-@onready var back_button: Button = $MarginContainer/VBoxContainer/TopBar/BackButton
+@onready var back_button: TextureButton = $MarginContainer/VBoxContainer/TopBar/BackButton
 @onready var hero_grid: GridContainer = $MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer/ScrollContainer/HeroGrid
 @onready var team_label: Label = $MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Label
 @onready var slot1: PanelContainer = $MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot1

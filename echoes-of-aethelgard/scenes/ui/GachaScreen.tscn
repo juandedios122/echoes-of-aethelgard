@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bqx8k7m3n9p2r"]
 
 [ext_resource type="Script" path="res://scripts/ui/GachaScreen.gd" id="1_gacha"]
+[ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/Button_Volver.png" id="2_volver"]
 
 [node name="GachaScreen" type="Control"]
 layout_mode = 3
@@ -135,19 +136,19 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Saltar"
 
-[node name="BackButton" type="Button" parent="."]
+[node name="BackButton" type="TextureButton" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = -70.0
-offset_right = 180.0
+offset_top = -100.0
+offset_right = 220.0
 offset_bottom = -20.0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_font_sizes/font_size = 24
-text = "← Volver"
+texture_normal = ExtResource("2_volver")
+ignore_texture_size = true
+stretch_mode = 5
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonsContainer/PullButton1x" to="." method="_on_pull_1x_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonsContainer/PullButton10x" to="." method="_on_pull_10x_pressed"]

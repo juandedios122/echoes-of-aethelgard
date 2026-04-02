@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvx8lam2n4p7q"]
+[gd_scene format=3 uid="uid://bvx8lam2n4p7q"]
 
-[ext_resource type="Script" path="res://scripts/ui/HeroRosterScreen.gd" id="1_roster"]
+[ext_resource type="Script" uid="uid://don2o6c5mbhab" path="res://scripts/ui/HeroRosterScreen.gd" id="1_roster"]
+[ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/Button_Volver.png" id="2_volver"]
+[ext_resource type="Texture2D" uid="uid://eu6aktjoqe1c" path="res://assets/ui/Fondo.png" id="3_fondo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_separator"]
 bg_color = Color(0.4, 0.35, 0.2, 0.5)
 
-[node name="HeroRosterScreen" type="Control"]
+[node name="HeroRosterScreen" type="Control" unique_id=2057373790]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,25 +16,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_roster")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1952208739]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.03, 0.03, 0.08, 1)
+texture = ExtResource("3_fondo")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="BackgroundGradient" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="ParticlesLayer" type="Control" parent="."]
+[node name="ParticlesLayer" type="Control" parent="." unique_id=2040010511]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,7 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=723649482]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,111 +48,90 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1006360112]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2069706177]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/TopBar"]
-custom_minimum_size = Vector2(140, 60)
+[node name="BackButton" type="TextureButton" parent="MarginContainer/VBoxContainer/TopBar" unique_id=1099446007]
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.7, 0.55, 1)
-theme_override_colors/font_hover_color = Color(0.9, 0.8, 0.65, 1)
-theme_override_font_sizes/font_size = 26
-text = "← Volver"
+texture_normal = ExtResource("2_volver")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.75, 0.65, 0.5, 1)
-theme_override_colors/font_outline_color = Color(0.15, 0.1, 0.05, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 36
-text = "⚔️ COLECCIÓN DE HÉROES"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/TopBar"]
-custom_minimum_size = Vector2(140, 0)
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/TopBar" unique_id=1904716324]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1012946357]
 layout_mode = 2
 theme_override_constants/separation = 3
 theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
 
-[node name="ContentContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ContentContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=147683173]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 30
 
-[node name="HeroListPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer"]
-custom_minimum_size = Vector2(520, 0)
+[node name="HeroListPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer" unique_id=2114508977]
+custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel" unique_id=744672974]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="FilterLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer"]
+[node name="FilterLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer" unique_id=355382766]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.7, 0.55, 1)
-theme_override_colors/font_outline_color = Color(0.2, 0.15, 0.1, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.3, 0.25, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.85, 0.8, 0.75, 0.5)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 22
 text = "🔍 Filtros:"
 
-[node name="FilterButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer"]
+[node name="FilterButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer" unique_id=2101687733]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="AllButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons"]
-custom_minimum_size = Vector2(0, 55)
+[node name="AllButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons" unique_id=1437097877]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
-text = "📋 Todos"
+theme_override_font_sizes/font_size = 18
+text = "⚪ Todos"
 
-[node name="OwnedButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons"]
-custom_minimum_size = Vector2(0, 55)
+[node name="OwnedButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons" unique_id=609745438]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
-text = "✅ Desbloqueados"
+theme_override_font_sizes/font_size = 18
+text = "🔴 Desbloqueados"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer" unique_id=890087922]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HeroGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/ScrollContainer"]
+[node name="HeroGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/ScrollContainer" unique_id=132302923]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/h_separation = 15
-theme_override_constants/v_separation = 15
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
 columns = 2
 
-[node name="HeroDetailPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer"]
+[node name="HeroDetailPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer" unique_id=1466225896]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel" unique_id=1946767088]
 layout_mode = 2
 
-[node name="DetailContent" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel/ScrollContainer"]
+[node name="DetailContent" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel/ScrollContainer" unique_id=416818280]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 20
-
-[node name="NoSelectionLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel/ScrollContainer/DetailContent"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.5, 0.6, 1)
-theme_override_font_sizes/font_size = 28
-text = "Selecciona un héroe para ver sus detalles"
-horizontal_alignment = 1
-vertical_alignment = 1

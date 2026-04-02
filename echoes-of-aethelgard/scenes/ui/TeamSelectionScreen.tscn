@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ekfe03t2ysgx"]
 
 [ext_resource type="Script" path="res://scripts/ui/TeamSelectionScreen.gd" id="1_team"]
+[ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/Button_Volver.png" id="2_volver"]
 
 [node name="TeamSelectionScreen" type="Control"]
 layout_mode = 3
@@ -39,12 +40,12 @@ theme_override_constants/separation = 20
 [node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/TopBar"]
-custom_minimum_size = Vector2(120, 50)
+[node name="BackButton" type="TextureButton" parent="MarginContainer/VBoxContainer/TopBar"]
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_font_sizes/font_size = 24
-text = "← Volver"
+texture_normal = ExtResource("2_volver")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar"]
 layout_mode = 2

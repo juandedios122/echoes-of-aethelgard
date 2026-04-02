@@ -66,53 +66,37 @@ func setup(hero: HeroData, is_owned: bool) -> void:
 	_apply_card_style(hero, is_owned)
 
 func _apply_card_style(hero: HeroData, is_owned: bool) -> void:
-	# Cargar la textura de pergamino oscuro
-	var bg_texture := load("res://assets/ui/hero_detail_bg.png.jpeg") as Texture2D
+	# Estilo medieval oscuro con bordes decorativos
+	var style := StyleBoxFlat.new()
 	
-	if bg_texture:
-		# Usar StyleBoxTexture para el fondo de pergamino
-		var style := StyleBoxTexture.new()
-		style.texture = bg_texture
-		
-		# Configurar márgenes para que la textura se vea bien
-		style.texture_margin_left = 10
-		style.texture_margin_right = 10
-		style.texture_margin_top = 10
-		style.texture_margin_bottom = 10
-		
-		# Modular el color según el estado y rareza
-		if is_owned:
-			style.modulate_color = hero.get_rarity_color().lightened(0.6)
-			style.modulate_color.a = 0.9
-		else:
-			style.modulate_color = Color(0.5, 0.5, 0.5, 0.85)
-		
-		card_panel.add_theme_stylebox_override("panel", style)
+	if is_owned:
+		# Fondo madera oscura para héroes desbloqueados
+		style.bg_color = Color(0.18, 0.14, 0.10, 0.98)
+		style.border_color = hero.get_rarity_color()
+		style.set_border_width_all(3)
 	else:
-		# Fallback al estilo anterior si no se encuentra la textura
-		var style := StyleBoxFlat.new()
-		
-		if is_owned:
-			style.bg_color = Color(0.15, 0.12, 0.1, 0.95)
-			style.border_color = hero.get_rarity_color()
-			style.set_border_width_all(3)
-		else:
-			style.bg_color = Color(0.1, 0.1, 0.1, 0.9)
-			style.border_color = Color(0.3, 0.3, 0.3, 1)
-			style.set_border_width_all(2)
-		
-		style.corner_radius_top_left = 8
-		style.corner_radius_top_right = 8
-		style.corner_radius_bottom_left = 8
-		style.corner_radius_bottom_right = 8
-		
-		card_panel.add_theme_stylebox_override("panel", style)
+		# Fondo muy oscuro para héroes bloqueados
+		style.bg_color = Color(0.08, 0.08, 0.08, 0.95)
+		style.border_color = Color(0.25, 0.25, 0.25, 1)
+		style.set_border_width_all(2)
 	
-	# Estilo del panel de info con textura semi-transparente
+	style.corner_radius_top_left = 6
+	style.corner_radius_top_right = 6
+	style.corner_radius_bottom_left = 6
+	style.corner_radius_bottom_right = 6
+	
+	# Sombra para profundidad
+	style.shadow_color = Color(0, 0, 0, 0.6)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(2, 3)
+	
+	card_panel.add_theme_stylebox_override("panel", style)
+	
+	# Estilo del panel de info - más oscuro en la parte inferior
 	var info_style := StyleBoxFlat.new()
-	info_style.bg_color = Color(0.08, 0.06, 0.05, 0.9)
-	info_style.corner_radius_bottom_left = 6
-	info_style.corner_radius_bottom_right = 6
+	info_style.bg_color = Color(0.06, 0.05, 0.04, 0.95)
+	info_style.corner_radius_bottom_left = 4
+	info_style.corner_radius_bottom_right = 4
 	$CardPanel/VBoxContainer/InfoPanel.add_theme_stylebox_override("panel", info_style)
 
 func set_selected(selected: bool) -> void:

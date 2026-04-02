@@ -12,7 +12,7 @@
 ##   ├── ResultContainer (HBoxContainer)  ← tarjetas resultantes
 ##   │   └── [HeroCard instanciados]
 ##   ├── SkipButton (Button)              ← saltar animación
-##   └── BackButton (Button)
+##   └── BackButton (TextureButton)
 class_name GachaScreen
 extends Control
 
