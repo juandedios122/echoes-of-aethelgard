@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://b1q1nhg7gu4po"]
+
+[ext_resource type="Script" path="res://scripts/ui/HeroDetailPanel.gd" id="1"]
+
+[node name="HeroDetailPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(400, 0)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+
+[node name="DetailContent" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="Header" type="VBoxContainer" parent="ScrollContainer/DetailContent"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NameLabel" type="Label" parent="ScrollContainer/DetailContent/Header"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="ScrollContainer/DetailContent/Header"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="LevelContainer" type="HBoxContainer" parent="ScrollContainer/DetailContent/Header"]
+layout_mode = 2
+alignment = 1
+
+[node name="LevelIcon" type="Label" parent="ScrollContainer/DetailContent/Header/LevelContainer"]
+layout_mode = 2
+text = "⚡"
+theme_override_font_sizes/font_size = 20
+
+[node name="LevelText" type="Label" parent="ScrollContainer/DetailContent/Header/LevelContainer"]
+layout_mode = 2
+text = "Nivel 1 / 60"
+theme_override_font_sizes/font_size = 18
+
+[node name="ExpBar" type="ProgressBar" parent="ScrollContainer/DetailContent/Header"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+max_value = 100.0
+show_percentage = false
+
+[node name="ExpText" type="Label" parent="ScrollContainer/DetailContent/Header"]
+layout_mode = 2
+text = "0 / 100 EXP"
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="StatsPanel" type="PanelContainer" parent="ScrollContainer/DetailContent"]
+layout_mode = 2
+
+[node name="StatsVBox" type="VBoxContainer" parent="ScrollContainer/DetailContent/StatsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StatsTitle" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox"]
+layout_mode = 2
+text = "Estadísticas de Combate"
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="StatsGrid" type="GridContainer" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="HpLabel" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "❤️ HP:"
+theme_override_font_sizes/font_size = 16
+
+[node name="HpValue" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "1000"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 2
+
+[node name="AtkLabel" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "⚔️ ATK:"
+theme_override_font_sizes/font_size = 16
+
+[node name="AtkValue" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "200"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 2
+
+[node name="DefLabel" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "🛡️ DEF:"
+theme_override_font_sizes/font_size = 16
+
+[node name="DefValue" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "150"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 2
+
+[node name="SpdLabel" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "⚡ SPD:"
+theme_override_font_sizes/font_size = 16
+
+[node name="SpdValue" type="Label" parent="ScrollContainer/DetailContent/StatsPanel/StatsVBox/StatsGrid"]
+layout_mode = 2
+text = "100"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 2
+
+[node name="AbilitiesPanel" type="PanelContainer" parent="ScrollContainer/DetailContent"]
+layout_mode = 2
+
+[node name="AbilitiesVBox" type="VBoxContainer" parent="ScrollContainer/DetailContent/AbilitiesPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AbilitiesTitle" type="Label" parent="ScrollContainer/DetailContent/AbilitiesPanel/AbilitiesVBox"]
+layout_mode = 2
+text = "Habilidades"
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="AbilitiesGrid" type="HBoxContainer" parent="ScrollContainer/DetailContent/AbilitiesPanel/AbilitiesVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 15
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="ScrollContainer/DetailContent"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="LevelUpButton" type="Button" parent="ScrollContainer/DetailContent/ButtonsContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "⬆️ MEJORAR"
+
+[node name="AscendButton" type="Button" parent="ScrollContainer/DetailContent/ButtonsContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "✨ ASCENDER"
+
+[node name="ParticleSpawn" type="Node2D" parent="ScrollContainer/DetailContent"]

@@ -9,7 +9,6 @@ extends Control
 @onready var all_button: Button = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons/AllButton
 @onready var owned_button: Button = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons/OwnedButton
 @onready var detail_content: VBoxContainer = $MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel/ScrollContainer/DetailContent
-@onready var no_selection_label: Label = $MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel/ScrollContainer/DetailContent/NoSelectionLabel
 
 const HERO_CARD_SCENE := preload("res://scenes/ui/HeroRosterCard.tscn")
 
@@ -109,10 +108,6 @@ func _on_hero_selected(hero: HeroData, card: Button) -> void:
 	if card.has_method("set_selected"):
 		card.set_selected(true)
 	
-	# Ocultar mensaje de "no selección"
-	if no_selection_label:
-		no_selection_label.visible = false
-	
 	_display_hero_details(hero)
 
 func _display_hero_details(hero: HeroData) -> void:
@@ -175,16 +170,12 @@ func _create_hero_header(hero: HeroData, level: int, is_owned: bool) -> void:
 		_create_compact_exp_bar(hero.hero_id, level, header_vbox)
 
 func _create_hero_portrait(hero: HeroData, is_owned: bool) -> void:
-	# Panel contenedor para el retrato
 	var portrait_panel := PanelContainer.new()
 	var panel_style := StyleBoxFlat.new()
 	panel_style.bg_color = Color(0.08, 0.06, 0.1, 0.95)
 	panel_style.border_color = hero.get_rarity_color()
 	panel_style.set_border_width_all(4)
-	panel_style.corner_radius_top_left = 12
-	panel_style.corner_radius_top_right = 12
-	panel_style.corner_radius_bottom_left = 12
-	panel_style.corner_radius_bottom_right = 12
+	panel_style.set_corner_radius_all(12)
 	panel_style.shadow_color = hero.get_rarity_color()
 	panel_style.shadow_color.a = 0.4
 	panel_style.shadow_size = 12
@@ -226,18 +217,12 @@ func _create_compact_exp_bar(hero_id: String, level: int, container: VBoxContain
 	# Estilo de la barra
 	var bar_bg := StyleBoxFlat.new()
 	bar_bg.bg_color = Color(0.15, 0.12, 0.10, 1)
-	bar_bg.corner_radius_top_left = 4
-	bar_bg.corner_radius_top_right = 4
-	bar_bg.corner_radius_bottom_left = 4
-	bar_bg.corner_radius_bottom_right = 4
+	bar_bg.set_corner_radius_all(4)
 	progress_bar.add_theme_stylebox_override("background", bar_bg)
 	
 	var bar_fill := StyleBoxFlat.new()
-	bar_fill.bg_color = Color(0.65, 0.50, 0.30, 1)  # Bronce
-	bar_fill.corner_radius_top_left = 4
-	bar_fill.corner_radius_top_right = 4
-	bar_fill.corner_radius_bottom_left = 4
-	bar_fill.corner_radius_bottom_right = 4
+	bar_fill.bg_color = Color(0.65, 0.50, 0.30, 1)
+	bar_fill.set_corner_radius_all(4)
 	progress_bar.add_theme_stylebox_override("fill", bar_fill)
 	
 	container.add_child(progress_bar)
@@ -819,16 +804,12 @@ func _add_stat_to_grid(grid: GridContainer, label_text: String, value, color: Co
 	grid.add_child(value_label)
 
 func _create_lore_section(hero: HeroData) -> void:
-	# Panel contenedor para el lore
 	var lore_panel := PanelContainer.new()
 	var panel_style := StyleBoxFlat.new()
 	panel_style.bg_color = Color(0.12, 0.08, 0.1, 0.95)
 	panel_style.border_color = Color(0.6, 0.5, 0.4, 0.7)
 	panel_style.set_border_width_all(3)
-	panel_style.corner_radius_top_left = 12
-	panel_style.corner_radius_top_right = 12
-	panel_style.corner_radius_bottom_left = 12
-	panel_style.corner_radius_bottom_right = 12
+	panel_style.set_corner_radius_all(12)
 	panel_style.content_margin_left = 20
 	panel_style.content_margin_right = 20
 	panel_style.content_margin_top = 20
@@ -842,30 +823,23 @@ func _create_lore_section(hero: HeroData) -> void:
 	
 	var lore_title := Label.new()
 	lore_title.text = "📜 HISTORIA"
-	lore_title.add_theme_color_override("font_color", Color(0.8, 0.7, 0.55, 1))  # Pergamino
+	lore_title.add_theme_color_override("font_color", Color(0.8, 0.7, 0.55, 1))
 	lore_title.add_theme_color_override("font_outline_color", Color(0.15, 0.1, 0.05, 0.8))
 	lore_title.add_theme_constant_override("outline_size", 2)
 	lore_title.add_theme_font_size_override("font_size", 26)
 	lore_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lore_vbox.add_child(lore_title)
 	
-	# Separador decorativo
-	var separator := HSeparator.new()
-	var sep_style := StyleBoxFlat.new()
-	sep_style.bg_color = Color(0.6, 0.5, 0.4, 0.4)
-	separator.add_theme_stylebox_override("separator", sep_style)
-	separator.add_theme_constant_override("separation", 2)
-	lore_vbox.add_child(separator)
+	_add_separator(Color(0.6, 0.5, 0.4, 0.4))
 	
 	var lore_label := Label.new()
-	lore_label.text = hero.lore_text if hero.lore_text else "Historia no disponible."
+	lore_label.text = hero.lore_text if hero.lore_text else "Los registros de este héroe se perdieron en la guerra..."
 	lore_label.add_theme_color_override("font_color", Color(0.9, 0.85, 0.8, 1))
 	lore_label.add_theme_font_size_override("font_size", 18)
 	lore_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	lore_vbox.add_child(lore_label)
 
 func _create_action_buttons(hero: HeroData, level: int) -> void:
-	# Contenedor para botones
 	var buttons_container := VBoxContainer.new()
 	buttons_container.add_theme_constant_override("separation", 15)
 	detail_content.add_child(buttons_container)
@@ -874,43 +848,32 @@ func _create_action_buttons(hero: HeroData, level: int) -> void:
 	if level < 60:
 		var cost: int = GameManager.player_data.get_level_up_cost(hero.hero_id)
 		var can_afford := GameManager.player_data.gold >= cost
-		
-		var level_up_button := _create_styled_button(
-			"⬆️ SUBIR NIVEL",
-			Color(0.15, 0.5, 0.2, 1) if can_afford else Color(0.3, 0.3, 0.35, 1),
-			Color(0.3, 1, 0.4, 1) if can_afford else Color(0.5, 0.5, 0.55, 1)
-		)
-		
-		level_up_button.text += "\n💰 Costo: %s Oro" % _format_number(cost)
-		level_up_button.pressed.connect(_on_level_up_pressed.bind(hero))
-		
-		if not can_afford:
+		var level_up_button := _create_styled_button("⬆️ MEJORAR",
+			Color(0.15, 0.5, 0.2, 1) if can_afford else Color(0.2, 0.2, 0.25, 1),
+			Color(0.3, 1, 0.4, 1) if can_afford else Color(0.4, 0.4, 0.45, 1))
+		level_up_button.text += "\n💰 %s Oro" % _format_number(cost)
+		if can_afford:
+			level_up_button.pressed.connect(_on_level_up_pressed.bind(hero, level_up_button))
+		else:
 			level_up_button.disabled = true
-			level_up_button.text += " | Oro actual: %s" % _format_number(GameManager.player_data.gold)
-		
+			level_up_button.text += " (Tienes: %s)" % _format_number(GameManager.player_data.gold)
 		buttons_container.add_child(level_up_button)
 	
 	# Botón de ascensión
-	var hero_info: Dictionary = GameManager.player_data.owned_heroes[hero.hero_id]
+	var hero_info: Dictionary = GameManager.player_data.owned_heroes.get(hero.hero_id, {})
 	var stars: int = hero_info.get("stars", 1)
 	var copies: int = hero_info.get("copies", 1)
-	
 	if stars < 5:
 		var ascension_cost: int = GameManager.player_data.get_ascension_cost(hero.hero_id)
 		var can_ascend := copies >= ascension_cost
-		
-		var ascend_button := _create_styled_button(
-			"✨ ASCENDER A %d★" % (stars + 1),
-			Color(0.3, 0.2, 0.35, 1) if can_ascend else Color(0.3, 0.3, 0.35, 1),
-			Color(0.7, 0.6, 0.45, 1) if can_ascend else Color(0.5, 0.5, 0.55, 1)  # Bronce
-		)
-		ascend_button.text += "\n🎴 Requiere: %d copias | Tienes: %d" % [ascension_cost, copies]
-		ascend_button.pressed.connect(_on_ascend_pressed.bind(hero))
-		
-		if not can_ascend:
+		var ascend_button := _create_styled_button("✨ ASCENDER A %d★" % (stars + 1),
+			Color(0.3, 0.2, 0.35, 1) if can_ascend else Color(0.2, 0.2, 0.25, 1),
+			Color(0.7, 0.6, 0.45, 1) if can_ascend else Color(0.4, 0.4, 0.45, 1))
+		ascend_button.text += "\n🎴 Copias: %d / %d" % [copies, ascension_cost]
+		if can_ascend:
+			ascend_button.pressed.connect(_on_ascend_pressed.bind(hero, ascend_button))
+		else:
 			ascend_button.disabled = true
-			ascend_button.text += " | Faltan: %d" % (ascension_cost - copies)
-		
 		buttons_container.add_child(ascend_button)
 
 func _format_number(num: int) -> String:
@@ -924,82 +887,88 @@ func _create_styled_button(text: String, bg_color: Color, border_color: Color) -
 	var button := Button.new()
 	button.text = text
 	button.custom_minimum_size = Vector2(0, 80)
-	button.add_theme_font_size_override("font_size", 24)
+	button.add_theme_font_size_override("font_size", 22)
 	button.add_theme_color_override("font_color", Color(0.95, 0.9, 0.8, 1))
 	button.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
 	button.add_theme_constant_override("outline_size", 3)
 	
-	# Estilo normal con efecto de bisel
-	var style := StyleBoxFlat.new()
-	style.bg_color = bg_color
-	style.border_color = border_color
-	style.set_border_width_all(4)
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	# Sombra para profundidad
-	style.shadow_color = Color(0, 0, 0, 0.7)
-	style.shadow_size = 10
-	style.shadow_offset = Vector2(0, 6)
-	# Efecto de bisel superior
-	style.set_expand_margin(SIDE_TOP, 2)
-	button.add_theme_stylebox_override("normal", style)
+	# Función auxiliar para no repetir código de bordes
+	var create_style = func(bg: Color, shadow_s: int, shadow_o: int, margin_t: int, margin_b: int) -> StyleBoxFlat:
+		var s := StyleBoxFlat.new()
+		s.bg_color = bg
+		s.border_color = border_color
+		s.set_border_width_all(4)
+		s.set_corner_radius_all(8)
+		s.shadow_color = Color(0, 0, 0, 0.7)
+		s.shadow_size = shadow_s
+		s.shadow_offset = Vector2(0, shadow_o)
+		s.set_expand_margin(SIDE_TOP, margin_t)
+		s.set_expand_margin(SIDE_BOTTOM, margin_b)
+		return s
 	
-	# Hover - se eleva
-	var hover_style := style.duplicate()
-	hover_style.bg_color = bg_color.lightened(0.2)
-	hover_style.shadow_size = 14
-	hover_style.shadow_offset = Vector2(0, 8)
-	button.add_theme_stylebox_override("hover", hover_style)
-	
-	# Pressed - se hunde
-	var pressed_style := style.duplicate()
-	pressed_style.bg_color = bg_color.darkened(0.15)
-	pressed_style.shadow_size = 4
-	pressed_style.shadow_offset = Vector2(0, 2)
-	pressed_style.set_expand_margin(SIDE_TOP, 0)
-	pressed_style.set_expand_margin(SIDE_BOTTOM, 2)
-	button.add_theme_stylebox_override("pressed", pressed_style)
-	
-	var disabled_style := style.duplicate()
-	disabled_style.bg_color = Color(0.25, 0.25, 0.28, 1)
-	disabled_style.border_color = Color(0.4, 0.4, 0.45, 1)
-	disabled_style.shadow_size = 2
-	button.add_theme_stylebox_override("disabled", disabled_style)
+	button.add_theme_stylebox_override("normal", create_style.call(bg_color, 10, 6, 2, 0))
+	button.add_theme_stylebox_override("hover", create_style.call(bg_color.lightened(0.2), 14, 8, 2, 0))
+	button.add_theme_stylebox_override("pressed", create_style.call(bg_color.darkened(0.15), 4, 2, 0, 2))
+	button.add_theme_stylebox_override("disabled", create_style.call(Color(0.2, 0.2, 0.2, 0.8), 0, 0, 0, 0))
 	
 	return button
 
 func _add_separator(color: Color) -> void:
 	var separator := HSeparator.new()
-	var style := StyleBoxFlat.new()
-	style.bg_color = color
+	var style := StyleBoxLine.new()
+	style.color = color
+	style.thickness = 2
+	style.grow_begin = -10
+	style.grow_end = -10
 	separator.add_theme_stylebox_override("separator", style)
-	separator.add_theme_constant_override("separation", 3)
 	detail_content.add_child(separator)
 
-func _on_level_up_pressed(hero: HeroData) -> void:
+func _on_level_up_pressed(hero: HeroData, button_node: Button) -> void:
 	var cost: int = GameManager.player_data.get_level_up_cost(hero.hero_id)
-	
 	if GameManager.player_data.gold >= cost:
+		if AudioManager.has_method("play_sfx"):
+			AudioManager.play_sfx("level_up_success")
 		GameManager.player_data.gold -= cost
 		if GameManager.player_data.level_up_hero(hero.hero_id):
 			GameManager.save_game()
+			# Animación Tween para el botón (Pequeño "salto")
+			var tween = create_tween()
+			tween.tween_property(button_node, "scale", Vector2(1.05, 1.05), 0.1)
+			tween.tween_property(button_node, "scale", Vector2(1.0, 1.0), 0.1)
 			_display_hero_details(hero)
 			var new_level: int = GameManager.player_data.get_hero_level(hero.hero_id)
 			print("[HeroRoster] %s subió a nivel %d" % [hero.hero_name, new_level])
 	else:
-		print("[HeroRoster] Oro insuficiente para subir de nivel")
+		_play_error_animation(button_node)
 
-func _on_ascend_pressed(hero: HeroData) -> void:
+func _on_ascend_pressed(hero: HeroData, button_node: Button) -> void:
 	if GameManager.player_data.ascend_hero(hero.hero_id):
+		if AudioManager.has_method("play_sfx"):
+			AudioManager.play_sfx("ascend_success")
 		GameManager.save_game()
+		# Efecto de destello al ascender
+		var tween = create_tween()
+		button_node.modulate = Color(2, 2, 2, 1)
+		tween.tween_property(button_node, "modulate", Color(1, 1, 1, 1), 0.5)
 		_display_hero_details(hero)
 		var hero_info: Dictionary = GameManager.player_data.owned_heroes[hero.hero_id]
 		var stars: int = hero_info.get("stars", 1)
 		print("[HeroRoster] %s ascendió a %d estrellas" % [hero.hero_name, stars])
 	else:
-		print("[HeroRoster] No se pudo ascender el héroe")
+		_play_error_animation(button_node)
+
+func _play_error_animation(node: Control) -> void:
+	if AudioManager.has_method("play_sfx"):
+		AudioManager.play_sfx("error_buzz")
+	# Efecto de "sacudida" (Shake)
+	var tween = create_tween()
+	var original_pos = node.position
+	tween.tween_property(node, "position:x", original_pos.x + 5, 0.05)
+	tween.tween_property(node, "position:x", original_pos.x - 5, 0.05)
+	tween.tween_property(node, "position:x", original_pos.x + 5, 0.05)
+	tween.tween_property(node, "position:x", original_pos.x, 0.05)
 
 func _on_back_pressed() -> void:
+	if AudioManager.has_method("play_sfx"):
+		AudioManager.play_sfx("button_click")
 	GameManager.go_to_scene("main_menu")
