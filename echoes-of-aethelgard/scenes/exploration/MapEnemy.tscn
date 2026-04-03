@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://map_enemy_01"]
+
+[ext_resource type="Script" path="res://scripts/exploration/MapEnemy.gd" id="1_map_enemy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 20.0
+
+[node name="MapEnemy" type="Area2D"]
+script = ExtResource("1_map_enemy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="AlertIcon" type="Sprite2D" parent="."]
+position = Vector2(0, -40)

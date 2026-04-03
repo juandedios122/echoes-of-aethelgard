@@ -1,60 +1,68 @@
-[gd_scene load_steps=5 format=3 uid="uid://d9vq8y7x3m4n6q"]
+[gd_scene format=3 uid="uid://bmhsc8sau11ny"]
 
-[ext_resource type="Script" path="res://scripts/ui/ExplorationMap.gd" id="1_exploration"]
+[ext_resource type="Script" uid="uid://k5ixovii6lhv" path="res://scripts/ui/ExplorationMap.gd" id="1_exploration"]
 [ext_resource type="SpriteFrames" path="res://resources/aethan_frames.tres" id="2_frames"]
-[ext_resource type="PackedScene" uid="uid://dpx9k8m4n6p3s" path="res://scenes/ui/PauseMenu.tscn" id="3_pause"]
+[ext_resource type="PackedScene" uid="uid://dpyak8m4n6p3s" path="res://scenes/ui/PauseMenu.tscn" id="3_pause"]
+[ext_resource type="TileSet" path="res://resources/forest_tileset.tres" id="4_tileset"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 20.0
 height = 60.0
 
-[node name="ExplorationMap" type="Node2D"]
+[sub_resource type="Gradient" id="Gradient_light"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_light"]
+gradient = SubResource("Gradient_light")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.1)
+
+[node name="ExplorationMap" type="Node2D" unique_id=398867680]
 script = ExtResource("1_exploration")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = -2000.0
-offset_top = -2000.0
-offset_right = 2000.0
-offset_bottom = 2000.0
-color = Color(0.25, 0.35, 0.25, 1)
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=783009746]
+color = Color(0.2, 0.2, 0.4, 1)
+energy = 0.8
+blend_mode = 2
+shadow_enabled = true
 
-[node name="Ground" type="ColorRect" parent="."]
-offset_left = -1500.0
-offset_top = -1000.0
-offset_right = 1500.0
-offset_bottom = 1000.0
-color = Color(0.3, 0.45, 0.3, 1)
+[node name="TileMap" type="TileMap" parent="." unique_id=641076527]
+tile_set = ExtResource("4_tileset")
+format = 2
 
-[node name="Path" type="ColorRect" parent="."]
-offset_left = -200.0
-offset_top = -600.0
-offset_right = 200.0
-offset_bottom = 600.0
-color = Color(0.5, 0.4, 0.3, 1)
+[node name="Hero" type="CharacterBody2D" parent="." unique_id=918995453 groups=["player_hero"]]
 
-[node name="Hero" type="CharacterBody2D" parent="."]
-position = Vector2(0, 0)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Hero"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Hero" unique_id=599929732]
+scale = Vector2(2, 2)
 sprite_frames = ExtResource("2_frames")
 animation = &"idle"
-scale = Vector2(2, 2)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hero"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hero" unique_id=143888774]
 shape = SubResource("CapsuleShape2D_1")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PointLight2D" type="PointLight2D" parent="Hero" unique_id=1948676857]
+color = Color(1, 0.8, 0.5, 1)
+shadow_enabled = true
+shadow_filter = 1
+texture = SubResource("GradientTexture2D_light")
+texture_scale = 20.0
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1958490068]
 zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="Enemies" type="Node2D" parent="." unique_id=906549189]
 
-[node name="Instructions" type="Label" parent="UI"]
+[node name="UI" type="CanvasLayer" parent="." unique_id=72500903]
+
+[node name="Instructions" type="Label" parent="UI" unique_id=625589671]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -380.0
+offset_left = -381.0
 offset_top = 20.0
-offset_right = -20.0
+offset_right = -21.0
 offset_bottom = 120.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -62,24 +70,8 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
-text = "Usa WASD o las flechas para moverte
-Presiona ESC para abrir el menú"
+text = "Usa WASD para moverte
+Cuidado con los enemigos (!)"
 autowrap_mode = 2
 
-[node name="BattleButton" type="Button" parent="UI"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -120.0
-offset_right = 200.0
-offset_bottom = -30.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_font_sizes/font_size = 32
-text = "⚔️ Preparar Batalla"
-
-[node name="PauseMenu" parent="." instance=ExtResource("3_pause")]
+[node name="PauseMenu" parent="." unique_id=634351470 instance=ExtResource("3_pause")]

@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3 uid="uid://hub_camp_scene_01"]
+
+[ext_resource type="Script" path="res://scripts/ui/HubCamp.gd" id="1_hub"]
+[ext_resource type="Texture2D" uid="uid://bg_castle" path="res://assets/backgrounds/hub_castle.png" id="2_bg"]
+
+[node name="HubCamp" type="Node2D"]
+script = ExtResource("1_hub")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Castle" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.8)
+
+[node name="BackgroundTexture" type="TextureRect" parent="ParallaxBackground/Castle"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HeroWalkers" type="Node2D" parent="."]
+position = Vector2(960, 800)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="GoldLabel" type="Label" parent="HUD"]
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 28
+text = "Oro: 0"
+
+[node name="AmberLabel" type="Label" parent="HUD"]
+offset_left = 30.0
+offset_top = 80.0
+offset_right = 200.0
+offset_bottom = 120.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(1, 0.6, 0, 1)
+text = "Ambar: 0"
+
+[node name="NavigationMenu" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NavigationMenu"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -450.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="BattleButton" type="Button" parent="NavigationMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Explorar Mundo"
+
+[node name="GachaButton" type="Button" parent="NavigationMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Invocación"
+
+[node name="HeroRosterButton" type="Button" parent="NavigationMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Héroes"
+
+[node name="SettingsButton" type="Button" parent="NavigationMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Ajustes"
+
+[node name="FireParticles" type="GPUParticles2D" parent="."]
+
+[connection signal="pressed" from="NavigationMenu/VBoxContainer/BattleButton" to="." method="_on_battle_pressed"]
+[connection signal="pressed" from="NavigationMenu/VBoxContainer/GachaButton" to="." method="_on_gacha_pressed"]
+[connection signal="pressed" from="NavigationMenu/VBoxContainer/HeroRosterButton" to="." method="_on_roster_pressed"]
+[connection signal="pressed" from="NavigationMenu/VBoxContainer/SettingsButton" to="." method="_on_settings_pressed"]

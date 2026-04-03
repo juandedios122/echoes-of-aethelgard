@@ -4,17 +4,33 @@ extends Node2D
 
 @onready var hero: CharacterBody2D = $Hero
 @onready var camera: Camera2D = $Camera2D
-@onready var battle_button: Button = $UI/BattleButton
 
 const SPEED := 200.0
 
 func _ready() -> void:
 	# Configurar cámara para seguir al héroe
-	camera.position = hero.position
-	battle_button.pressed.connect(_on_battle_button_pressed)
+	if camera and hero:
+		camera.position = hero.position
+	
+	_generate_base_floor()
 	
 	# Reproducir música de exploración
 	AudioManager.play_music("exploration_theme", 1.5)
+
+func _generate_base_floor() -> void:
+	var tile_map: TileMap = get_node_or_null("TileMap")
+	if not tile_map:
+		return
+		
+	# Si el mapa ya tiene tiles dibujados desde el editor, no lo sobrescribimos
+	if tile_map.get_used_rect().get_area() > 0:
+		return
+		
+	# Llenar un área equivalente a un escenario grande pero usando los tiles de 1024x1024
+	var r = 4
+	for x in range(-r, r):
+		for y in range(-r, r):
+			tile_map.set_cell(0, Vector2i(x, y), 0, Vector2i(0, 0))
 
 func _physics_process(delta: float) -> void:
 	var direction := Vector2.ZERO
@@ -54,6 +70,3 @@ func _update_hero_animation(direction: Vector2) -> void:
 	else:
 		if sprite.sprite_frames.has_animation("idle"):
 			sprite.play("idle")
-
-func _on_battle_button_pressed() -> void:
-	GameManager.go_to_scene("team_selection")

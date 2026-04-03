@@ -89,6 +89,7 @@ func receive_damage(raw_dmg: int) -> int:
 	current_hp -= dmg
 	current_hp  = maxi(0, current_hp)
 	_spawn_damage_label(dmg, false)
+	_play_hit_effects()
 	hp_changed.emit(current_hp, max_hp)
 	_update_ui()
 	if current_hp <= 0:
@@ -138,7 +139,12 @@ func get_status_multiplier(stat: String) -> float:
 func is_stunned() -> bool:
 	return "stun" in active_statuses
 
-# ─── Animaciones ──────────────────────────────────────────────────────────────
+# ─── Dibujo (Sombra Falsa) ────────────────────────────────────────────────────
+func _draw() -> void:
+	# Dibujar sombra ovalada debajo del personaje (pro-juice)
+	draw_circle(Vector2(0, 45), 35.0, Color(0, 0, 0, 0.4))
+
+# ─── Animaciones y Efectos Visuales ──────────────────────────────────────────
 func play_animation(anim_name: String) -> void:
 	if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
 		sprite.play(anim_name)
@@ -171,6 +177,32 @@ func play_hurt() -> void:
 	tween.tween_property(self, "position", original, 0.05)
 	await sprite.animation_finished
 	play_idle()
+
+func _play_hit_effects() -> void:
+	# Parpadeo Rojo / Hit Flash
+	var f_tween := create_tween()
+	sprite.modulate = Color(5.0, 0.5, 0.5, 1.0) # Rojo sobre expuesto
+	f_tween.tween_property(sprite, "modulate", Color(1,1,1,1), 0.2)
+	
+	# Partículas de sangre sencillas
+	var p := CPUParticles2D.new()
+	p.position = Vector2(0, -30) # Centro del torso
+	p.emitting = false
+	p.one_shot = true
+	p.explosiveness = 0.95
+	p.direction = Vector2(randf_range(-1, 1), -1)
+	p.spread = 45.0
+	p.initial_velocity_min = 100.0
+	p.initial_velocity_max = 250.0
+	p.scale_amount_min = 3.0
+	p.scale_amount_max = 6.0
+	p.color = Color(0.8, 0.1, 0.1, 1.0)
+	p.amount = 12
+	add_child(p)
+	p.emitting = true
+	
+	# Borrar partículas después de un tiempo
+	get_tree().create_timer(1.0).timeout.connect(func(): if is_instance_valid(p): p.queue_free())
 
 func play_death() -> void:
 	play_animation("death")

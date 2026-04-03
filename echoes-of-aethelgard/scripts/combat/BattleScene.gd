@@ -19,11 +19,15 @@ extends Node2D
 @onready var combat_manager: CombatManager   = $CombatManager
 @onready var player_container: Node2D        = $PlayerUnitsContainer
 @onready var enemy_container: Node2D         = $EnemyUnitsContainer
-@onready var skill_bar: HBoxContainer        = $BattleUI/SkillBar
-@onready var speed_btn: Button               = $BattleUI/SpeedToggle
-@onready var auto_btn: Button                = $BattleUI/AutoToggle
-@onready var result_panel: Panel             = $BattleUI/ResultPanel
+@onready var skill_bar: HBoxContainer        = $BattleUI/Control/SkillBar
+@onready var speed_btn: Button               = $BattleUI/Control/SpeedToggle
+@onready var auto_btn: Button                = $BattleUI/Control/AutoToggle
+@onready var result_panel: Panel             = $BattleUI/Control/ResultPanel
 @onready var transition: ColorRect           = $Transition
+@onready var camera: Camera2D                = $Camera2D
+
+var _shake_intensity: float = 0.0
+var _shake_decay: float = 50.0
 
 # ─── Preloads ─────────────────────────────────────────────────────────────────
 const CombatUnitScene: PackedScene = preload("res://scenes/combat/CombatUnit.tscn")
@@ -157,7 +161,12 @@ func _on_turn_started(unit: CombatUnit) -> void:
 		_build_skill_bar(unit)
 
 func _on_action_executed(_atk, _def, _dmg, _label) -> void:
-	pass   # La UI de daño la maneja CombatUnit con DamageLabel
+	if _dmg > 0:
+		var percent = float(_dmg) / float(_def.max_hp) if _def and _def.max_hp > 0 else 0.1
+		if percent > 0.3:
+			shake_camera(15.0, 60.0) # Fuerte shake (crítico o daño masivo)
+		else:
+			shake_camera(5.0, 40.0) # Ligero shake
 
 func _on_battle_ended(victory: bool, rewards: Dictionary) -> void:
 	result_panel.visible = true
@@ -180,10 +189,24 @@ func _on_auto_toggled() -> void:
 	auto_battle = not auto_battle
 	auto_btn.text = "Auto ON" if auto_battle else "Auto OFF"
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if auto_battle and combat_manager.state == CombatManager.BattleState.PLAYER_TURN:
 		if selected_unit and selected_unit.hero_data.skill_basic:
 			_on_skill_pressed(selected_unit.hero_data.skill_basic)
+			
+	# Camera Shake
+	if _shake_intensity > 0.0:
+		_shake_intensity = move_toward(_shake_intensity, 0.0, _shake_decay * delta)
+		camera.offset = Vector2(
+			randf_range(-_shake_intensity, _shake_intensity),
+			randf_range(-_shake_intensity, _shake_intensity)
+		)
+	else:
+		camera.offset = Vector2.ZERO
+
+func shake_camera(intensity: float, decay: float = 50.0) -> void:
+	_shake_intensity = intensity
+	_shake_decay = decay
 
 # ─── Transiciones ─────────────────────────────────────────────────────────────
 func _fade_in() -> void:
