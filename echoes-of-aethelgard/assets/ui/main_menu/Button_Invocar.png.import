@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xb8cwh4qj0xu"
-path="res://.godot/imported/title_main.png-8b7a534ab0fa542580f5fcc8f59842fe.ctex"
+uid="uid://c6767jbv2tsho"
+path="res://.godot/imported/Button_Invocar.png-86a0d742d93c157b0b07017a011020cb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/title_main.png"
-dest_files=["res://.godot/imported/title_main.png-8b7a534ab0fa542580f5fcc8f59842fe.ctex"]
+source_file="res://assets/ui/main_menu/Button_Invocar.png"
+dest_files=["res://.godot/imported/Button_Invocar.png-86a0d742d93c157b0b07017a011020cb.ctex"]
 
 [params]
 

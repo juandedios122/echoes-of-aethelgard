@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://is7whc84pso"
-path="res://.godot/imported/Desbloqueados.png-ac1b220690894bf702b98b604529adff.ctex"
+uid="uid://ck2wensqvdes"
+path="res://.godot/imported/Desbloqueados.png-26c2564a641c184195f63cd2c7deea0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Desbloqueados.png"
-dest_files=["res://.godot/imported/Desbloqueados.png-ac1b220690894bf702b98b604529adff.ctex"]
+source_file="res://assets/ui/hero_roster/Desbloqueados.png"
+dest_files=["res://.godot/imported/Desbloqueados.png-26c2564a641c184195f63cd2c7deea0f.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bqx8k7m3n9p2r"]
 
 [ext_resource type="Script" path="res://scripts/ui/GachaScreen.gd" id="1_gacha"]
-[ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/Button_Volver.png" id="2_volver"]
+[ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/common/Button_Volver.png" id="2_volver"]
 
 [node name="GachaScreen" type="Control"]
 layout_mode = 3

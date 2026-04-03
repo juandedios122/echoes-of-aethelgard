@@ -32,9 +32,9 @@ func _init_ui() -> void:
 	all_button.toggle_mode = true
 	owned_button.toggle_mode = true
 
-	if ResourceLoader.exists("res://assets/ui/Todos.png"):
+	if ResourceLoader.exists("res://assets/ui/hero_roster/Todos.png"):
 		all_button.focus_mode = Control.FOCUS_NONE
-	if ResourceLoader.exists("res://assets/ui/Desbloqueados.png"):
+	if ResourceLoader.exists("res://assets/ui/hero_roster/Desbloqueados.png"):
 		owned_button.focus_mode = Control.FOCUS_NONE
 
 	_create_collection_banner()
@@ -60,7 +60,7 @@ func _load_collection() -> void:
 
 func _setup_panel_styles() -> void:
 	# Cargar textura de fondo para los paneles
-	var _bg_texture := load("res://assets/ui/Fondo.png") as Texture2D
+	var _bg_texture := load("res://assets/ui/hero_roster/Fondo.png") as Texture2D
 	
 	
 	# Estilo para el panel de detalles - estilo pergamino claro
@@ -70,8 +70,8 @@ func _create_collection_banner() -> void:
 	var banner := $HeroCollectionBanner
 	if not banner:
 		banner = $MarginContainer/VBoxContainer/HeroCollectionBanner if has_node("MarginContainer/VBoxContainer/HeroCollectionBanner") else null
-	if banner and ResourceLoader.exists("res://assets/ui/Barra_Coleccion_Heroes.png"):
-		banner.texture = load("res://assets/ui/Barra_Coleccion_Heroes.png")
+	if banner and ResourceLoader.exists("res://assets/ui/hero_roster/Barra_Coleccion_Heroes.png"):
+		banner.texture = load("res://assets/ui/hero_roster/Barra_Coleccion_Heroes.png")
 		banner.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		banner.size_flags_vertical = Control.SIZE_FILL
 		banner.custom_minimum_size = Vector2(0, 110)
@@ -193,13 +193,18 @@ func _display_hero_details(hero: HeroData) -> void:
 	var is_owned := GameManager.player_data.has_hero(hero.hero_id)
 	var hero_level: int = GameManager.player_data.get_hero_level(hero.hero_id) if is_owned else 1
 	
-	# Header con nombre y título
+	# Retrato del héroe (arriba de todo)
+	_create_hero_portrait(hero, is_owned)
+	
+	# Header con nombre, rareza y nivel
 	_create_hero_header(hero, hero_level, is_owned)
+	
+	_add_separator(Color(0.35, 0.28, 0.20, 0.6))
 	
 	# Pestañas de navegación (Habilidades, Historia, Equipo)
 	_create_tab_navigation(hero, is_owned)
 	
-	_add_separator(Color(0.35, 0.28, 0.20, 0.6))
+	_add_separator(Color(0.35, 0.28, 0.20, 0.4))
 	
 	# Estado de desbloqueo o información de nivel
 	if not is_owned:
@@ -214,34 +219,60 @@ func _display_hero_details(hero: HeroData) -> void:
 		_create_action_buttons(hero, hero_level)
 
 func _create_hero_header(hero: HeroData, level: int, is_owned: bool) -> void:
-	# Panel contenedor con fondo decorativo
-	
-	
+	# Panel con borde de rareza
+	var header_panel := PanelContainer.new()
+	var header_style := StyleBoxFlat.new()
+	header_style.bg_color = Color(0.10, 0.08, 0.06, 0.90)
+	header_style.border_color = hero.get_rarity_color()
+	header_style.set_border_width_all(2)
+	header_style.set_corner_radius_all(10)
+	header_style.content_margin_left = 12
+	header_style.content_margin_right = 12
+	header_style.content_margin_top = 10
+	header_style.content_margin_bottom = 10
+	header_panel.add_theme_stylebox_override("panel", header_style)
+	detail_content.add_child(header_panel)
+
 	var header_vbox := VBoxContainer.new()
 	header_vbox.add_theme_constant_override("separation", 6)
-	
+	header_panel.add_child(header_vbox)
 
-	
-	
-	
+	# Nombre del héroe
+	var name_label := Label.new()
+	name_label.text = hero.hero_name
+	name_label.add_theme_color_override("font_color", Color(0.95, 0.90, 0.78, 1))
+	name_label.add_theme_color_override("font_outline_color", Color(0.10, 0.07, 0.04, 1))
+	name_label.add_theme_constant_override("outline_size", 3)
+	name_label.add_theme_font_size_override("font_size", 28)
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	header_vbox.add_child(name_label)
+
+	# Rareza
+	var rarity_label := Label.new()
+	rarity_label.text = hero.get_rarity_label()
+	rarity_label.add_theme_color_override("font_color", hero.get_rarity_color())
+	rarity_label.add_theme_font_size_override("font_size", 17)
+	rarity_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	header_vbox.add_child(rarity_label)
+
 	# Nivel y barra de progreso
 	if is_owned:
 		var level_container := HBoxContainer.new()
 		level_container.alignment = BoxContainer.ALIGNMENT_CENTER
 		level_container.add_theme_constant_override("separation", 8)
 		header_vbox.add_child(level_container)
-		
+
 		var level_icon := Label.new()
 		level_icon.text = "⚡"
 		level_icon.add_theme_font_size_override("font_size", 20)
 		level_container.add_child(level_icon)
-		
+
 		var level_text := Label.new()
 		level_text.text = "Nivel %d / 60" % level
 		level_text.add_theme_color_override("font_color", Color(0.85, 0.80, 0.70, 1))
 		level_text.add_theme_font_size_override("font_size", 18)
 		level_container.add_child(level_text)
-		
+
 		# Barra de experiencia compacta
 		_create_compact_exp_bar(hero.hero_id, level, header_vbox)
 
@@ -316,7 +347,7 @@ func _create_compact_exp_bar(hero_id: String, level: int, container: VBoxContain
 func _create_tab_navigation(hero: HeroData, _is_owned: bool) -> void:
 	# Contenedor de pestañas con imagen decorativa
 	var tab_frame := PanelContainer.new()
-	var toolbar_image_path := "res://assets/ui/Barra_Equipamientos.png"
+	var toolbar_image_path := "res://assets/ui/hero_roster/Barra_Equipamientos.png"
 	if ResourceLoader.exists(toolbar_image_path):
 		var tab_style := _create_decorative_stylebox_from_image(toolbar_image_path, 10, Color(1,1,1,0.92))
 		tab_frame.add_theme_stylebox_override("panel", tab_style)
@@ -328,7 +359,7 @@ func _create_tab_navigation(hero: HeroData, _is_owned: bool) -> void:
 		fallback.set_corner_radius_all(8)
 		tab_frame.add_theme_stylebox_override("panel", fallback)
 
-	tab_frame.custom_minimum_size = Vector2(0, 120)
+	tab_frame.custom_minimum_size = Vector2(0, 65)
 	tab_frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	detail_content.add_child(tab_frame)
 
@@ -418,7 +449,7 @@ func _create_history_tab_content(hero: HeroData) -> void:
 
 func _create_equipment_tab_content(_hero: HeroData) -> void:
 	var equip_panel := PanelContainer.new()
-	var equip_image_path := "res://assets/ui/Barra_Equipamientos.png"
+	var equip_image_path := "res://assets/ui/hero_roster/Barra_Equipamientos.png"
 	if ResourceLoader.exists(equip_image_path):
 		var equip_style := _create_decorative_stylebox_from_image(equip_image_path, 14, Color(1,1,1,0.90))
 		equip_panel.add_theme_stylebox_override("panel", equip_style)
@@ -432,7 +463,6 @@ func _create_equipment_tab_content(_hero: HeroData) -> void:
 		style.corner_radius_bottom_left = 10
 		style.corner_radius_bottom_right = 10
 		equip_panel.add_theme_stylebox_override("panel", style)
-	end
 	detail_content.add_child(equip_panel)
 
 	var vbox := VBoxContainer.new()
@@ -455,13 +485,13 @@ func _create_equipment_tab_content(_hero: HeroData) -> void:
 
 func _create_compact_stats_section(hero: HeroData, level: int) -> void:
 	# Priorizar barra decorativa si existe, después Fondo.png
-	var banner_path := "res://assets/ui/Barra_Equipamientos.png"
-	var panel_style := null
+	var banner_path := "res://assets/ui/hero_roster/Barra_Equipamientos.png"
+	var panel_style: StyleBox = null
 
 	if ResourceLoader.exists(banner_path):
 		panel_style = _create_decorative_stylebox_from_image(banner_path, 12, Color(1,1,1,0.92))
 	else:
-		var bg_texture := load("res://assets/ui/Fondo.png") as Texture2D
+		var bg_texture := load("res://assets/ui/hero_roster/Fondo.png") as Texture2D
 		if bg_texture:
 			panel_style = StyleBoxTexture.new()
 			panel_style.texture = bg_texture
@@ -470,8 +500,6 @@ func _create_compact_stats_section(hero: HeroData, level: int) -> void:
 			panel_style.texture_margin_top = 15
 			panel_style.texture_margin_bottom = 15
 			panel_style.modulate_color = Color(0.28, 0.22, 0.18, 0.98)
-		end
-	end
 
 	# Panel contenedor para las estadísticas
 	var stats_panel := PanelContainer.new()
@@ -901,13 +929,13 @@ func _add_stat_bar(container: VBoxContainer, label_text: String, value: int, max
 	
 	# Detectar el tipo de estadística
 	if "HP" in label_text:
-		texture_path = "res://assets/ui/Barra_Vida.png"
+		texture_path = "res://assets/ui/combat/Barra_Vida.png"
 	elif "ATK" in label_text:
-		texture_path = "res://assets/ui/Barra_Ataque.png"
+		texture_path = "res://assets/ui/combat/Barra_Ataque.png"
 	elif "DEF" in label_text:
-		texture_path = "res://assets/ui/Barra_Defensa.png"
+		texture_path = "res://assets/ui/combat/Barra_Defensa.png"
 	elif "SPD" in label_text:
-		texture_path = "res://assets/ui/Barra_Sped.png"
+		texture_path = "res://assets/ui/combat/Barra_Sped.png"
 	
 	if texture_path != "" and ResourceLoader.exists(texture_path):
 		# Usar TextureProgressBar con la textura personalizada

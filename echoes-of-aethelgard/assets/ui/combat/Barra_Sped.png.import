@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhjmnd2o2hu4p"
-path="res://.godot/imported/Icono_Habilidades.png-09685d09308365e89f73a92e98fd0392.ctex"
+uid="uid://b7f78e4c4wwtc"
+path="res://.godot/imported/Barra_Sped.png-1316815a91652fac4d137972e870f86c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Icono_Habilidades.png"
-dest_files=["res://.godot/imported/Icono_Habilidades.png-09685d09308365e89f73a92e98fd0392.ctex"]
+source_file="res://assets/ui/combat/Barra_Sped.png"
+dest_files=["res://.godot/imported/Barra_Sped.png-1316815a91652fac4d137972e870f86c.ctex"]
 
 [params]
 

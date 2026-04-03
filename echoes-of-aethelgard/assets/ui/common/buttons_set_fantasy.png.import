@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6nuegxdlwjf6"
-path="res://.godot/imported/Button_Heroes.png-6343661372daa94d3c1cf46332e204b1.ctex"
+uid="uid://b2ppbco4qb23j"
+path="res://.godot/imported/buttons_set_fantasy.png-65df2138dd45d7a4684085d49774622d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Button_Heroes.png"
-dest_files=["res://.godot/imported/Button_Heroes.png-6343661372daa94d3c1cf46332e204b1.ctex"]
+source_file="res://assets/ui/common/buttons_set_fantasy.png"
+dest_files=["res://.godot/imported/buttons_set_fantasy.png-65df2138dd45d7a4684085d49774622d.ctex"]
 
 [params]
 

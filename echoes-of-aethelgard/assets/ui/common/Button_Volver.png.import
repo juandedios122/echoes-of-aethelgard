@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwampd6y506f2"
-path="res://.godot/imported/Icono_Nuevo.png-8099fc609dfe39ed51606fb10faf6a80.ctex"
+uid="uid://c3krescmpb2d2"
+path="res://.godot/imported/Button_Volver.png-97ce8ff29d737d03ae2bd94f66f69e95.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Icono_Nuevo.png"
-dest_files=["res://.godot/imported/Icono_Nuevo.png-8099fc609dfe39ed51606fb10faf6a80.ctex"]
+source_file="res://assets/ui/common/Button_Volver.png"
+dest_files=["res://.godot/imported/Button_Volver.png-97ce8ff29d737d03ae2bd94f66f69e95.ctex"]
 
 [params]
 

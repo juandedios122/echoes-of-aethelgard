@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cescbuyyutr0h"
-path="res://.godot/imported/Botones_Subir_Acender.png-0ca15264dcdac94d6dfafc562be59b46.ctex"
+uid="uid://cycjpo1nfj3ex"
+path="res://.godot/imported/Barra_Vida.png-b71bc4dca93bc988abdec67022f4d3a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Botones_Subir_Acender.png"
-dest_files=["res://.godot/imported/Botones_Subir_Acender.png-0ca15264dcdac94d6dfafc562be59b46.ctex"]
+source_file="res://assets/ui/combat/Barra_Vida.png"
+dest_files=["res://.godot/imported/Barra_Vida.png-b71bc4dca93bc988abdec67022f4d3a5.ctex"]
 
 [params]
 

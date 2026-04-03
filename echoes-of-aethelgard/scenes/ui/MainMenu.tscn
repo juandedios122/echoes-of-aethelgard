@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://c8vq7x3m4n5p"]
 
 [ext_resource type="Script" uid="uid://bqk0ejlbniu6v" path="res://scripts/ui/MainMenu.gd" id="1_mainmenu"]
-[ext_resource type="Texture2D" uid="uid://c5vq8x4n6o7q" path="res://assets/ui/background_main_blurred.png" id="2_background"]
-[ext_resource type="Texture2D" uid="uid://btxh7tls5jkvv" path="res://assets/ui/Button_Jugar.png" id="3_button_jugar"]
-[ext_resource type="Texture2D" uid="uid://b2jlgpughmkhp" path="res://assets/ui/Button_Invocar.png" id="4_button_invocar"]
-[ext_resource type="Texture2D" uid="uid://c6nuegxdlwjf6" path="res://assets/ui/Button_Heroes.png" id="5_button_heroes"]
-[ext_resource type="Texture2D" uid="uid://dwampd6y506f2" path="res://assets/ui/Icono_Nuevo.png" id="6_icon"]
-[ext_resource type="Texture2D" uid="uid://xb8cwh4qj0xu" path="res://assets/ui/title_main.png" id="7_cqjrg"]
+[ext_resource type="Texture2D" uid="uid://c5vq8x4n6o7q" path="res://assets/ui/main_menu/background_main_blurred.png" id="2_background"]
+[ext_resource type="Texture2D" uid="uid://btxh7tls5jkvv" path="res://assets/ui/main_menu/Button_Jugar.png" id="3_button_jugar"]
+[ext_resource type="Texture2D" uid="uid://b2jlgpughmkhp" path="res://assets/ui/main_menu/Button_Invocar.png" id="4_button_invocar"]
+[ext_resource type="Texture2D" uid="uid://c6nuegxdlwjf6" path="res://assets/ui/main_menu/Button_Heroes.png" id="5_button_heroes"]
+[ext_resource type="Texture2D" uid="uid://dwampd6y506f2" path="res://assets/ui/main_menu/Icono_Nuevo.png" id="6_icon"]
+[ext_resource type="Texture2D" uid="uid://xb8cwh4qj0xu" path="res://assets/ui/main_menu/title_main.png" id="7_cqjrg"]
 
 [node name="MainMenu" type="Control" unique_id=1723565334]
 layout_mode = 3

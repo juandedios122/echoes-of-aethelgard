@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ch7s5n1h2q0a8" path="res://scripts/combat/CombatUnit.gd" id="1_efns5"]
 [ext_resource type="SpriteFrames" uid="uid://b81mryr7iis6u" path="res://resources/heroes/vex_nigromante.tres" id="2_a6grj"]
-[ext_resource type="Texture2D" path="res://assets/ui/Barra_Vida.png" id="3_barra_vida"]
+[ext_resource type="Texture2D" path="res://assets/ui/combat/Barra_Vida.png" id="3_barra_vida"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hp_bg"]
 texture = ExtResource("3_barra_vida")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwb0ugwrtng03"
-path="res://.godot/imported/Button_Volver.png-aa19d2c50a9a8eb237aeaa6ae2ba1a73.ctex"
+uid="uid://cume1ynt81wyi"
+path="res://.godot/imported/Barra_Equipamientos.png-98405dff01697f3bbfa9c7514f5b1888.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Button_Volver.png"
-dest_files=["res://.godot/imported/Button_Volver.png-aa19d2c50a9a8eb237aeaa6ae2ba1a73.ctex"]
+source_file="res://assets/ui/hero_roster/Barra_Equipamientos.png"
+dest_files=["res://.godot/imported/Barra_Equipamientos.png-98405dff01697f3bbfa9c7514f5b1888.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bimsu82dfdfod"
-path="res://.godot/imported/Barra_Coleccion_Heroes.png-38272f89fdc459d987445a4d1e6cf32c.ctex"
+uid="uid://dh3yg8u38ohf8"
+path="res://.godot/imported/Button_Jugar.png-234a61036f6f42bb9c3a4ccd9113393a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Barra_Coleccion_Heroes.png"
-dest_files=["res://.godot/imported/Barra_Coleccion_Heroes.png-38272f89fdc459d987445a4d1e6cf32c.ctex"]
+source_file="res://assets/ui/main_menu/Button_Jugar.png"
+dest_files=["res://.godot/imported/Button_Jugar.png-234a61036f6f42bb9c3a4ccd9113393a.ctex"]
 
 [params]
 

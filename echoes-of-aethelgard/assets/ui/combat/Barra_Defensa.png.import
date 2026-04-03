@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cifylx77noy3d"
-path="res://.godot/imported/Icono_Rareza.png-14d3300fc17efff0cb01da48af4bf4b2.ctex"
+uid="uid://oi0au1r1mqfg"
+path="res://.godot/imported/Barra_Defensa.png-a8c757e87c34459c092a91b5b26bc872.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Icono_Rareza.png"
-dest_files=["res://.godot/imported/Icono_Rareza.png-14d3300fc17efff0cb01da48af4bf4b2.ctex"]
+source_file="res://assets/ui/combat/Barra_Defensa.png"
+dest_files=["res://.godot/imported/Barra_Defensa.png-a8c757e87c34459c092a91b5b26bc872.ctex"]
 
 [params]
 
