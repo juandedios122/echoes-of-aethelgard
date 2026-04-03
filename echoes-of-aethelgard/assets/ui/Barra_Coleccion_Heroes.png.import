@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwampd6y506f2"
-path="res://.godot/imported/Icono_Nuevo.png-fb01c1eb124aa0b863124e8a05e39e51.ctex"
+uid="uid://bimsu82dfdfod"
+path="res://.godot/imported/Barra_Coleccion_Heroes.png-38272f89fdc459d987445a4d1e6cf32c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Icono_Nuevo.png"
-dest_files=["res://.godot/imported/Icono_Nuevo.png-fb01c1eb124aa0b863124e8a05e39e51.ctex"]
+source_file="res://assets/ui/Barra_Coleccion_Heroes.png"
+dest_files=["res://.godot/imported/Barra_Coleccion_Heroes.png-38272f89fdc459d987445a4d1e6cf32c.ctex"]
 
 [params]
 

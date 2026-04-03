@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cu8obhktf7xxh"
-path="res://.godot/imported/Marcos.png-0da3e9d8e5eecad471c823c32d58e418.ctex"
+uid="uid://cifylx77noy3d"
+path="res://.godot/imported/Icono_Rareza.png-14d3300fc17efff0cb01da48af4bf4b2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Marcos.png"
-dest_files=["res://.godot/imported/Marcos.png-0da3e9d8e5eecad471c823c32d58e418.ctex"]
+source_file="res://assets/ui/Icono_Rareza.png"
+dest_files=["res://.godot/imported/Icono_Rareza.png-14d3300fc17efff0cb01da48af4bf4b2.ctex"]
 
 [params]
 

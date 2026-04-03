@@ -26,7 +26,7 @@ extends Node2D
 @onready var transition: ColorRect           = $Transition
 
 # ─── Preloads ─────────────────────────────────────────────────────────────────
-const CombatUnitScene: PackedScene = preload("res://CombatUnit.tscn")
+const CombatUnitScene: PackedScene = preload("res://scenes/combat/CombatUnit.tscn")
 const EnemyDataPath: String        = "res://resources/enemies/"
 
 # ─── Estado ───────────────────────────────────────────────────────────────────

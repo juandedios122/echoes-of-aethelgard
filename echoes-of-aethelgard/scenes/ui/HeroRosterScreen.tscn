@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://don2o6c5mbhab" path="res://scripts/ui/HeroRosterScreen.gd" id="1_roster"]
 [ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/Button_Volver.png" id="2_volver"]
 [ext_resource type="Texture2D" uid="uid://eu6aktjoqe1c" path="res://assets/ui/Fondo.png" id="3_fondo"]
+[ext_resource type="Texture2D" uid="uid://bimsu82dfdfod" path="res://assets/ui/Barra_Coleccion_Heroes.png" id="4_barra_coleccion"]
+[ext_resource type="Texture2D" uid="uid://btnt0usnkp5r2" path="res://assets/ui/Todos.png" id="5_todos"]
+[ext_resource type="Texture2D" uid="uid://is7whc84pso" path="res://assets/ui/Desbloqueados.png" id="6_desbloq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_separator"]
 bg_color = Color(0.4, 0.35, 0.2, 0.5)
@@ -26,6 +29,18 @@ grow_vertical = 2
 texture = ExtResource("3_fondo")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="HeroCollectionBanner" type="TextureRect" parent="." unique_id=999999999]
+layout_mode = 0
+offset_left = 485.0
+offset_top = -339.0
+offset_right = 2021.0
+offset_bottom = 685.0
+scale = Vector2(0.66704434, 0.8471198)
+size_flags_horizontal = 3
+size_flags_vertical = 0
+texture = ExtResource("4_barra_coleccion")
+stretch_mode = 2
 
 [node name="ParticlesLayer" type="Control" parent="." unique_id=2040010511]
 layout_mode = 1
@@ -77,14 +92,14 @@ size_flags_vertical = 3
 theme_override_constants/separation = 30
 
 [node name="HeroListPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer" unique_id=2114508977]
-custom_minimum_size = Vector2(340, 0)
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 2
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel" unique_id=744672974]
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 8
 
 [node name="FilterLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer" unique_id=355382766]
 layout_mode = 2
@@ -96,21 +111,29 @@ text = "🔍 Filtros:"
 
 [node name="FilterButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer" unique_id=2101687733]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
-[node name="AllButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons" unique_id=1437097877]
-custom_minimum_size = Vector2(0, 45)
+[node name="AllButton" type="TextureButton" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons" unique_id=1437097877]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 18
-text = "⚪ Todos"
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource("5_todos")
+texture_pressed = ExtResource("5_todos")
+texture_hover = ExtResource("5_todos")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="OwnedButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons" unique_id=609745438]
-custom_minimum_size = Vector2(0, 45)
+[node name="OwnedButton" type="TextureButton" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons" unique_id=609745438]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 18
-text = "🔴 Desbloqueados"
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource("6_desbloq")
+texture_pressed = ExtResource("6_desbloq")
+texture_hover = ExtResource("6_desbloq")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer" unique_id=890087922]
 layout_mode = 2
@@ -119,6 +142,7 @@ size_flags_vertical = 3
 [node name="HeroGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/ScrollContainer" unique_id=132302923]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 columns = 2

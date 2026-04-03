@@ -15,10 +15,10 @@ const VERSION   := "0.1.0"
 
 # ─── Escenas Principales ─────────────────────────────────────────────────────
 const SCENES := {
-	"main_menu"        : "res://MainMenu.tscn",
-	"exploration_map"  : "res://ExplorationMap.tscn",
+	"main_menu"        : "res://scenes/ui/MainMenu.tscn",
+	"exploration_map"  : "res://scenes/exploration/ExplorationMap.tscn",
 	"gacha_screen"     : "res://scenes/ui/GachaScreen.tscn",
-	"battle_scene"     : "res://BattleScene.tscn",
+	"battle_scene"     : "res://scenes/combat/BattleScene.tscn",
 	"hub_camp"         : "res://scenes/ui/hub_camp.tscn",
 	"hero_roster"      : "res://scenes/ui/HeroRosterScreen.tscn",
 	"team_selection"   : "res://scenes/ui/TeamSelectionScreen.tscn",
@@ -42,13 +42,25 @@ func _ready() -> void:
 func _load_game() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
-		var data: Variant = file.get_var()
-		file.close()
-		if data is Dictionary:
-			player_data.load_from_dict(data)
-			print("[GameManager] Partida cargada.")
+		if file:
+			var data: Variant = file.get_var()
+			file.close()
+			if data is Dictionary and _validate_save_data(data):
+				player_data.load_from_dict(data)
+				print("[GameManager] Partida cargada.")
+			else:
+				push_warning("[GameManager] Datos de guardado inválidos. Eliminando archivo y empezando nueva partida.")
+				DirAccess.remove_absolute(SAVE_PATH)
+				_new_game()
+		else:
+			push_error("[GameManager] Error al abrir archivo de guardado.")
+			_new_game()
 	else:
 		_new_game()
+
+func _validate_save_data(data: Dictionary) -> bool:
+	# Validar campos esenciales
+	return data.has("amber_shards") and data.has("gold") and data.has("heroes") and data.has("current_chapter")
 
 func save_game() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)

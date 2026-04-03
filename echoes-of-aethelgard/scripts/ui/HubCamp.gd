@@ -24,7 +24,7 @@ extends Node2D
 @onready var amber_label: Label  = $HUD/AmberLabel
 @onready var hero_walkers: Node2D = $HeroWalkers
 
-const WalkerScene: PackedScene = preload("res://HeroWalker.tscn")
+const WalkerScene: PackedScene = preload("res://scenes/exploration/HeroWalker.tscn")
 
 func _ready() -> void:
 	_refresh_hud()

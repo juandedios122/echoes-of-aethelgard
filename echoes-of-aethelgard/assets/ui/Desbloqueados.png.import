@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxtr3k76eb4gh"
-path="res://.godot/imported/Icono_Estado.png-cc57c68338b6e1d96ecd86347ba4dbe7.ctex"
+uid="uid://is7whc84pso"
+path="res://.godot/imported/Desbloqueados.png-ac1b220690894bf702b98b604529adff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Icono_Estado.png"
-dest_files=["res://.godot/imported/Icono_Estado.png-cc57c68338b6e1d96ecd86347ba4dbe7.ctex"]
+source_file="res://assets/ui/Desbloqueados.png"
+dest_files=["res://.godot/imported/Desbloqueados.png-ac1b220690894bf702b98b604529adff.ctex"]
 
 [params]
 

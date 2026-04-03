@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clibwhdseml8k"
-path="res://.godot/imported/Barras de estado.png-80e682f84b48d145faacdbc42135fee8.ctex"
+path="res://.godot/imported/Barras de estado.png-0896752a566b9aea969f838901ff9bc1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Barras de estado.png"
-dest_files=["res://.godot/imported/Barras de estado.png-80e682f84b48d145faacdbc42135fee8.ctex"]
+source_file="res://assets/ui/Barras de estado.png"
+dest_files=["res://.godot/imported/Barras de estado.png-0896752a566b9aea969f838901ff9bc1.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhjmnd2o2hu4p"
-path="res://.godot/imported/Icono_Habilidades.png-da990339fd35743b116f5b9aaa27469c.ctex"
+uid="uid://dwampd6y506f2"
+path="res://.godot/imported/Icono_Nuevo.png-8099fc609dfe39ed51606fb10faf6a80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Icono_Habilidades.png"
-dest_files=["res://.godot/imported/Icono_Habilidades.png-da990339fd35743b116f5b9aaa27469c.ctex"]
+source_file="res://assets/ui/Icono_Nuevo.png"
+dest_files=["res://.godot/imported/Icono_Nuevo.png-8099fc609dfe39ed51606fb10faf6a80.ctex"]
 
 [params]
 

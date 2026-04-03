@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cescbuyyutr0h"
-path="res://.godot/imported/Botones_Subir_Acender.png-7deeedf8e539a6c949cc6cd46376a1f8.ctex"
+uid="uid://bhjmnd2o2hu4p"
+path="res://.godot/imported/Icono_Habilidades.png-09685d09308365e89f73a92e98fd0392.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Botones_Subir_Acender.png"
-dest_files=["res://.godot/imported/Botones_Subir_Acender.png-7deeedf8e539a6c949cc6cd46376a1f8.ctex"]
+source_file="res://assets/ui/Icono_Habilidades.png"
+dest_files=["res://.godot/imported/Icono_Habilidades.png-09685d09308365e89f73a92e98fd0392.ctex"]
 
 [params]
 

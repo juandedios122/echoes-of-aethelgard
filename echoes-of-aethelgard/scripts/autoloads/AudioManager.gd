@@ -55,8 +55,8 @@ func play_music(music_name: String, fade_duration: float = 1.0) -> void:
 		current_music = music_name
 		
 		# Fade in
-		var tween := create_tween()
-		tween.tween_property(music_player, "volume_db", linear_to_db(music_volume), fade_duration)
+		var tween_in := create_tween()
+		tween_in.tween_property(music_player, "volume_db", linear_to_db(music_volume), fade_duration)
 
 func stop_music(fade_duration: float = 1.0) -> void:
 	if music_player.playing:

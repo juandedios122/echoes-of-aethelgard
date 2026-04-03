@@ -35,7 +35,7 @@ var active_statuses: Dictionary = {}
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hp_bar: ProgressBar      = $HpBar
 @onready var energy_bar: ProgressBar  = $EnergyBar
-@onready var damage_label_scene: PackedScene = preload("res://DamageLabel.tscn")
+@onready var damage_label_scene: PackedScene = preload("res://scenes/combat/DamageLabel.tscn")
 
 # ─── Inicialización ───────────────────────────────────────────────────────────
 func setup(data: HeroData, unit_level: int, player: bool = true) -> void:

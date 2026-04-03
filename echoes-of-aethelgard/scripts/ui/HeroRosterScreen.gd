@@ -6,8 +6,8 @@ extends Control
 @onready var hero_grid: GridContainer = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/ScrollContainer/HeroGrid
 @onready var hero_list_panel: PanelContainer = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel
 @onready var hero_detail_panel: PanelContainer = $MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel
-@onready var all_button: Button = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons/AllButton
-@onready var owned_button: Button = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons/OwnedButton
+@onready var all_button: TextureButton = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons/AllButton
+@onready var owned_button: TextureButton = $MarginContainer/VBoxContainer/ContentContainer/HeroListPanel/VBoxContainer/FilterButtons/OwnedButton
 @onready var detail_content: VBoxContainer = $MarginContainer/VBoxContainer/ContentContainer/HeroDetailPanel/ScrollContainer/DetailContent
 
 const HERO_CARD_SCENE := preload("res://scenes/ui/HeroRosterCard.tscn")
@@ -16,30 +16,69 @@ var all_heroes: Array[HeroData] = []
 var current_filter: String = "all"
 var selected_hero: HeroData = null
 var selected_card: Button = null
+var current_detail_tab: String = "Habilidades"
 
 func _ready() -> void:
+	_init_ui()
+	_load_collection()
+	_apply_filter("all")
+	AudioManager.play_music("menu_theme", 1.0)
+	get_viewport().size_changed.connect(_update_grid_columns)
+
+func _init_ui() -> void:
 	back_button.pressed.connect(_on_back_pressed)
 	all_button.pressed.connect(func(): _apply_filter("all"))
 	owned_button.pressed.connect(func(): _apply_filter("owned"))
-	
+	all_button.toggle_mode = true
+	owned_button.toggle_mode = true
+
+	if ResourceLoader.exists("res://assets/ui/Todos.png"):
+		all_button.focus_mode = Control.FOCUS_NONE
+	if ResourceLoader.exists("res://assets/ui/Desbloqueados.png"):
+		owned_button.focus_mode = Control.FOCUS_NONE
+
+	_create_collection_banner()
+	_update_filter_button_states()
 	_setup_panel_styles()
-	_load_all_heroes()
 	_update_grid_columns()
-	_populate_hero_grid()
-	
-	# Reproducir música del menú (misma que main menu)
-	AudioManager.play_music("menu_theme", 1.0)
-	
-	# Conectar señal de redimensionamiento para grid adaptativo
-	get_viewport().size_changed.connect(_update_grid_columns)
+
+	hero_list_panel.size_flags_horizontal = Control.SIZE_FILL
+	hero_list_panel.custom_minimum_size = Vector2(380, 0)
+	hero_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hero_grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	print("[HeroRosterScreen] hero_list_panel size_flags:", hero_list_panel.size_flags_horizontal, hero_list_panel.size_flags_vertical)
+	print("[HeroRosterScreen] hero_grid size_flags:", hero_grid.size_flags_horizontal, hero_grid.size_flags_vertical)
+
+func _load_collection() -> void:
+	print("[HeroRosterScreen] ======== _load_collection INICIO ========")
+	all_heroes = HeroCollectionService.load_all_heroes()
+	print("[HeroRosterScreen] total heroes cargados en all_heroes:", all_heroes.size())
+	if all_heroes.size() > 0:
+		print("[HeroRosterScreen] Nombres de héroes:", all_heroes.map(func(h): return h.hero_name))
+	else:
+		push_error("[HeroRosterScreen] ⚠️ ¡NO se cargaron héroes!")
 
 func _setup_panel_styles() -> void:
 	# Cargar textura de fondo para los paneles
-	var bg_texture := load("res://ui/Fondo.png") as Texture2D
+	var _bg_texture := load("res://assets/ui/Fondo.png") as Texture2D
 	
 	
 	# Estilo para el panel de detalles - estilo pergamino claro
 	
+func _create_collection_banner() -> void:
+	# El nodo HeroCollectionBanner está bajo la raíz de la pantalla, no dentro de MarginContainer/VBoxContainer
+	var banner := $HeroCollectionBanner
+	if not banner:
+		banner = $MarginContainer/VBoxContainer/HeroCollectionBanner if has_node("MarginContainer/VBoxContainer/HeroCollectionBanner") else null
+	if banner and ResourceLoader.exists("res://assets/ui/Barra_Coleccion_Heroes.png"):
+		banner.texture = load("res://assets/ui/Barra_Coleccion_Heroes.png")
+		banner.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		banner.size_flags_vertical = Control.SIZE_FILL
+		banner.custom_minimum_size = Vector2(0, 110)
+		banner.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		banner.visible = true
+
 func _update_grid_columns() -> void:
 	var available_width: float = hero_list_panel.size.x - 60  # Restar márgenes
 	var card_width: float = 140.0
@@ -49,37 +88,35 @@ func _update_grid_columns() -> void:
 	var optimal_columns: int = max(1, int(available_width / (card_width + spacing)))
 	hero_grid.columns = clamp(optimal_columns, 2, 3)
 
+# Carga de datos ahora delegada a HeroCollectionService
 func _load_all_heroes() -> void:
-	var hero_paths := [
-		"res://resources/heroes_data/aethan_paladin.tres",
-		"res://resources/heroes_data/aldric_archimago.tres",
-		"res://resources/heroes_data/gorn_barbaro.tres",
-		"res://resources/heroes_data/kael_soldado.tres",
-		"res://resources/heroes_data/lyra_arquera.tres",
-		"res://resources/heroes_data/mira_sanadora.tres",
-		"res://resources/heroes_data/seraphel_jueza.tres",
-		"res://resources/heroes_data/theron_cazador.tres",
-		"res://resources/heroes_data/varra_mercenaria.tres",
-		"res://resources/heroes_data/vex_nigromante.tres",
-	]
-	
-	for path in hero_paths:
-		var hero: HeroData = load(path)
-		if hero:
-			all_heroes.append(hero)
+	# Método legado, mantenido por compatibilidad pero sin efecto.
+	# Se utiliza _load_collection() a partir de la versión reorganizada.
+	pass
 
 func _populate_hero_grid() -> void:
+	print("[HeroRosterScreen] ======== _populate_hero_grid INICIO ========")
+	print("[HeroRosterScreen] all_heroes.size() = ", all_heroes.size())
+	print("[HeroRosterScreen] current_filter = ", current_filter)
+	
 	for child in hero_grid.get_children():
 		child.queue_free()
 	
-	var filtered_heroes := _get_filtered_heroes()
-	
+	print("[HeroRosterScreen] Grid limpiado")
+
+	# Solo configurar en _init_ui, aquí no tocamos layout
+	var filtered_heroes := HeroCollectionService.filter_heroes(all_heroes, current_filter)
+	print("[HeroRosterScreen] filtered_heroes.size() = ", filtered_heroes.size())
+	print("[HeroRosterScreen] Héroes filtrados: ", filtered_heroes.map(func(h): return h.hero_name))
+
 	for hero in filtered_heroes:
 		var card := HERO_CARD_SCENE.instantiate()
 		hero_grid.add_child(card)
+		card.modulate = Color(1, 1, 1, 1)
+		card.custom_minimum_size = Vector2(140, 220)
 		card.setup(hero, GameManager.player_data.has_hero(hero.hero_id))
 		card.pressed.connect(_on_hero_selected.bind(hero, card))
-		
+
 		# Animación de entrada escalonada
 		card.modulate.a = 0
 		card.scale = Vector2(0.8, 0.8)
@@ -88,14 +125,51 @@ func _populate_hero_grid() -> void:
 		tween.tween_property(card, "modulate:a", 1.0, 0.3).set_delay(delay)
 		tween.parallel().tween_property(card, "scale", Vector2(1.0, 1.0), 0.3).set_delay(delay).set_ease(Tween.EASE_OUT)
 
-func _get_filtered_heroes() -> Array[HeroData]:
-	if current_filter == "owned":
-		return all_heroes.filter(func(h): return GameManager.player_data.has_hero(h.hero_id))
-	return all_heroes
+		# Nota de debug por cada card
+		print("[HeroRosterScreen] añadida card:", hero.hero_name)
+
+	if hero_grid.get_child_count() == 0:
+		var empty_label := Label.new()
+		empty_label.text = "No se encontraron héroes (comprueba si los datos están cargados)."
+		empty_label.add_theme_color_override("font_color", Color(0.85, 0.75, 0.6, 1))
+		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		hero_grid.add_child(empty_label)
+		print("[HeroRosterScreen] HeroGrid está vacío")
+	else:
+		# Seleccionar automáticamente el primer héroe filtrado para mostrar detalles
+		var first_card := hero_grid.get_child(0)
+		if first_card and first_card.has_method("set_selected"):
+			first_card.set_selected(true)
+			selected_card = first_card
+			selected_hero = filtered_heroes[0] if filtered_heroes.size() > 0 else null
+			if selected_hero:
+				_display_hero_details(selected_hero)
+		print("[HeroRosterScreen] HeroGrid tiene ", hero_grid.get_child_count(), "cards")
 
 func _apply_filter(filter: String) -> void:
+	print("[HeroRosterScreen] ======== _apply_filter INICIO ========")
+	print("[HeroRosterScreen] Filtro solicitado: %s" % filter)
 	current_filter = filter
+	_update_filter_button_states()
+	print("[HeroRosterScreen] Llamando a _populate_hero_grid()...")
 	_populate_hero_grid()
+	print("[HeroRosterScreen] _populate_hero_grid() completado")
+	print("[HeroRosterScreen] ======== _apply_filter FIN ========")
+
+func _update_filter_button_states() -> void:
+	# Cambiar estado visual de toggle sin tocar la señal 'pressed'
+	all_button.set_pressed(current_filter == "all")
+	owned_button.set_pressed(current_filter == "owned")
+
+	if current_filter == "all":
+		all_button.modulate = Color(1, 1, 1, 1)
+		owned_button.modulate = Color(0.82, 0.82, 0.82, 0.9)
+	else:
+		all_button.modulate = Color(0.82, 0.82, 0.82, 0.9)
+		owned_button.modulate = Color(1, 1, 1, 1)
+
+	# Texto alternativo para accesibilidad
+	# Se puede añadir aquí si se quiere mostrar un Label de estado
 
 func _on_hero_selected(hero: HeroData, card: Button) -> void:
 	# Deseleccionar tarjeta anterior
@@ -108,6 +182,8 @@ func _on_hero_selected(hero: HeroData, card: Button) -> void:
 	if card.has_method("set_selected"):
 		card.set_selected(true)
 	
+	# Empezar siempre en Habilidades al seleccionar un héroe nuevo
+	current_detail_tab = "Habilidades"
 	_display_hero_details(hero)
 
 func _display_hero_details(hero: HeroData) -> void:
@@ -129,8 +205,8 @@ func _display_hero_details(hero: HeroData) -> void:
 	if not is_owned:
 		_create_locked_display()
 	else:
-		# Mostrar contenido de la pestaña activa (por defecto: Habilidades)
-		_create_abilities_tab_content(hero, hero_level)
+		# Mostrar contenido de la pestaña activa
+		_update_detail_tab_content(hero, hero_level)
 	
 	# Botones de acción
 	if is_owned:
@@ -190,7 +266,9 @@ func _create_hero_portrait(hero: HeroData, is_owned: bool) -> void:
 	var portrait_rect := TextureRect.new()
 	portrait_rect.texture = hero.portrait
 	portrait_rect.custom_minimum_size = Vector2(256, 256)
-	portrait_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	portrait_rect.expand = true
+	portrait_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	portrait_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	
 	# Si está bloqueado, aplicar filtro oscuro
@@ -235,23 +313,44 @@ func _create_compact_exp_bar(hero_id: String, level: int, container: VBoxContain
 	progress_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	container.add_child(progress_text)
 
-func _create_tab_navigation(_hero: HeroData, _is_owned: bool) -> void:
-	# Contenedor de pestañas
+func _create_tab_navigation(hero: HeroData, _is_owned: bool) -> void:
+	# Contenedor de pestañas con imagen decorativa
+	var tab_frame := PanelContainer.new()
+	var toolbar_image_path := "res://assets/ui/Barra_Equipamientos.png"
+	if ResourceLoader.exists(toolbar_image_path):
+		var tab_style := _create_decorative_stylebox_from_image(toolbar_image_path, 10, Color(1,1,1,0.92))
+		tab_frame.add_theme_stylebox_override("panel", tab_style)
+	else:
+		var fallback := StyleBoxFlat.new()
+		fallback.bg_color = Color(0.14, 0.1, 0.08, 0.9)
+		fallback.border_color = Color(0.34, 0.25, 0.20, 1)
+		fallback.set_border_width_all(2)
+		fallback.set_corner_radius_all(8)
+		tab_frame.add_theme_stylebox_override("panel", fallback)
+
+	tab_frame.custom_minimum_size = Vector2(0, 120)
+	tab_frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_content.add_child(tab_frame)
+
 	var tabs_container := HBoxContainer.new()
 	tabs_container.alignment = BoxContainer.ALIGNMENT_CENTER
 	tabs_container.add_theme_constant_override("separation", 8)
-	detail_content.add_child(tabs_container)
-	
-	# Pestaña Habilidades
-	var abilities_tab := _create_tab_button("Habilidades", true)
+	# Ajuste de margenes internos para mejorar vista
+	tabs_container.add_theme_constant_override("margin_left", 20)
+	tabs_container.add_theme_constant_override("margin_right", 20)
+	tab_frame.add_child(tabs_container)
+
+	# Pestañas
+	var abilities_tab := _create_tab_button("Habilidades", current_detail_tab == "Habilidades")
+	abilities_tab.pressed.connect(func(): _on_detail_tab_changed("Habilidades", hero))
 	tabs_container.add_child(abilities_tab)
-	
-	# Pestaña Historia
-	var history_tab := _create_tab_button("Historia", false)
+
+	var history_tab := _create_tab_button("Historia", current_detail_tab == "Historia")
+	history_tab.pressed.connect(func(): _on_detail_tab_changed("Historia", hero))
 	tabs_container.add_child(history_tab)
-	
-	# Pestaña Equipo
-	var equipment_tab := _create_tab_button("Equipo", false)
+
+	var equipment_tab := _create_tab_button("Equipo", current_detail_tab == "Equipo")
+	equipment_tab.pressed.connect(func(): _on_detail_tab_changed("Equipo", hero))
 	tabs_container.add_child(equipment_tab)
 
 func _create_tab_button(text: String, is_active: bool) -> Button:
@@ -279,6 +378,32 @@ func _create_tab_button(text: String, is_active: bool) -> Button:
 	
 	return button
 
+func _on_detail_tab_changed(tab: String, hero: HeroData) -> void:
+	current_detail_tab = tab
+	_display_hero_details(hero)
+
+func _create_decorative_stylebox_from_image(image_path: String, margin: int = 12, tint: Color = Color(1,1,1,1)) -> StyleBoxTexture:
+	var stylebox := StyleBoxTexture.new()
+	stylebox.texture = load(image_path)
+	stylebox.draw_center = true
+	stylebox.content_margin_left = margin
+	stylebox.content_margin_right = margin
+	stylebox.content_margin_top = margin
+	stylebox.content_margin_bottom = margin
+	stylebox.modulate_color = tint
+	return stylebox
+
+func _update_detail_tab_content(hero: HeroData, hero_level: int) -> void:
+	match current_detail_tab:
+		"Habilidades":
+			_create_abilities_tab_content(hero, hero_level)
+		"Historia":
+			_create_history_tab_content(hero)
+		"Equipo":
+			_create_equipment_tab_content(hero)
+		_:
+			_create_abilities_tab_content(hero, hero_level)
+
 func _create_abilities_tab_content(hero: HeroData, hero_level: int) -> void:
 	# Panel de estadísticas de combate
 	_create_compact_stats_section(hero, hero_level)
@@ -288,24 +413,73 @@ func _create_abilities_tab_content(hero: HeroData, hero_level: int) -> void:
 	# Panel de habilidades
 	_create_abilities_section(hero)
 
+func _create_history_tab_content(hero: HeroData) -> void:
+	_create_lore_section(hero)
+
+func _create_equipment_tab_content(_hero: HeroData) -> void:
+	var equip_panel := PanelContainer.new()
+	var equip_image_path := "res://assets/ui/Barra_Equipamientos.png"
+	if ResourceLoader.exists(equip_image_path):
+		var equip_style := _create_decorative_stylebox_from_image(equip_image_path, 14, Color(1,1,1,0.90))
+		equip_panel.add_theme_stylebox_override("panel", equip_style)
+	else:
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(0.08, 0.06, 0.1, 0.95)
+		style.border_color = Color(0.5, 0.4, 0.3, 1)
+		style.set_border_width_all(2)
+		style.corner_radius_top_left = 10
+		style.corner_radius_top_right = 10
+		style.corner_radius_bottom_left = 10
+		style.corner_radius_bottom_right = 10
+		equip_panel.add_theme_stylebox_override("panel", style)
+	end
+	detail_content.add_child(equip_panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 10)
+	equip_panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text = "🛠️ EQUIPO"
+	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.7, 1))
+	title.add_theme_font_size_override("font_size", 20)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	var info := Label.new()
+	info.text = "Aquí aparecerán los objetos equipados."
+	info.add_theme_color_override("font_color", Color(0.88, 0.83, 0.74, 1))
+	info.add_theme_font_size_override("font_size", 16)
+	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(info)
+
 func _create_compact_stats_section(hero: HeroData, level: int) -> void:
-	# Cargar textura de fondo
-	var bg_texture := load("res://ui/Fondo.png") as Texture2D
-	
+	# Priorizar barra decorativa si existe, después Fondo.png
+	var banner_path := "res://assets/ui/Barra_Equipamientos.png"
+	var panel_style := null
+
+	if ResourceLoader.exists(banner_path):
+		panel_style = _create_decorative_stylebox_from_image(banner_path, 12, Color(1,1,1,0.92))
+	else:
+		var bg_texture := load("res://assets/ui/Fondo.png") as Texture2D
+		if bg_texture:
+			panel_style = StyleBoxTexture.new()
+			panel_style.texture = bg_texture
+			panel_style.texture_margin_left = 15
+			panel_style.texture_margin_right = 15
+			panel_style.texture_margin_top = 15
+			panel_style.texture_margin_bottom = 15
+			panel_style.modulate_color = Color(0.28, 0.22, 0.18, 0.98)
+		end
+	end
+
 	# Panel contenedor para las estadísticas
 	var stats_panel := PanelContainer.new()
-	
-	if bg_texture:
-		var panel_style := StyleBoxTexture.new()
-		panel_style.texture = bg_texture
-		panel_style.texture_margin_left = 15
-		panel_style.texture_margin_right = 15
-		panel_style.texture_margin_top = 15
-		panel_style.texture_margin_bottom = 15
-		panel_style.modulate_color = Color(0.28, 0.22, 0.18, 0.98)
+
+	if panel_style:
 		stats_panel.add_theme_stylebox_override("panel", panel_style)
 	else:
-		var panel_style := StyleBoxFlat.new()
+		panel_style = StyleBoxFlat.new()
 		panel_style.bg_color = Color(0.10, 0.08, 0.06, 0.98)
 		panel_style.border_color = Color(0.40, 0.32, 0.24, 0.9)
 		panel_style.set_border_width_all(2)

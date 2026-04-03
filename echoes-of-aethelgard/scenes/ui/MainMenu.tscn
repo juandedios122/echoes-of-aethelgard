@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://btxh7tls5jkvv" path="res://assets/ui/Button_Jugar.png" id="3_button_jugar"]
 [ext_resource type="Texture2D" uid="uid://b2jlgpughmkhp" path="res://assets/ui/Button_Invocar.png" id="4_button_invocar"]
 [ext_resource type="Texture2D" uid="uid://c6nuegxdlwjf6" path="res://assets/ui/Button_Heroes.png" id="5_button_heroes"]
-[ext_resource type="Texture2D" uid="uid://dwampd6y506f2" path="res://Icono_Nuevo.png" id="6_icon"]
+[ext_resource type="Texture2D" uid="uid://dwampd6y506f2" path="res://assets/ui/Icono_Nuevo.png" id="6_icon"]
 [ext_resource type="Texture2D" uid="uid://xb8cwh4qj0xu" path="res://assets/ui/title_main.png" id="7_cqjrg"]
 
 [node name="MainMenu" type="Control" unique_id=1723565334]

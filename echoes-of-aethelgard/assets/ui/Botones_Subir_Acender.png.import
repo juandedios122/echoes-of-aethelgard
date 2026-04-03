@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqfwlr7a6noy2"
-path="res://.godot/imported/Fondo.png-99503bc1fc7710cef27ba9266b2a3ed7.ctex"
+uid="uid://cescbuyyutr0h"
+path="res://.godot/imported/Botones_Subir_Acender.png-0ca15264dcdac94d6dfafc562be59b46.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Fondo.png"
-dest_files=["res://.godot/imported/Fondo.png-99503bc1fc7710cef27ba9266b2a3ed7.ctex"]
+source_file="res://assets/ui/Botones_Subir_Acender.png"
+dest_files=["res://.godot/imported/Botones_Subir_Acender.png-0ca15264dcdac94d6dfafc562be59b46.ctex"]
 
 [params]
 

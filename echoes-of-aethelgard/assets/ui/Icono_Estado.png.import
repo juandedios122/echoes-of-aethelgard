@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cifylx77noy3d"
-path="res://.godot/imported/Icono_Rareza.png-1bb0e09db99635684cc4b1a9a1e57216.ctex"
+uid="uid://bxtr3k76eb4gh"
+path="res://.godot/imported/Icono_Estado.png-45d002c72f15079e791f61bd93604f7d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/Icono_Rareza.png"
-dest_files=["res://.godot/imported/Icono_Rareza.png-1bb0e09db99635684cc4b1a9a1e57216.ctex"]
+source_file="res://assets/ui/Icono_Estado.png"
+dest_files=["res://.godot/imported/Icono_Estado.png-45d002c72f15079e791f61bd93604f7d.ctex"]
 
 [params]
 
