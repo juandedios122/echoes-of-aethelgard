@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bvx8lam2n4p7q"]
 
 [ext_resource type="Script" uid="uid://don2o6c5mbhab" path="res://scripts/ui/HeroRosterScreen.gd" id="1_roster"]
-[ext_resource type="Texture2D" uid="uid://dwb0ugwrtng03" path="res://assets/ui/common/Button_Volver.png" id="2_volver"]
+[ext_resource type="Texture2D" uid="uid://c3krescmpb2d2" path="res://assets/ui/common/Button_Volver.png" id="2_volver"]
 [ext_resource type="Texture2D" uid="uid://eu6aktjoqe1c" path="res://assets/ui/hero_roster/Fondo.png" id="3_fondo"]
 [ext_resource type="Texture2D" uid="uid://bimsu82dfdfod" path="res://assets/ui/hero_roster/Barra_Coleccion_Heroes.png" id="4_barra_coleccion"]
 [ext_resource type="Texture2D" uid="uid://btnt0usnkp5r2" path="res://assets/ui/hero_roster/Todos.png" id="5_todos"]

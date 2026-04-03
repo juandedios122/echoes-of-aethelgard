@@ -19,10 +19,12 @@ config/description="Juego gacha medieval 2D para móvil"
 config/version="0.1.0"
 run/main_scene="uid://c8vq7x3m4n5p"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://assets/ui/Icono_Nuevo.png"
+config/icon="res://assets/ui/main_menu/Icono_Nuevo.png"
 
 [autoload]
 
+SignalBus="*res://scripts/autoloads/SignalBus.gd"
+SceneTransition="*res://scripts/autoloads/SceneTransition.gd"
 GameManager="*uid://b4kfqfallkrmw"
 AudioManager="*res://scripts/autoloads/AudioManager.gd"
 

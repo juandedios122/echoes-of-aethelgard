@@ -11,6 +11,18 @@ enum Rarity   { COMUN, RARO, EPICO, LEGENDARIO }
 enum Role     { TANQUE, GUERRERO, ARQUERO, MAGO, CURANDERO, MERCENARIO }
 enum Element  { LUZ, NATURALEZA, ARCANO, FUEGO, SOMBRA, NEUTRO }
 
+# ─── Tabla de Ventajas Elementales ────────────────────────────────────────────
+## LUZ > SOMBRA > ARCANO > NATURALEZA > FUEGO > LUZ, NEUTRO = neutral
+const ELEMENT_ADVANTAGE := {
+	Element.LUZ:         Element.SOMBRA,
+	Element.SOMBRA:      Element.ARCANO,
+	Element.ARCANO:      Element.NATURALEZA,
+	Element.NATURALEZA:  Element.FUEGO,
+	Element.FUEGO:       Element.LUZ,
+}
+const ELEMENT_ADVANTAGE_BONUS: float  = 0.30  # +30% daño con ventaja
+const ELEMENT_DISADVANTAGE_PENALTY: float = 0.25  # -25% daño con desventaja
+
 # ─── Identidad ────────────────────────────────────────────────────────────────
 @export var hero_id: String         = ""
 @export var hero_name: String       = ""
@@ -69,6 +81,26 @@ func get_atk_at_level(level: int) -> int:
 func get_def_at_level(level: int) -> int:
 	return get_stat_at_level(base_def, def_growth, level)
 
+func get_spd_at_level(level: int) -> int:
+	return base_spd + (level - 1) * 2
+
+# ─── Ventaja Elemental ────────────────────────────────────────────────────────
+static func get_elemental_multiplier(attacker_element: Element, defender_element: Element) -> float:
+	if attacker_element == Element.NEUTRO or defender_element == Element.NEUTRO:
+		return 1.0
+	if ELEMENT_ADVANTAGE.get(attacker_element) == defender_element:
+		return 1.0 + ELEMENT_ADVANTAGE_BONUS
+	if ELEMENT_ADVANTAGE.get(defender_element) == attacker_element:
+		return 1.0 - ELEMENT_DISADVANTAGE_PENALTY
+	return 1.0
+
+static func is_advantage(atk_elem: Element, def_elem: Element) -> bool:
+	return ELEMENT_ADVANTAGE.get(atk_elem) == def_elem
+
+static func is_disadvantage(atk_elem: Element, def_elem: Element) -> bool:
+	return ELEMENT_ADVANTAGE.get(def_elem) == atk_elem
+
+# ─── Labels ───────────────────────────────────────────────────────────────────
 func get_rarity_label() -> String:
 	match rarity:
 		Rarity.COMUN:      return "Común"
@@ -80,10 +112,60 @@ func get_rarity_label() -> String:
 func get_rarity_color() -> Color:
 	match rarity:
 		Rarity.COMUN:      return Color(0.5, 0.48, 0.45, 1)   # Hierro/gris piedra
-		Rarity.RARO:       return Color(0.55, 0.6, 0.65, 1)   # Plata envejecida
-		Rarity.EPICO:      return Color(0.65, 0.5, 0.4, 1)    # Cobre oxidado
-		Rarity.LEGENDARIO: return Color(0.7, 0.6, 0.45, 1)    # Bronce antiguo
+		Rarity.RARO:       return Color(0.4, 0.55, 0.75, 1)   # Azul acero
+		Rarity.EPICO:      return Color(0.65, 0.35, 0.75, 1)  # Púrpura arcano
+		Rarity.LEGENDARIO: return Color(0.85, 0.65, 0.2, 1)   # Oro antiguo
 	return Color.WHITE
+
+func get_element_label() -> String:
+	match element:
+		Element.LUZ:         return "Luz"
+		Element.NATURALEZA:  return "Naturaleza"
+		Element.ARCANO:      return "Arcano"
+		Element.FUEGO:       return "Fuego"
+		Element.SOMBRA:      return "Sombra"
+		Element.NEUTRO:      return "Neutro"
+	return ""
+
+func get_element_color() -> Color:
+	match element:
+		Element.LUZ:         return Color(1.0, 0.95, 0.6, 1)   # Dorado brillante
+		Element.NATURALEZA:  return Color(0.3, 0.8, 0.35, 1)   # Verde bosque
+		Element.ARCANO:      return Color(0.5, 0.4, 0.9, 1)    # Azul místico
+		Element.FUEGO:       return Color(1.0, 0.4, 0.15, 1)   # Naranja fuego
+		Element.SOMBRA:      return Color(0.55, 0.25, 0.65, 1) # Púrpura oscuro
+		Element.NEUTRO:      return Color(0.7, 0.7, 0.7, 1)    # Gris neutro
+	return Color.WHITE
+
+func get_element_icon() -> String:
+	match element:
+		Element.LUZ:         return "☀️"
+		Element.NATURALEZA:  return "🌿"
+		Element.ARCANO:      return "🔮"
+		Element.FUEGO:       return "🔥"
+		Element.SOMBRA:      return "🌑"
+		Element.NEUTRO:      return "⚪"
+	return "⚪"
+
+func get_role_label() -> String:
+	match role:
+		Role.TANQUE:     return "Tanque"
+		Role.GUERRERO:   return "Guerrero"
+		Role.ARQUERO:    return "Arquero"
+		Role.MAGO:       return "Mago"
+		Role.CURANDERO:  return "Curandero"
+		Role.MERCENARIO: return "Mercenario"
+	return ""
+
+func get_role_icon() -> String:
+	match role:
+		Role.TANQUE:     return "🛡️"
+		Role.GUERRERO:   return "⚔️"
+		Role.ARQUERO:    return "🏹"
+		Role.MAGO:       return "🧙"
+		Role.CURANDERO:  return "💚"
+		Role.MERCENARIO: return "🗡️"
+	return "⚔️"
 
 func get_faction_label() -> String:
 	match faction:
@@ -92,3 +174,15 @@ func get_faction_label() -> String:
 		Faction.CONCLAVE_ARCANO:   return "Cónclave Arcano"
 		Faction.RENEGADOS:         return "Los Renegados"
 	return ""
+
+func get_faction_icon() -> String:
+	match faction:
+		Faction.ORDEN_ALBA:        return "🏛️"
+		Faction.CAZADORES_BOSQUE:  return "🌲"
+		Faction.CONCLAVE_ARCANO:   return "📖"
+		Faction.RENEGADOS:         return "💀"
+	return "❓"
+
+## Calcula el "power rating" de un héroe a cierto nivel
+func get_power_rating(level: int) -> int:
+	return get_hp_at_level(level) + get_atk_at_level(level) * 3 + get_def_at_level(level) * 2 + get_spd_at_level(level) * 2
