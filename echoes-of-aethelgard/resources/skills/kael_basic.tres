@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "kael_basic"
+skill_name = "Estocada"
+description = "1.2× ATK a un enemigo. Gana +10 de energía."
+target_type = 0
+effect_type = 0
+energy_cost = 0
+cooldown_turns = 0
+power_multiplier = 1.2
+effect_value = 10.0
+effect_duration = 0
+hit_count = 1
+animation_name = "attack"

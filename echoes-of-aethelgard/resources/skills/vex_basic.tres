@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "vex_basic"
+skill_name = "Toque de Muerte"
+description = "1.2× ATK de sombra a un enemigo + veneno 3% HP 1 turno. +10 energía."
+target_type = 0
+effect_type = 0
+energy_cost = 0
+cooldown_turns = 0
+power_multiplier = 1.2
+effect_value = 0.03
+effect_duration = 1
+hit_count = 1
+animation_name = "attack"

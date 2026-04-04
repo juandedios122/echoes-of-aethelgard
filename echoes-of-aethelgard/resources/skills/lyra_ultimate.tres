@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "lyra_ultimate"
+skill_name = "Flecha del Viento"
+description = "2.5× ATK a un enemigo + reduce su SPD -25% por 2 turnos."
+target_type = 0
+effect_type = 0
+energy_cost = 100
+cooldown_turns = 0
+power_multiplier = 2.5
+effect_value = 0.25
+effect_duration = 2
+hit_count = 1
+animation_name = "ultimate"

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "theron_basic"
+skill_name = "Disparo Rápido"
+description = "1.1× ATK × 2 golpes rápidos a un enemigo. +10 energía."
+target_type = 0
+effect_type = 0
+energy_cost = 0
+cooldown_turns = 0
+power_multiplier = 1.1
+effect_value = 10.0
+effect_duration = 0
+hit_count = 2
+animation_name = "attack"

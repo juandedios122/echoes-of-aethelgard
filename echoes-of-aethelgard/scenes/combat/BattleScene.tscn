@@ -1,40 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://bj8636t51uxn0"]
+[gd_scene format=3 uid="uid://bj8636t51uxn0"]
 
-[ext_resource type="Script" path="res://scripts/combat/BattleScene.gd" id="1_script"]
-[ext_resource type="Script" path="res://scripts/systems/CombatManager.gd" id="2_manager"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/cursed_forest.png" id="3_bg"]
+[ext_resource type="Script" uid="uid://b4wv4tvdenoum" path="res://scripts/combat/BattleScene.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cugo6etcy6xe7" path="res://scripts/systems/CombatManager.gd" id="2_manager"]
 
-[node name="BattleScene" type="Node2D"]
+[node name="BattleScene" type="Node2D" unique_id=306271127]
 script = ExtResource("1_script")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, 0)
-zoom = Vector2(1, 1)
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1068441581]
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=204555546]
 
-[node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1444552227]
 motion_scale = Vector2(0.8, 0.8)
 
-[node name="Background" type="TextureRect" parent="ParallaxBackground/Layer1"]
+[node name="Background" type="TextureRect" parent="ParallaxBackground/Layer1" unique_id=1565996881]
 offset_left = -960.0
 offset_top = -540.0
 offset_right = 960.0
 offset_bottom = 540.0
-texture = ExtResource("3_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="PlayerUnitsContainer" type="Node2D" parent="."]
+[node name="PlayerUnitsContainer" type="Node2D" parent="." unique_id=1406137598]
 
-[node name="EnemyUnitsContainer" type="Node2D" parent="."]
+[node name="EnemyUnitsContainer" type="Node2D" parent="." unique_id=1653085099]
 
-[node name="CombatManager" type="Node" parent="."]
+[node name="CombatManager" type="Node" parent="." unique_id=1786775055]
 script = ExtResource("2_manager")
 
-[node name="BattleUI" type="CanvasLayer" parent="."]
+[node name="BattleUI" type="CanvasLayer" parent="." unique_id=1389708026]
 
-[node name="Control" type="Control" parent="BattleUI"]
+[node name="Control" type="Control" parent="BattleUI" unique_id=615125532]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,7 +38,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SkillBar" type="HBoxContainer" parent="BattleUI/Control"]
+[node name="SkillBar" type="HBoxContainer" parent="BattleUI/Control" unique_id=2056432195]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -57,7 +53,7 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
-[node name="SpeedToggle" type="Button" parent="BattleUI/Control"]
+[node name="SpeedToggle" type="Button" parent="BattleUI/Control" unique_id=110220183]
 layout_mode = 0
 offset_left = 40.0
 offset_top = 40.0
@@ -65,7 +61,7 @@ offset_right = 120.0
 offset_bottom = 80.0
 text = "x1"
 
-[node name="AutoToggle" type="Button" parent="BattleUI/Control"]
+[node name="AutoToggle" type="Button" parent="BattleUI/Control" unique_id=506371814]
 layout_mode = 0
 offset_left = 140.0
 offset_top = 40.0
@@ -73,7 +69,7 @@ offset_right = 260.0
 offset_bottom = 80.0
 text = "Auto OFF"
 
-[node name="ResultPanel" type="Panel" parent="BattleUI/Control"]
+[node name="ResultPanel" type="Panel" parent="BattleUI/Control" unique_id=1093168689]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -88,7 +84,7 @@ offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="BattleUI/Control/ResultPanel"]
+[node name="Label" type="Label" parent="BattleUI/Control/ResultPanel" unique_id=350959880]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -99,7 +95,7 @@ theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RetreatButton" type="Button" parent="BattleUI/Control/ResultPanel"]
+[node name="RetreatButton" type="Button" parent="BattleUI/Control/ResultPanel" unique_id=2020932074]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -114,7 +110,13 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Salir"
 
-[node name="Transition" type="ColorRect" parent="."]
+[node name="ContinueButton" type="Button" parent="BattleUI/Control/ResultPanel" unique_id=1436142685]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Continuar →"
+
+[node name="Transition" type="ColorRect" parent="." unique_id=1536150126]
 z_index = 100
 offset_left = -1920.0
 offset_top = -1080.0
@@ -126,3 +128,4 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="BattleUI/Control/SpeedToggle" to="." method="_on_speed_toggled"]
 [connection signal="pressed" from="BattleUI/Control/AutoToggle" to="." method="_on_auto_toggled"]
 [connection signal="pressed" from="BattleUI/Control/ResultPanel/RetreatButton" to="." method="_on_retreat_pressed"]
+[connection signal="pressed" from="BattleUI/Control/ResultPanel/ContinueButton" to="." method="_on_continue_button_pressed"]

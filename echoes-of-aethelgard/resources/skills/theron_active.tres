@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "theron_active"
+skill_name = "Trampa Venenosa"
+description = "Aplica veneno a un enemigo: 5% HP por turno, 3 turnos."
+target_type = 0
+effect_type = 5
+energy_cost = 40
+cooldown_turns = 0
+power_multiplier = 0.0
+effect_value = 0.05
+effect_duration = 3
+hit_count = 1
+animation_name = "skill"

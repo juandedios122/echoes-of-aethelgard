@@ -53,24 +53,32 @@ func setup(data: HeroData, unit_level: int, player: bool = true) -> void:
 	crit_dmg    = data.base_crit_dmg
 	current_energy = 0
 
-	# ── Cargar SpriteFrames dinámicamente ──────────────────────────────────
-	var frames_path := "res://assets/sprites/heroes/%s/%s_frames.tres" % [
-		data.hero_name, data.hero_name.to_lower()
-	]
+	# ── BUG FIX: Cargar SpriteFrames desde resources/heroes/{hero_id}.tres ──
+	# La ruta correcta es resources/heroes/ (SpriteFrames),
+	# NO assets/sprites/heroes/ (que no existe en este proyecto).
+	var frames_path := "res://resources/heroes/%s.tres" % data.hero_id
 	if ResourceLoader.exists(frames_path):
-		sprite.sprite_frames = load(frames_path)
+		sprite.sprite_frames = load(frames_path) as SpriteFrames
 		sprite.animation     = "idle"
 		sprite.play()
 	else:
-		push_warning("[CombatUnit] SpriteFrames no encontrado: " + frames_path)
+		push_warning("[CombatUnit] SpriteFrames no encontrado para: %s (buscado en: %s)" % [data.hero_id, frames_path])
 
 	# Voltear si es enemigo
 	sprite.flip_h = not is_player_unit
 
-	# ── Cargar portrait para UI ─────────────────────────────────────────────
-	var portrait_path := "res://assets/sprites/heroes/%s/portrait.png" % data.hero_name
-	if ResourceLoader.exists(portrait_path):
-		data.portrait = load(portrait_path)
+	# ── BUG FIX: Cargar portrait con ruta correcta ──────────────────────────
+	# El hero_name es "Aethan", "Lyra", etc. — coincide con la carpeta del sprite.
+	# Si el HeroData no tiene portrait asignado, lo cargamos dinámicamente.
+	if data.portrait == null:
+		var portrait_path := "res://assets/sprites/%s/portrait.png" % data.hero_name
+		if ResourceLoader.exists(portrait_path):
+			data.portrait = load(portrait_path)
+		else:
+			# Fallback: usar el battle_sprite como retrato
+			var battle_path := "res://assets/sprites/%s/battle_sprite.png" % data.hero_name
+			if ResourceLoader.exists(battle_path):
+				data.portrait = load(battle_path)
 
 	_update_ui()
 	print("[CombatUnit] %s (Lv.%d) — HP:%d ATK:%d DEF:%d SPD:%d" % [
@@ -141,7 +149,7 @@ func is_stunned() -> bool:
 
 # ─── Dibujo (Sombra Falsa) ────────────────────────────────────────────────────
 func _draw() -> void:
-	# Dibujar sombra ovalada debajo del personaje (pro-juice)
+	# Dibujar sombra ovalada debajo del personaje
 	draw_circle(Vector2(0, 45), 35.0, Color(0, 0, 0, 0.4))
 
 # ─── Animaciones y Efectos Visuales ──────────────────────────────────────────
@@ -157,7 +165,6 @@ func play_walk() -> void:
 
 func play_attack() -> Signal:
 	play_animation("attack")
-	# Desplazamiento hacia el enemigo durante el ataque
 	var tween := create_tween()
 	var dir_x  := 60.0 if is_player_unit else -60.0
 	tween.tween_property(self, "position:x", position.x + dir_x, 0.15)
@@ -168,7 +175,6 @@ func play_attack() -> Signal:
 
 func play_hurt() -> void:
 	play_animation("hurt")
-	# Shake rápido
 	var original := position
 	var tween    := create_tween()
 	for i in 4:
@@ -179,14 +185,14 @@ func play_hurt() -> void:
 	play_idle()
 
 func _play_hit_effects() -> void:
-	# Parpadeo Rojo / Hit Flash
+	# Flash rojo al recibir daño
 	var f_tween := create_tween()
-	sprite.modulate = Color(5.0, 0.5, 0.5, 1.0) # Rojo sobre expuesto
+	sprite.modulate = Color(5.0, 0.5, 0.5, 1.0)
 	f_tween.tween_property(sprite, "modulate", Color(1,1,1,1), 0.2)
-	
-	# Partículas de sangre sencillas
+
+	# Partículas de impacto
 	var p := CPUParticles2D.new()
-	p.position = Vector2(0, -30) # Centro del torso
+	p.position = Vector2(0, -30)
 	p.emitting = false
 	p.one_shot = true
 	p.explosiveness = 0.95
@@ -200,8 +206,6 @@ func _play_hit_effects() -> void:
 	p.amount = 12
 	add_child(p)
 	p.emitting = true
-	
-	# Borrar partículas después de un tiempo
 	get_tree().create_timer(1.0).timeout.connect(func(): if is_instance_valid(p): p.queue_free())
 
 func play_death() -> void:
@@ -209,7 +213,6 @@ func play_death() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.8).set_delay(0.4)
 	await tween.finished
-	# No volver a idle; la unidad permanece invisible
 
 # ─── Estado ───────────────────────────────────────────────────────────────────
 func is_dead() -> bool:

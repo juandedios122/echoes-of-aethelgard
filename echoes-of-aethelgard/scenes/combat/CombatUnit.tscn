@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ch7s5n1h2q0a8" path="res://scripts/combat/CombatUnit.gd" id="1_efns5"]
 [ext_resource type="SpriteFrames" uid="uid://b81mryr7iis6u" path="res://resources/heroes/vex_nigromante.tres" id="2_a6grj"]
-[ext_resource type="Texture2D" path="res://assets/ui/combat/Barra_Vida.png" id="3_barra_vida"]
+[ext_resource type="Texture2D" uid="uid://cycjpo1nfj3ex" path="res://assets/ui/combat/Barra_Vida.png" id="3_barra_vida"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hp_bg"]
 texture = ExtResource("3_barra_vida")
@@ -16,6 +16,12 @@ bg_color = Color(0.8, 0.1, 0.1, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0aljl"]
+bg_color = Color(0.42298058, 0.3812818, 0.23933464, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
 corner_radius_bottom_left = 3
 
 [node name="CombatUnit" type="Node2D" unique_id=558098438]
@@ -38,6 +44,8 @@ show_percentage = false
 [node name="EnergyBar" type="ProgressBar" parent="." unique_id=1616742052]
 offset_right = 4.0
 offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_0aljl")
+show_percentage = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2039399774]
 

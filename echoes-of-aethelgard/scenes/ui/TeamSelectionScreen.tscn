@@ -1,18 +1,22 @@
 [gd_scene format=3 uid="uid://ekfe03t2ysgx"]
 
-[ext_resource type="Script" path="res://scripts/ui/TeamSelectionScreen.gd" id="1_team"]
+[ext_resource type="Script" uid="uid://cqhyfrfbdyu4f" path="res://scripts/ui/TeamSelectionScreen.gd" id="1_team"]
 [ext_resource type="Texture2D" uid="uid://c3krescmpb2d2" path="res://assets/ui/common/Button_Volver.png" id="2_volver"]
 
-[node name="TeamSelectionScreen" type="Control"]
+[node name="TeamSelectionScreen" type="Control" unique_id=660552292]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_team")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1094595941]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +25,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.1, 0.08, 0.15, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1252135151]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,21 +37,21 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1765068776]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=639790235]
 layout_mode = 2
 
-[node name="BackButton" type="TextureButton" parent="MarginContainer/VBoxContainer/TopBar"]
+[node name="BackButton" type="TextureButton" parent="MarginContainer/VBoxContainer/TopBar" unique_id=270787747]
 custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
 texture_normal = ExtResource("2_volver")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TopBar" unique_id=563136626]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
@@ -56,72 +60,72 @@ text = "⚔️ Seleccionar Equipo"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/TopBar"]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/TopBar" unique_id=573389331]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=303409]
 layout_mode = 2
 
-[node name="InfoLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="InfoLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=890795143]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
 theme_override_font_sizes/font_size = 20
 text = "Selecciona hasta 3 héroes para tu equipo"
 horizontal_alignment = 1
 
-[node name="ContentContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ContentContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=936445762]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 30
 
-[node name="AvailableHeroesPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer"]
+[node name="AvailableHeroesPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer" unique_id=1682056046]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel" unique_id=1821833462]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer" unique_id=836642438]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
 theme_override_font_sizes/font_size = 24
 text = "Héroes Disponibles"
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer" unique_id=1190097320]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HeroGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer/ScrollContainer"]
+[node name="HeroGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentContainer/AvailableHeroesPanel/VBoxContainer/ScrollContainer" unique_id=2060968673]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 3
 
-[node name="SelectedTeamPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer"]
+[node name="SelectedTeamPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer" unique_id=1798545966]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel" unique_id=643910383]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer" unique_id=1824278009]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
 theme_override_font_sizes/font_size = 24
 text = "Equipo Seleccionado (0/3)"
 horizontal_alignment = 1
 
-[node name="Slot1" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer"]
+[node name="Slot1" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer" unique_id=1638899597]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="EmptyLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot1"]
+[node name="EmptyLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot1" unique_id=324715764]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 18
@@ -129,11 +133,11 @@ text = "Vacío - Click en un héroe"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot2" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer"]
+[node name="Slot2" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer" unique_id=570079460]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="EmptyLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot2"]
+[node name="EmptyLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot2" unique_id=1465783127]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 18
@@ -141,11 +145,11 @@ text = "Vacío - Click en un héroe"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot3" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer"]
+[node name="Slot3" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer" unique_id=1374128064]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="EmptyLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot3"]
+[node name="EmptyLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer/Slot3" unique_id=1083244281]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 18
@@ -153,13 +157,13 @@ text = "Vacío - Click en un héroe"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer" unique_id=325432676]
 layout_mode = 2
 
-[node name="StartBattleButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer"]
+[node name="StartBattleButton" type="Button" parent="MarginContainer/VBoxContainer/ContentContainer/SelectedTeamPanel/VBoxContainer" unique_id=582720485]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 0.8, 0.3, 1)
 theme_override_font_sizes/font_size = 28
-text = "⚔️ Iniciar Batalla"
 disabled = true
+text = "⚔️ Iniciar Batalla"

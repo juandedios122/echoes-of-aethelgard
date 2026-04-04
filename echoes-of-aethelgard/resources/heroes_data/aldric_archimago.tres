@@ -1,14 +1,17 @@
-[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://xg4wh8k2gvtd"]
 
-[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://b56xv8rer7q6i" path="res://assets/sprites/Aldric/frames/idle_00.png" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/aldric_basic.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/skills/aldric_active.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/skills/aldric_ultimate.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
 hero_id = "aldric_archimago"
 hero_name = "Aldric"
 title = "El Archimago"
-lore_text = "Líder del Cónclave Arcano, maestro de la magia."
+lore_text = "Líder del Cónclave Arcano y el mayor erudito de las artes mágicas en Aethelgard. Aldric pasó décadas descifrando los secretos del tejido arcano. Su poder destructivo no tiene rival, pero lo usa con calculada precisión, pues sabe que cada hechizo mal lanzado puede desgarrar el mundo."
 faction = 2
 rarity = 3
 role = 3
@@ -18,3 +21,6 @@ base_hp = 950
 base_atk = 160
 base_def = 45
 base_spd = 85
+skill_basic = ExtResource("3")
+skill_active = ExtResource("4")
+skill_ultimate = ExtResource("5")

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://k5ixovii6lhv" path="res://scripts/ui/ExplorationMap.gd" id="1_exploration"]
 [ext_resource type="SpriteFrames" path="res://resources/aethan_frames.tres" id="2_frames"]
 [ext_resource type="PackedScene" uid="uid://dpyak8m4n6p3s" path="res://scenes/ui/PauseMenu.tscn" id="3_pause"]
-[ext_resource type="TileSet" path="res://resources/forest_tileset.tres" id="4_tileset"]
+[ext_resource type="TileSet" uid="uid://chfvt5k2a3v01" path="res://resources/forest_tileset.tres" id="4_tileset"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 20.0
@@ -70,8 +70,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
-text = "Usa WASD para moverte
-Cuidado con los enemigos (!)"
+text = "Arrastra la zona izquierda para moverte\\nCuidado con los enemigos (!)"
 autowrap_mode = 2
 
 [node name="PauseMenu" parent="." unique_id=634351470 instance=ExtResource("3_pause")]

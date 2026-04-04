@@ -1,7 +1,10 @@
-[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://drlqhtfasl5b4"]
 
-[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://nu3cblg3oaae" path="res://assets/sprites/Lyra/frames/idle_00.png" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/lyra_basic.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/skills/lyra_active.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/skills/lyra_ultimate.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
@@ -18,3 +21,6 @@ base_hp = 900
 base_atk = 130
 base_def = 40
 base_spd = 100
+skill_basic = ExtResource("3")
+skill_active = ExtResource("4")
+skill_ultimate = ExtResource("5")

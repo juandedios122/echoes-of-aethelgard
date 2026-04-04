@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "aldric_ultimate"
+skill_name = "Singularidad"
+description = "2.0× ATK a TODOS los enemigos. Debuff ATK -20% por 2 turnos."
+target_type = 1
+effect_type = 0
+energy_cost = 100
+cooldown_turns = 0
+power_multiplier = 2.0
+effect_value = 0.2
+effect_duration = 2
+hit_count = 1
+animation_name = "ultimate"

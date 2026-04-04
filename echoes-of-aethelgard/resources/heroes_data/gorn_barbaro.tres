@@ -1,20 +1,24 @@
-[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://cqimqpy4t8kw8"]
 
-[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://7jua3wcumm5f" path="res://assets/sprites/Gorn/frames/idle_00.png" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/gorn_basic.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/skills/gorn_active.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/skills/gorn_ultimate.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
 hero_id = "gorn_barbaro"
 hero_name = "Gorn"
 title = "El Bárbaro"
-lore_text = "Guerrero salvaje de las tierras del norte."
+lore_text = "Guerrero salvaje de las tierras del norte, Gorn sobrevivió a la masacre de su clan siendo apenas un niño. Forjado en las ventiscas y las bestias de las montañas, su fuerza es legendaria. Lucha sin armadura para demostrar que su piel es más dura que el acero."
 faction = 3
 rarity = 1
-role = 1
-element = 5
 portrait = ExtResource("2")
 base_hp = 1300
 base_atk = 140
 base_def = 55
 base_spd = 65
+skill_basic = ExtResource("3")
+skill_active = ExtResource("4")
+skill_ultimate = ExtResource("5")

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = "gorn_active"
+skill_name = "Furia Salvaje"
+description = "1.8× ATK a un enemigo + aturde 1 turno."
+target_type = 0
+effect_type = 0
+energy_cost = 40
+cooldown_turns = 0
+power_multiplier = 1.8
+effect_value = 0.0
+effect_duration = 1
+hit_count = 1
+animation_name = "skill"

@@ -1,20 +1,23 @@
-[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://dgn16fqgp1lqh"]
 
-[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://c7iolamy1ncd5" path="res://assets/sprites/Kael/frames/idle_00.png" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/kael_basic.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/skills/kael_active.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/skills/kael_ultimate.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
 hero_id = "kael_soldado"
 hero_name = "Kael"
 title = "El Soldado Veterano"
-lore_text = "Guerrero experimentado de la Orden del Alba."
-faction = 0
+lore_text = "Veinte años de campaña en los ejércitos de la Orden del Alba han convertido a Kael en una muralla de acero y experiencia. Disciplinado y leal, es el primero en cargar y el último en retroceder. Sus compañeros saben que mientras Kael esté en pie, ningún enemigo los alcanzará."
 rarity = 1
-role = 1
-element = 5
 portrait = ExtResource("2")
 base_hp = 1100
 base_atk = 110
 base_def = 60
 base_spd = 75
+skill_basic = ExtResource("3")
+skill_active = ExtResource("4")
+skill_ultimate = ExtResource("5")

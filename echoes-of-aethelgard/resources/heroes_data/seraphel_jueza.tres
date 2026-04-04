@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="HeroData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://ddmjhghlnhg2u"]
 
-[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://q8fpgqs66ndw" path="res://assets/sprites/Seraphel/frames/idle_00.png" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/seraphel_basic.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/skills/seraphel_active.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/skills/seraphel_ultimate.tres" id="5"]
 
 [resource]
 script = ExtResource("1")
 hero_id = "seraphel_jueza"
 hero_name = "Seraphel"
 title = "La Jueza Divina"
-lore_text = "Ángel caído que juzga a los mortales."
-faction = 0
+lore_text = "Ángel caído que descendió al mundo mortal para ejecutar la voluntad del Panteón. Seraphel no conoce la misericordia: juzga con la frialdad de la justicia absoluta. Aquellos que enfrentan su mirada de luz dorada saben que su veredicto es inapelable."
 rarity = 3
 role = 3
 element = 0
@@ -18,3 +20,6 @@ base_hp = 1100
 base_atk = 145
 base_def = 60
 base_spd = 95
+skill_basic = ExtResource("3")
+skill_active = ExtResource("4")
+skill_ultimate = ExtResource("5")
