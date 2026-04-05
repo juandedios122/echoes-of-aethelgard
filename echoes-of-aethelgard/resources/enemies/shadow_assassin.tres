@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_poison_sting.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_backstab.tres" id="3"]
+[resource]
+script = ExtResource("1")
+hero_id = "shadow_assassin"
+hero_name = "Asesino de Sombras"
+title = "Muerte Silenciosa"
+lore_text = "Un asesino entrenado por el Culto de la Sombra Eterna. Nadie lo ha visto moverse. Solo han visto a sus víctimas caer."
+faction = 3
+rarity = 2
+role = 5
+element = 4
+skill_basic = ExtResource("2")
+skill_ultimate = ExtResource("3")
+base_hp = 400
+base_atk = 150
+base_def = 22
+base_spd = 108
+hp_growth = 0.07
+atk_growth = 0.05
+def_growth = 0.04

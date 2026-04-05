@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_poison_sting.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_backstab.tres" id="3"]
+[resource]
+script = ExtResource("1")
+hero_id = "bandit_rogue"
+hero_name = "Pícaro Bandido"
+title = "Ladrón de los Caminos"
+lore_text = "Bandido ágil que ataca desde las sombras. Su veneno es tan peligroso como su hoja."
+faction = 3
+rarity = 0
+role = 5
+element = 5
+skill_basic = ExtResource("2")
+skill_ultimate = ExtResource("3")
+base_hp = 430
+base_atk = 100
+base_def = 22
+base_spd = 82
+hp_growth = 0.07
+atk_growth = 0.05
+def_growth = 0.04

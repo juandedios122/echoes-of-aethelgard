@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+[resource]
+script = ExtResource("1")
+skill_id = "enemy_poison_sting"
+skill_name = "Aguijón Venenoso"
+description = "1.0× ATK + veneno 4% HP por 3 turnos."
+target_type = 0
+effect_type = 0
+energy_cost = 0
+power_multiplier = 1.0
+effect_value = 0.04
+effect_duration = 3
+hit_count = 1
+animation_name = "attack"

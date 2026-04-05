@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bvq8y7x3m4n5p"]
 
-[ext_resource type="Script" path="res://scripts/ui/HeroWalker.gd" id="1_walker"]
+[ext_resource type="Script" uid="uid://tjof871n5eo4" path="res://scripts/ui/HeroWalker.gd" id="1_walker"]
 
-[node name="HeroWalker" type="Node2D"]
+[node name="HeroWalker" type="Node2D" unique_id=195344824]
 script = ExtResource("1_walker")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1692096161]

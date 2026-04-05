@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_multi_slash.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_basic_strike.tres" id="3"]
+[resource]
+script = ExtResource("1")
+hero_id = "goblin_scout"
+hero_name = "Explorador Goblin"
+title = "Merodeador del Bosque"
+lore_text = "Un goblin ágil que ataca en manada. Individualmente débil pero peligroso en grupo."
+faction = 3
+rarity = 0
+role = 5
+element = 1
+skill_basic = ExtResource("2")
+skill_ultimate = ExtResource("3")
+base_hp = 380
+base_atk = 75
+base_def = 18
+base_spd = 95
+hp_growth = 0.07
+atk_growth = 0.05
+def_growth = 0.04

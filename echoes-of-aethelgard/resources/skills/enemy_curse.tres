@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/resources/SkillData.gd" id="1"]
+[resource]
+script = ExtResource("1")
+skill_id = "enemy_curse"
+skill_name = "Maldición"
+description = "Debuff ATK -25% + veneno 5% HP por 3 turnos."
+target_type = 0
+effect_type = 3
+energy_cost = 100
+power_multiplier = 0.0
+effect_value = 0.05
+effect_duration = 3
+hit_count = 1
+animation_name = "ultimate"

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_basic_strike.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_heavy_blow.tres" id="3"]
+[resource]
+script = ExtResource("1")
+hero_id = "skeleton_warrior"
+hero_name = "Guerrero Esqueleto"
+title = "Soldado de los Muertos"
+lore_text = "Restos de un soldado caído reanimados por magia oscura. Lento pero resistente."
+faction = 3
+rarity = 0
+role = 1
+element = 4
+skill_basic = ExtResource("2")
+skill_ultimate = ExtResource("3")
+base_hp = 520
+base_atk = 88
+base_def = 32
+base_spd = 58
+hp_growth = 0.07
+atk_growth = 0.05
+def_growth = 0.04

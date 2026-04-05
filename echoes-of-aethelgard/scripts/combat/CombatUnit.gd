@@ -62,7 +62,16 @@ func setup(data: HeroData, unit_level: int, player: bool = true) -> void:
 		sprite.animation     = "idle"
 		sprite.play()
 	else:
-		push_warning("[CombatUnit] SpriteFrames no encontrado para: %s (buscado en: %s)" % [data.hero_id, frames_path])
+		# Enemigo sin SpriteFrames propio: usar sprite de heroe similar con tinte
+		var fallback_id := _get_enemy_fallback_sprite(data.hero_id)
+		var fallback_path := "res://resources/heroes/%s.tres" % fallback_id
+		if ResourceLoader.exists(fallback_path):
+			sprite.sprite_frames = load(fallback_path) as SpriteFrames
+			sprite.animation     = "idle"
+			sprite.play()
+			sprite.modulate = _get_enemy_tint(data.hero_id)
+		else:
+			_use_placeholder_sprite(data.hero_id)
 
 	# Voltear si es enemigo
 	sprite.flip_h = not is_player_unit
@@ -244,3 +253,53 @@ func _on_died() -> void:
 	play_death()
 	died.emit()
 	print("[CombatUnit] %s ha sido derrotado." % unit_name)
+
+# ─── Helpers de sprites para enemigos ────────────────────────────────────────
+## Devuelve el hero_id de un SpriteFrames existente para usar como fallback visual.
+func _get_enemy_fallback_sprite(enemy_id: String) -> String:
+	var mapping := {
+		"goblin_scout"      : "vex_nigromante",
+		"skeleton_warrior"  : "kael_soldado",
+		"bandit_rogue"      : "varra_mercenaria",
+		"orc_brute"         : "gorn_barbaro",
+		"dark_mage"         : "aldric_archimago",
+		"cursed_archer"     : "theron_cazador",
+		"corrupted_knight"  : "aethan_paladin",
+		"shadow_assassin"   : "vex_nigromante",
+		"bone_necromancer"  : "vex_nigromante",
+	}
+	return mapping.get(enemy_id, "vex_nigromante")
+
+## Devuelve el color de tinte para cada tipo de enemigo.
+func _get_enemy_tint(enemy_id: String) -> Color:
+	var tints := {
+		"goblin_scout"      : Color(0.4, 0.9, 0.4, 1),   # Verde goblin
+		"skeleton_warrior"  : Color(0.9, 0.9, 0.85, 1),  # Hueso
+		"bandit_rogue"      : Color(0.8, 0.55, 0.3, 1),  # Marrón cuero
+		"orc_brute"         : Color(0.45, 0.75, 0.35, 1),# Verde orco
+		"dark_mage"         : Color(0.5, 0.25, 0.85, 1), # Púrpura oscuro
+		"cursed_archer"     : Color(0.7, 0.2, 0.2, 1),   # Rojo maldición
+		"corrupted_knight"  : Color(0.35, 0.35, 0.65, 1),# Azul corrupto
+		"shadow_assassin"   : Color(0.25, 0.15, 0.35, 1),# Negro sombra
+		"bone_necromancer"  : Color(0.45, 0.15, 0.55, 1),# Morado necrosis
+	}
+	return tints.get(enemy_id, Color(0.8, 0.3, 0.3, 1))
+
+## Crea un SpriteFrames placeholder de color sólido cuando no hay sprite real.
+func _use_placeholder_sprite(enemy_id: String) -> void:
+	var img := Image.create(64, 96, false, Image.FORMAT_RGBA8)
+	img.fill(_get_enemy_tint(enemy_id))
+	var tex := ImageTexture.create_from_image(img)
+	var sf  := SpriteFrames.new()
+	sf.add_animation("idle")
+	sf.add_frame("idle", tex)
+	sf.add_animation("attack")
+	sf.add_frame("attack", tex)
+	sf.add_animation("hurt")
+	sf.add_frame("hurt", tex)
+	sf.add_animation("death")
+	sf.add_frame("death", tex)
+	sprite.sprite_frames = sf
+	sprite.animation     = "idle"
+	sprite.play()
+	push_warning("[CombatUnit] Usando placeholder para enemigo: %s" % enemy_id)

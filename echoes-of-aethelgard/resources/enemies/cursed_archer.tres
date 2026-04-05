@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/resources/HeroData.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_basic_strike.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/skills/enemy_arrow_rain.tres" id="3"]
+[resource]
+script = ExtResource("1")
+hero_id = "cursed_archer"
+hero_name = "Arquero Maldito"
+title = "Guardián Caído del Bosque"
+lore_text = "Un cazador corrompido por la maldición del bosque sombrío. Sus flechas envenenadas no conocen la misericordia."
+faction = 3
+rarity = 1
+role = 2
+element = 4
+skill_basic = ExtResource("2")
+skill_ultimate = ExtResource("3")
+base_hp = 500
+base_atk = 110
+base_def = 28
+base_spd = 88
+hp_growth = 0.07
+atk_growth = 0.05
+def_growth = 0.04
