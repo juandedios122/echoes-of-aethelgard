@@ -13,6 +13,7 @@
 - [Sistema Gacha](#-sistema-gacha--la-grieta-del-destino)
 - [Facciones](#️-facciones)
 - [Mundo](#-mundo)
+- [Capturas](#-capturas)
 - [Tecnologías](#️-tecnologías)
 - [Estado del Proyecto](#-estado-del-proyecto)
 - [Objetivos](#-objetivos-a-futuro)
@@ -88,6 +89,11 @@ El progreso se divide en regiones con identidad y desafíos únicos:
 - ⚙️ **Ruinas de Hierro** — Enemigos armados y estructuras antiguas  
 - 💎 **Ciudad de Cristal** — Núcleo de la corrupción  
 
+
+## 📸 Capturas
+
+![Gameplay](screenshots/gameplay.png)
+![UI](screenshots/ui.png)
 ---
 
 ## 🛠️ Tecnologías
