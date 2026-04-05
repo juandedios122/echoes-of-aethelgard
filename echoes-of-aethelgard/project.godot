@@ -27,6 +27,7 @@ SignalBus="*res://scripts/autoloads/SignalBus.gd"
 SceneTransition="*res://scripts/autoloads/SceneTransition.gd"
 GameManager="*uid://b4kfqfallkrmw"
 AudioManager="*res://scripts/autoloads/AudioManager.gd"
+JuiceManager="*uid://47s0xteyoktn"
 
 [display]
 
@@ -34,7 +35,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=2
 window/size/resizable=false
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation="landscape"
 
