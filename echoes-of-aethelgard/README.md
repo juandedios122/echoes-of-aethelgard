@@ -14,6 +14,7 @@
 - [Facciones](#️-facciones)
 - [Mundo](#-mundo)
 - [Capturas](#-capturas)
+- [Instalacion](#️-instalación)
 - [Tecnologías](#️-tecnologías)
 - [Estado del Proyecto](#-estado-del-proyecto)
 - [Objetivos](#-objetivos-a-futuro)
@@ -89,11 +90,20 @@ El progreso se divide en regiones con identidad y desafíos únicos:
 - ⚙️ **Ruinas de Hierro** — Enemigos armados y estructuras antiguas  
 - 💎 **Ciudad de Cristal** — Núcleo de la corrupción  
 
-
+---
 ## 📸 Capturas
 
 ![Gameplay](screenshots/gameplay.png)
 ![UI](screenshots/ui.png)
+
+---
+
+## ⚙️ Instalación
+
+1. Clona el repositorio
+2. Ábrelo en Godot 4.6.1
+3. Ejecuta el proyecto
+
 ---
 
 ## 🛠️ Tecnologías
