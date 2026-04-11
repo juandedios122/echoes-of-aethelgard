@@ -9,10 +9,12 @@ extends Node2D
 @onready var ui_layer: CanvasLayer     = $UI
 
 const SPEED := 220.0
+
+## Límites del mapa en píxeles desde el origen (ajusta según el tamaño del TileMap)
+const MAP_BOUNDS := Rect2(-2048, -2048, 4096, 4096)
+
 const MapEnemyScene: PackedScene = preload("res://scenes/exploration/MapEnemy.tscn")
 
-# Sin tipo explícito: evita el error de asignación antes de que el script
-# se aplique al nodo (Godot asigna el script DESPUÉS de add_child).
 var virtual_joystick: Node = null
 
 # ─── Inicialización ───────────────────────────────────────────────────────────
@@ -20,11 +22,19 @@ func _ready() -> void:
 	if camera and hero:
 		camera.position = hero.position
 
+	_fix_instructions_label()
 	_generate_base_floor()
 	_create_virtual_joystick()
 	_spawn_map_enemies()
 
 	AudioManager.play_music("exploration_theme", 1.5)
+
+## Corrige el bug del \n literal que aparece en el texto de instrucciones.
+## El nodo .tscn tiene \\n escapado en lugar de un salto de línea real.
+func _fix_instructions_label() -> void:
+	var label := ui_layer.get_node_or_null("Instructions") as Label
+	if label:
+		label.text = "Arrastra la zona izquierda para moverte\nCuidado con los enemigos (!)"
 
 ## Crea el joystick virtual por código para evitar problemas de UID en la escena.
 func _create_virtual_joystick() -> void:
@@ -33,8 +43,6 @@ func _create_virtual_joystick() -> void:
 		push_warning("[ExplorationMap] VirtualJoystick.gd no encontrado — solo teclado.")
 		return
 
-	# Crear el nodo, añadirlo al árbol PRIMERO, luego asignar el script.
-	# Así Godot puede inicializar correctamente el tipo.
 	var node := Control.new()
 	node.name = "VirtualJoystick"
 	ui_layer.add_child(node)
@@ -67,15 +75,13 @@ func _spawn_map_enemies() -> void:
 		enemies_container.add_child(enemy)
 		enemy.position = pos
 
-# ─── Movimiento ───────────────────────────────────────────────────────────────
+# ─── Movimiento con límites de mapa ──────────────────────────────────────────
 func _physics_process(delta: float) -> void:
 	var direction := Vector2.ZERO
 
-	# Teclado / gamepad
 	direction.x = Input.get_axis("ui_left", "ui_right")
 	direction.y = Input.get_axis("ui_up", "ui_down")
 
-	# Joystick virtual (tiene prioridad si hay input táctil)
 	if virtual_joystick != null and virtual_joystick.has_method("get_direction"):
 		var joy_dir: Vector2 = virtual_joystick.get_direction()
 		if joy_dir.length() > 0.1:
@@ -86,6 +92,10 @@ func _physics_process(delta: float) -> void:
 
 	hero.velocity = direction * SPEED
 	hero.move_and_slide()
+
+	# Limitar al héroe dentro de los límites del mapa
+	hero.position.x = clamp(hero.position.x, MAP_BOUNDS.position.x, MAP_BOUNDS.end.x)
+	hero.position.y = clamp(hero.position.y, MAP_BOUNDS.position.y, MAP_BOUNDS.end.y)
 
 	_update_hero_animation(direction)
 	camera.position = camera.position.lerp(hero.position, 6.0 * delta)
