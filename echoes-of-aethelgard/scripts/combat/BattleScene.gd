@@ -1,401 +1,582 @@
-## BattleScene.gd
-## Controlador principal de la escena de combate.
-## El ResultPanel se construye dinámicamente para mostrar EXP y level-ups.
+## BattleScene.gd — VERSIÓN MEJORADA Y CORREGIDA
+## RUTA: res://scripts/combat/BattleScene.gd
 class_name BattleScene
 extends Node2D
 
-# ─── Nodos ────────────────────────────────────────────────────────────────────
-@onready var combat_manager: CombatManager = $CombatManager
-@onready var player_container: Node2D      = $PlayerUnitsContainer
-@onready var enemy_container: Node2D       = $EnemyUnitsContainer
-@onready var skill_bar: HBoxContainer      = $BattleUI/Control/SkillBar
-@onready var speed_btn: Button             = $BattleUI/Control/SpeedToggle
-@onready var auto_btn: Button              = $BattleUI/Control/AutoToggle
-@onready var result_panel: Panel           = $BattleUI/Control/ResultPanel
-@onready var transition: ColorRect         = $Transition
-@onready var camera: Camera2D              = $Camera2D
+# ── Referencias a nodos de la escena ──────────────────────────────────────────
+@onready var combat_manager   : CombatManager = $CombatManager
+@onready var player_container : Node2D        = $PlayerUnitsContainer
+@onready var enemy_container  : Node2D        = $EnemyUnitsContainer
+@onready var camera           : Camera2D      = $Camera2D
+@onready var transition       : ColorRect     = $Transition
+@onready var battle_ui        : CanvasLayer   = $BattleUI
+@onready var result_panel     : Panel         = $BattleUI/Control/ResultPanel
+@onready var speed_btn        : Button        = $BattleUI/Control/TopBar/TopBarHBox/SpeedToggle
+@onready var auto_btn         : Button        = $BattleUI/Control/TopBar/TopBarHBox/AutoToggle
+@onready var turn_label       : Label         = $BattleUI/Control/TopBar/TopBarHBox/TurnLabel
+@onready var effect_label     : Label         = $BattleUI/Control/EffectLabel
+@onready var player_hud_box   : HBoxContainer = $BattleUI/Control/PlayerHUDPanel/PlayerHUDBox
+@onready var enemy_hud_box    : HBoxContainer = $BattleUI/Control/EnemyHUDPanel/EnemyHUDBox
+@onready var turn_queue_bar   : HBoxContainer = $BattleUI/Control/TurnQueueBar
 
+# ── UI creada por código ───────────────────────────────────────────────────────
+var _message_box  : BattleMessageBox
+var _battle_menu  : Node   # BattleMenu (sin class_name, cargado con preload)
+var _skill_panel  : Node   # SkillSelectPanel
+
+const _BattleMenuScript     := preload("res://scripts/combat/BattleMenu.gd")
+const _SkillPanelScript     := preload("res://scripts/combat/SkillSelectPanel.gd")
+const CombatUnitScene       := preload("res://scenes/combat/CombatUnit.tscn")
+
+# ── Estado ────────────────────────────────────────────────────────────────────
+var _speed_index    : int  = 0          # 0=x1, 1=x1.5, 2=x2
+var _auto_battle    : bool = false
+var _selected_unit  : CombatUnit = null
+var _battle_config  : Dictionary = {}
 var _shake_intensity: float = 0.0
-var _shake_decay: float     = 50.0
+var _shake_decay    : float = 55.0
+var _combo_count    : int   = 0         # golpes consecutivos sin que el enemigo actúe
+var _turn_number    : int   = 0
 
-const CombatUnitScene: PackedScene = preload("res://scenes/combat/CombatUnit.tscn")
-const EnemyDataPath: String        = "res://resources/enemies/"
-
-var auto_battle: bool         = false
-var speed_x2: bool            = false
-var selected_unit: CombatUnit = null
-var battle_config: Dictionary = {}
-
-const PLAYER_POSITIONS := [
-	Vector2(-280, 80), Vector2(-220, 20), Vector2(-160, 80)
+# Constantes de posicionamiento
+const PLAYER_POSITIONS : Array[Vector2] = [
+	Vector2(-290, 60), Vector2(-210, 10), Vector2(-130, 60)
 ]
-const ENEMY_POSITIONS := [
-	Vector2(160, 80), Vector2(220, 20), Vector2(280, 80)
+const ENEMY_POSITIONS : Array[Vector2] = [
+	Vector2(130, 60), Vector2(210, 10), Vector2(290, 60)
 ]
+const SPEED_VALUES : Array[float] = [1.0, 1.5, 2.0]
+const SPEED_LABELS : Array[String] = ["⏩ x1", "⏩ x1.5", "⏩ x2"]
 
-# ─── Inicialización ───────────────────────────────────────────────────────────
+# ═════════════════════════════════════════════════════════════════════════════
 func _ready() -> void:
-	battle_config = GameManager.current_battle_config
+	_battle_config = GameManager.current_battle_config
+	_build_code_ui()
 	_fade_in()
 	_spawn_units()
 	_connect_signals()
 	combat_manager.start_battle()
 	AudioManager.play_music("battle_theme", 1.0)
 
+# ── Construcción de UI por código ─────────────────────────────────────────────
+func _build_code_ui() -> void:
+	var ui_control : Control = battle_ui.get_node("Control")
+
+	# Message box (inferior izquierda, encima del HUD de jugadores)
+	_message_box = BattleMessageBox.new()
+	battle_ui.add_child(_message_box)
+	_message_box.skip_requested.connect(_on_skip_message)
+
+	# Battle menu (inferior derecha)
+	_battle_menu = Control.new()
+	_battle_menu.set_script(_BattleMenuScript)
+	battle_ui.add_child(_battle_menu)
+	_battle_menu.connect("action_selected", _on_menu_action)
+
+	# Skill panel
+	_skill_panel = Control.new()
+	_skill_panel.set_script(_SkillPanelScript)
+	battle_ui.add_child(_skill_panel)
+	_skill_panel.connect("skill_chosen",    _on_skill_chosen)
+	_skill_panel.connect("panel_cancelled", func() -> void:
+		if _selected_unit: _battle_menu.show_for_unit(_selected_unit)
+	)
+
+# ── Spawn de unidades + creación del HUD ──────────────────────────────────────
 func _spawn_units() -> void:
 	var pd   := GameManager.player_data
-	var team: Array[String] = pd.active_team
+	var team : Array[String] = pd.active_team
 
-	var player_units: Array[CombatUnit] = []
+	var p_units : Array[CombatUnit] = []
 	for i in team.size():
-		var hero_id := team[i]
-		if not pd.has_hero(hero_id):
-			continue
-		var hero_data := _load_hero_data(hero_id)
-		if hero_data == null:
-			continue
+		var hid := team[i]
+		if not pd.has_hero(hid): continue
+		var hdata := _load_hero_data(hid)
+		if hdata == null: continue
 		var unit := CombatUnitScene.instantiate() as CombatUnit
 		player_container.add_child(unit)
 		unit.position = PLAYER_POSITIONS[i % PLAYER_POSITIONS.size()]
-		unit.setup(hero_data, pd.get_hero_level(hero_id), true)
-		player_units.append(unit)
+		unit.setup(hdata, pd.get_hero_level(hid), true)
+		p_units.append(unit)
+		_create_unit_hud_card(unit, player_hud_box, true)
 
 	var enemies := _load_stage_enemies()
-	var enemy_units: Array[CombatUnit] = []
+	var e_units : Array[CombatUnit] = []
 	for i in enemies.size():
 		var unit := CombatUnitScene.instantiate() as CombatUnit
 		enemy_container.add_child(unit)
 		unit.position = ENEMY_POSITIONS[i % ENEMY_POSITIONS.size()]
 		unit.scale.x  = -1
-		unit.setup(enemies[i], battle_config.get("enemy_level", 1), false)
-		enemy_units.append(unit)
+		unit.setup(enemies[i], _battle_config.get("enemy_level", 1), false)
+		e_units.append(unit)
+		_create_unit_hud_card(unit, enemy_hud_box, false)
 
-	combat_manager.initialize(player_units, enemy_units)
-	_build_skill_bar(player_units[0] if not player_units.is_empty() else null)
+	combat_manager.initialize(p_units, e_units)
 
+# ── Tarjeta HUD para cada unidad ──────────────────────────────────────────────
+func _create_unit_hud_card(unit: CombatUnit, container: HBoxContainer, is_player: bool) -> void:
+	var card := PanelContainer.new()
+	card.name = "Card_" + unit.unit_name
+	card.custom_minimum_size = Vector2(140.0, 100.0)
+
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color     = Color(0.08, 0.06, 0.04, 0.90)
+	card_style.border_color = unit.hero_data.get_rarity_color() if unit.hero_data else Color(0.5, 0.4, 0.2)
+	card_style.set_border_width_all(2)
+	card_style.set_corner_radius_all(7)
+	card.add_theme_stylebox_override("panel", card_style)
+	container.add_child(card)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 4)
+	card.add_child(vbox)
+
+	# Nombre
+	var name_lbl := Label.new()
+	name_lbl.name = "NameLabel"
+	name_lbl.text = unit.unit_name
+	name_lbl.add_theme_font_size_override("font_size", 14)
+	var rarity_col := unit.hero_data.get_rarity_color() if unit.hero_data else Color(0.9, 0.85, 0.7)
+	name_lbl.add_theme_color_override("font_color", rarity_col)
+	name_lbl.clip_text = true
+	vbox.add_child(name_lbl)
+
+	# Barra de HP
+	var hp_bar := ProgressBar.new()
+	hp_bar.name          = "HPBar"
+	hp_bar.custom_minimum_size = Vector2(0, 12)
+	hp_bar.max_value     = float(unit.max_hp)
+	hp_bar.value         = float(unit.current_hp)
+	hp_bar.show_percentage = false
+	_style_hp_bar(hp_bar)
+	vbox.add_child(hp_bar)
+
+	var hp_txt := Label.new()
+	hp_txt.name = "HPText"
+	hp_txt.text = "%d / %d" % [unit.current_hp, unit.max_hp]
+	hp_txt.add_theme_font_size_override("font_size", 12)
+	hp_txt.add_theme_color_override("font_color", Color(0.80, 0.75, 0.65))
+	vbox.add_child(hp_txt)
+
+	# Barra de energía
+	var ep_bar := ProgressBar.new()
+	ep_bar.name          = "EPBar"
+	ep_bar.custom_minimum_size = Vector2(0, 8)
+	ep_bar.max_value     = float(unit.max_energy)
+	ep_bar.value         = float(unit.current_energy)
+	ep_bar.show_percentage = false
+	_style_energy_bar(ep_bar)
+	vbox.add_child(ep_bar)
+
+	# Indicador de estado (statuses activos)
+	var status_row := HBoxContainer.new()
+	status_row.name = "StatusRow"
+	status_row.add_theme_constant_override("separation", 4)
+	vbox.add_child(status_row)
+
+	# Actualizar en tiempo real
+	unit.hp_changed.connect(func(cur: int, mx: int) -> void:
+		_update_unit_hud_card(card, cur, mx, unit.current_energy, unit.max_energy)
+	)
+	unit.energy_changed.connect(func(cur: int, mx: int) -> void:
+		if is_instance_valid(ep_bar):
+			ep_bar.value = float(cur)
+	)
+
+func _style_hp_bar(bar: ProgressBar) -> void:
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.12, 0.08, 0.06)
+	bg.set_corner_radius_all(4)
+	bar.add_theme_stylebox_override("background", bg)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.72, 0.14, 0.14)
+	fill.set_corner_radius_all(4)
+	bar.add_theme_stylebox_override("fill", fill)
+
+func _style_energy_bar(bar: ProgressBar) -> void:
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.10, 0.10, 0.14)
+	bg.set_corner_radius_all(3)
+	bar.add_theme_stylebox_override("background", bg)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.22, 0.52, 0.88)
+	fill.set_corner_radius_all(3)
+	bar.add_theme_stylebox_override("fill", fill)
+
+func _update_unit_hud_card(card: PanelContainer, cur_hp: int, max_hp: int, cur_ep: int, max_ep: int) -> void:
+	if not is_instance_valid(card): return
+	var hp_bar  : ProgressBar = card.get_node_or_null("VBoxContainer/HPBar")
+	var hp_txt  : Label       = card.get_node_or_null("VBoxContainer/HPText")
+	var ep_bar  : ProgressBar = card.get_node_or_null("VBoxContainer/EPBar")
+	if hp_bar: hp_bar.value = float(cur_hp)
+	if hp_txt: hp_txt.text  = "%d / %d" % [cur_hp, max_hp]
+	if ep_bar: ep_bar.value = float(cur_ep)
+
+	# Cambiar color de barra según HP
+	if hp_bar:
+		var ratio := float(cur_hp) / float(max_hp) if max_hp > 0 else 0.0
+		var fill := StyleBoxFlat.new()
+		fill.set_corner_radius_all(4)
+		if ratio > 0.5:
+			fill.bg_color = Color(0.72, 0.14, 0.14)
+		elif ratio > 0.25:
+			fill.bg_color = Color(0.85, 0.55, 0.08)
+		else:
+			fill.bg_color = Color(1.0, 0.15, 0.15)
+		hp_bar.add_theme_stylebox_override("fill", fill)
+
+# ── Cola de turnos visual ──────────────────────────────────────────────────────
+func _update_turn_queue_display() -> void:
+	for child in turn_queue_bar.get_children():
+		child.queue_free()
+
+	var queue := combat_manager.turn_queue
+	var current_idx := combat_manager.current_turn_index
+	var shown := 0
+	var i     := current_idx
+
+	while shown < 6 and i < queue.size():
+		var unit : CombatUnit = queue[i]
+		if not unit.is_dead():
+			var dot := Label.new()
+			dot.text = unit.unit_name[0].to_upper()  # Inicial del nombre
+			dot.custom_minimum_size = Vector2(28, 28)
+			dot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			dot.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
+			dot.add_theme_font_size_override("font_size", 14)
+
+			var col : Color
+			if shown == 0:
+				col = Color(1.0, 0.90, 0.20)   # Amarillo dorado = turno actual
+			elif unit.is_player_unit:
+				col = Color(0.35, 0.75, 0.35)  # Verde = jugador
+			else:
+				col = Color(0.85, 0.30, 0.25)  # Rojo = enemigo
+
+			dot.add_theme_color_override("font_color", col)
+
+			var bg := StyleBoxFlat.new()
+			bg.bg_color   = Color(col.r * 0.15, col.g * 0.15, col.b * 0.15, 0.85)
+			bg.border_color = col
+			bg.set_border_width_all(2 if shown == 0 else 1)
+			bg.set_corner_radius_all(14)
+			var panel := PanelContainer.new()
+			panel.add_theme_stylebox_override("panel", bg)
+			panel.add_child(dot)
+			turn_queue_bar.add_child(panel)
+			shown += 1
+		i += 1
+
+# ── Carga de datos ────────────────────────────────────────────────────────────
 func _load_hero_data(hero_id: String) -> HeroData:
 	var path := "res://resources/heroes_data/%s.tres" % hero_id
-	if ResourceLoader.exists(path):
-		return load(path) as HeroData
-	push_error("[BattleScene] HeroData no encontrado: %s" % path)
+	if ResourceLoader.exists(path): return load(path) as HeroData
 	return null
 
 func _load_stage_enemies() -> Array[HeroData]:
-	var enemy_list: Array[HeroData] = []
-	for eid in battle_config.get("enemies", []):
-		var eid_str := str(eid)
-		var path: String = EnemyDataPath + eid_str + ".tres"
+	var list : Array[HeroData] = []
+	for eid in _battle_config.get("enemies", []):
+		var s := str(eid)
+		var path := "res://resources/enemies/%s.tres" % s
 		if not ResourceLoader.exists(path):
-			path = "res://resources/heroes_data/%s.tres" % eid_str
+			path = "res://resources/heroes_data/%s.tres" % s
 		if ResourceLoader.exists(path):
-			enemy_list.append(load(path) as HeroData)
-		else:
-			push_warning("[BattleScene] Enemigo no encontrado: %s" % eid)
-	return enemy_list
+			list.append(load(path) as HeroData)
+	return list
 
-# ─── Barra de Habilidades ─────────────────────────────────────────────────────
-func _build_skill_bar(unit: CombatUnit) -> void:
-	for child in skill_bar.get_children():
-		child.queue_free()
-	if unit == null or unit.hero_data == null:
-		return
-
-	selected_unit = unit
-	var skills := [
-		unit.hero_data.skill_basic,
-		unit.hero_data.skill_active,
-		unit.hero_data.skill_ultimate,
-	]
-	for skill in skills:
-		if skill == null:
-			continue
-		var btn := Button.new()
-		btn.text                = skill.skill_name
-		btn.tooltip_text        = skill.description
-		btn.custom_minimum_size = Vector2(100, 90)
-		btn.add_theme_font_size_override("font_size", 14)
-		btn.pressed.connect(_on_skill_pressed.bind(skill))
-		skill_bar.add_child(btn)
-
-func _on_skill_pressed(skill: SkillData) -> void:
-	if combat_manager.state != CombatManager.BattleState.PLAYER_TURN:
-		return
-	var targets := _pick_targets(skill)
-	if targets.is_empty():
-		return
-	combat_manager.execute_skill(selected_unit, skill, targets)
-
-func _pick_targets(skill: SkillData) -> Array[CombatUnit]:
-	match skill.target_type:
-		SkillData.TargetType.ALL_ENEMIES:
-			return combat_manager.get_alive_enemies()
-		SkillData.TargetType.ALL_ALLIES:
-			return combat_manager.get_alive_players()
-		SkillData.TargetType.SELF:
-			var s: Array[CombatUnit] = [selected_unit]
-			return s
-		_:
-			var enemies := combat_manager.get_alive_enemies()
-			var single: Array[CombatUnit] = []
-			if not enemies.is_empty():
-				single.append(enemies[0])
-			return single
-
-# ─── Señales del CombatManager ────────────────────────────────────────────────
+# ── Señales ───────────────────────────────────────────────────────────────────
 func _connect_signals() -> void:
 	combat_manager.turn_started.connect(_on_turn_started)
 	combat_manager.battle_ended.connect(_on_battle_ended)
 	combat_manager.action_executed.connect(_on_action_executed)
 
+# ── Turno ─────────────────────────────────────────────────────────────────────
 func _on_turn_started(unit: CombatUnit) -> void:
+	_selected_unit = unit
+	_turn_number  += 1
+	_update_turn_queue_display()
+
 	if unit.is_player_unit:
-		selected_unit = unit
-		_build_skill_bar(unit)
+		_combo_count = 0
+		turn_label.text = "⚔ %s" % unit.unit_name
+		_message_box.push("%s — ¡Tu turno!" % unit.unit_name)
+		await _message_box.wait_done()
+		if _auto_battle:
+			await get_tree().create_timer(0.35).timeout
+			_execute_player_skill(unit.hero_data.skill_basic)
+		else:
+			_battle_menu.show_for_unit(unit)
+	else:
+		turn_label.text = "👹 %s" % unit.unit_name
 
-func _on_action_executed(_atk, _def, _dmg, _label) -> void:
-	if _dmg > 0:
-		var percent := float(_dmg) / float(_def.max_hp) if _def and _def.max_hp > 0 else 0.1
-		shake_camera(15.0 if percent > 0.3 else 5.0, 60.0 if percent > 0.3 else 40.0)
+func _on_menu_action(action: String) -> void:
+	match action:
+		"attack":  _execute_player_skill(_selected_unit.hero_data.skill_basic)
+		"skill":   _skill_panel.populate(_selected_unit)
+		"item":
+			_message_box.push("¡No tienes objetos todavía!")
+			await get_tree().create_timer(1.2).timeout
+			_battle_menu.show_for_unit(_selected_unit)
+		"run":     _try_escape()
 
-# ─── Panel de Resultado con EXP y Level-ups ───────────────────────────────────
+func _on_skill_chosen(skill: SkillData) -> void:
+	_execute_player_skill(skill)
+
+func _execute_player_skill(skill: SkillData) -> void:
+	if _selected_unit == null or skill == null: return
+	if combat_manager.state != CombatManager.BattleState.PLAYER_TURN: return
+
+	if skill.energy_cost > 0 and _selected_unit.current_energy < skill.energy_cost:
+		_message_box.push("¡No tienes suficiente energía! (%d/%d)" % [
+			_selected_unit.current_energy, skill.energy_cost])
+		JuiceManager.shake_node(_battle_menu as Control, 6.0, 4) if _battle_menu is Control else JuiceManager.shake(3.0)
+		await get_tree().create_timer(1.2).timeout
+		_battle_menu.show_for_unit(_selected_unit)
+		return
+
+	var targets := _pick_targets(skill)
+	if targets.is_empty(): return
+
+	_combo_count += 1
+	_message_box.push("¡%s usa %s!" % [_selected_unit.unit_name, skill.skill_name])
+	await combat_manager.execute_skill(_selected_unit, skill, targets)
+
+func _pick_targets(skill: SkillData) -> Array[CombatUnit]:
+	match skill.target_type:
+		SkillData.TargetType.ALL_ENEMIES: return combat_manager.get_alive_enemies()
+		SkillData.TargetType.ALL_ALLIES:  return combat_manager.get_alive_players()
+		SkillData.TargetType.SELF:
+			var s : Array[CombatUnit] = [_selected_unit]; return s
+		_:
+			var enemies := combat_manager.get_alive_enemies()
+			var single  : Array[CombatUnit] = []
+			if not enemies.is_empty(): single.append(enemies[0])
+			return single
+
+func _try_escape() -> void:
+	# La probabilidad de escapar depende de la velocidad del equipo vs enemigos
+	var player_spd : float = 0.0
+	var enemy_spd  : float = 0.0
+	for u in combat_manager.get_alive_players(): player_spd += u.spd
+	for u in combat_manager.get_alive_enemies(): enemy_spd  += u.spd
+	var ratio  := player_spd / maxf(enemy_spd, 1.0)
+	var chance := clampf(0.45 + (ratio - 1.0) * 0.25, 0.20, 0.90)
+
+	if randf() < chance:
+		_message_box.push("¡Huiste con éxito!")
+		await get_tree().create_timer(1.5).timeout
+		_fade_out_and_go("hub_camp")
+	else:
+		_message_box.push("¡No pudiste escapar! (%.0f%%)" % (chance * 100))
+		JuiceManager.shake(8.0)
+		await get_tree().create_timer(1.2).timeout
+		combat_manager.advance_turn()
+
+func _on_skip_message() -> void:
+	pass   # BattleMessageBox maneja el skip internamente
+
+# ── Feedback de acción ────────────────────────────────────────────────────────
+func _on_action_executed(attacker: CombatUnit, target: CombatUnit, dmg: int, _label: String) -> void:
+	if dmg <= 0: return
+
+	var ratio := float(dmg) / float(target.max_hp) if target.max_hp > 0 else 0.1
+
+	# Camera shake proporcional al daño
+	JuiceManager.shake(clampf(ratio * 60.0, 3.0, 22.0))
+
+	# Hit freeze en golpes grandes
+	if ratio > 0.20:
+		JuiceManager.hit_freeze(0.04)
+
+	# Efectividad elemental
+	if attacker.hero_data and target.hero_data:
+		var mult := HeroData.get_elemental_multiplier(
+			attacker.hero_data.element, target.hero_data.element)
+		if mult > 1.1:
+			_show_effect_label("¡Es muy efectivo!", Color(1.0, 0.88, 0.10))
+		elif mult < 0.9:
+			_show_effect_label("No es muy efectivo…", Color(0.65, 0.65, 0.65))
+
+# ── Indicador de efectividad elemental ───────────────────────────────────────
+func _show_effect_label(text: String, col: Color) -> void:
+	if effect_label == null: return
+	effect_label.text    = text
+	effect_label.modulate = Color(col.r, col.g, col.b, 0.0)
+	effect_label.visible = true
+
+	var tween : Tween = create_tween().set_parallel(true)
+	tween.tween_property(effect_label, "modulate:a", 1.0, 0.15)
+	tween.tween_property(effect_label, "position:y",
+		effect_label.position.y - 18.0, 0.5).set_ease(Tween.EASE_OUT)
+	await get_tree().create_timer(0.9).timeout
+	var out := create_tween()
+	out.tween_property(effect_label, "modulate:a", 0.0, 0.25)
+	await out.finished
+	effect_label.visible = false
+	effect_label.position.y += 18.0   # Reset posición
+
+# ── Panel de resultado ────────────────────────────────────────────────────────
 func _on_battle_ended(victory: bool, rewards: Dictionary) -> void:
-	# Ampliar el panel para caber más información
-	result_panel.offset_left   = -340.0
-	result_panel.offset_top    = -240.0
-	result_panel.offset_right  = 340.0
-	result_panel.offset_bottom = 240.0
+	Engine.time_scale = 1.0
+	turn_label.text   = ""
+	_message_box.push_instant("")
 
-	# Estilo del panel
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.08, 0.06, 0.04, 0.97)
-	panel_style.border_color = Color(0.75, 0.6, 0.25, 1) if victory else Color(0.6, 0.2, 0.2, 1)
-	panel_style.set_border_width_all(4)
-	panel_style.set_corner_radius_all(10)
-	result_panel.add_theme_stylebox_override("panel", panel_style)
+	# Flash de pantalla
+	JuiceManager.screen_flash(
+		Color(1.0, 0.85, 0.1, 0.5) if victory else Color(0.8, 0.1, 0.1, 0.5),
+		0.6
+	)
 
-	# Limpiar contenido anterior del panel
-	var old_label  := result_panel.get_node_or_null("Label")
-	var old_btn    := result_panel.get_node_or_null("RetreatButton")
-	if old_label:  old_label.queue_free()
-	if old_btn:    old_btn.queue_free()
+	await get_tree().create_timer(0.5).timeout
 
-	# Contenedor vertical principal
-	var vbox := VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.add_theme_constant_override("separation", 10)
+	# Limpiar contenido antiguo del panel
+	for child in result_panel.get_children():
+		child.queue_free()
+
 	var margin := MarginContainer.new()
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left",   20)
-	margin.add_theme_constant_override("margin_right",  20)
-	margin.add_theme_constant_override("margin_top",    16)
-	margin.add_theme_constant_override("margin_bottom", 16)
+	margin.add_theme_constant_override("margin_left",   28)
+	margin.add_theme_constant_override("margin_right",  28)
+	margin.add_theme_constant_override("margin_top",    20)
+	margin.add_theme_constant_override("margin_bottom", 20)
 	result_panel.add_child(margin)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
 	margin.add_child(vbox)
 
-	# ── Título ────────────────────────────────────────────────────────────────
+	# Título con efecto de escala
 	var title := Label.new()
-	if victory:
-		title.text     = "¡ VICTORIA !"
-		title.modulate = Color(1.0, 0.88, 0.2)
-	else:
-		title.text     = "D E R R O T A"
-		title.modulate = Color(1.0, 0.3, 0.3)
-	title.add_theme_font_size_override("font_size", 42)
+	title.text = "✦  ¡VICTORIA!  ✦" if victory else "☠  DERROTA  ☠"
+	title.modulate = Color(1.0, 0.88, 0.15) if victory else Color(1.0, 0.28, 0.28)
+	title.add_theme_font_size_override("font_size", 44)
+	title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+	title.add_theme_constant_override("shadow_offset_x", 3)
+	title.add_theme_constant_override("shadow_offset_y", 3)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.scale = Vector2(0.5, 0.5)
+	title.pivot_offset = Vector2(340, 22)
 	vbox.add_child(title)
 
-	# Animación de entrada del título
-	title.modulate.a = 0.0
-	var title_tween := create_tween()
-	title_tween.tween_property(title, "modulate:a", 1.0, 0.4)
+	var sep1 := HSeparator.new()
+	vbox.add_child(sep1)
 
-	# ── Recompensas (solo en victoria) ────────────────────────────────────────
 	if victory:
-		var sep1 := HSeparator.new()
-		vbox.add_child(sep1)
-
-		# Oro y Ámbar
+		# Recompensas
 		var rewards_hbox := HBoxContainer.new()
 		rewards_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-		rewards_hbox.add_theme_constant_override("separation", 30)
+		rewards_hbox.add_theme_constant_override("separation", 28)
 		vbox.add_child(rewards_hbox)
 
-		var gold_lbl := Label.new()
-		gold_lbl.text = "⚙ +%d Oro" % rewards.get("gold", 0)
-		gold_lbl.add_theme_color_override("font_color", Color(0.95, 0.80, 0.3))
-		gold_lbl.add_theme_font_size_override("font_size", 24)
-		rewards_hbox.add_child(gold_lbl)
+		_add_reward_label(rewards_hbox, "⚙ +%d Oro" % rewards.get("gold", 0), Color(0.95, 0.80, 0.25))
+		_add_reward_label(rewards_hbox, "🔶 +%d Ámbar" % rewards.get("amber", 0), Color(1.0, 0.55, 0.10))
+		_add_reward_label(rewards_hbox, "⚡ +%d EXP" % rewards.get("exp_per_hero", 0), Color(0.40, 0.82, 1.0))
 
-		var amber_lbl := Label.new()
-		amber_lbl.text = "🔶 +%d Ámbar" % rewards.get("amber", 0)
-		amber_lbl.add_theme_color_override("font_color", Color(1.0, 0.55, 0.1))
-		amber_lbl.add_theme_font_size_override("font_size", 24)
-		rewards_hbox.add_child(amber_lbl)
+		# Niveles subidos
+		for lu : Dictionary in rewards.get("level_ups", []):
+			var lv_lbl := Label.new()
+			lv_lbl.text = "  ▲ %s  → Nivel %d" % [lu["hero_name"], lu["new_level"]]
+			lv_lbl.add_theme_color_override("font_color", Color(0.30, 1.0, 0.45))
+			lv_lbl.add_theme_font_size_override("font_size", 20)
+			lv_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			vbox.add_child(lv_lbl)
+			# Animación de pulso en level-up
+			var p := create_tween().set_loops(3)
+			p.tween_property(lv_lbl, "scale", Vector2(1.08, 1.08), 0.18)
+			p.tween_property(lv_lbl, "scale", Vector2(1.00, 1.00), 0.18)
 
-		# ── EXP por héroe con barra animada ───────────────────────────────────
-		var sep2 := HSeparator.new()
-		vbox.add_child(sep2)
+	var sep2 := HSeparator.new()
+	vbox.add_child(sep2)
 
-		var exp_title := Label.new()
-		exp_title.text = "Experiencia obtenida"
-		exp_title.add_theme_color_override("font_color", Color(0.75, 0.72, 0.65))
-		exp_title.add_theme_font_size_override("font_size", 18)
-		exp_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		vbox.add_child(exp_title)
+	# Turnos usados
+	var turns_lbl := Label.new()
+	turns_lbl.text = "Turnos: %d" % _turn_number
+	turns_lbl.add_theme_color_override("font_color", Color(0.65, 0.62, 0.55))
+	turns_lbl.add_theme_font_size_override("font_size", 16)
+	turns_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(turns_lbl)
 
-		var exp_per_hero: int    = rewards.get("exp_per_hero", 0)
-		var level_ups: Array     = rewards.get("level_ups", [])
-		var level_up_names       := {}
-		for lu in level_ups:
-			level_up_names[lu["hero_name"]] = lu["new_level"]
-
-		var pd := GameManager.player_data
-
-		for unit in combat_manager.player_units:
-			if unit.hero_data == null:
-				continue
-
-			var hero_id   := unit.hero_data.hero_id
-			var hero_name := unit.hero_data.hero_name
-			var level     := pd.get_hero_level(hero_id)
-			var leveled_up: bool = level_up_names.has(hero_name)
-
-			var row := HBoxContainer.new()
-			row.add_theme_constant_override("separation", 10)
-			vbox.add_child(row)
-
-			# Nombre del héroe
-			var name_lbl := Label.new()
-			name_lbl.text = hero_name
-			name_lbl.custom_minimum_size = Vector2(90, 0)
-			name_lbl.add_theme_color_override("font_color", unit.hero_data.get_rarity_color())
-			name_lbl.add_theme_font_size_override("font_size", 16)
-			row.add_child(name_lbl)
-
-			# Barra de EXP
-			var exp_bar := ProgressBar.new()
-			exp_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			exp_bar.custom_minimum_size   = Vector2(0, 20)
-			exp_bar.show_percentage       = false
-
-			var bar_bg := StyleBoxFlat.new()
-			bar_bg.bg_color = Color(0.12, 0.10, 0.07)
-			bar_bg.set_corner_radius_all(3)
-			exp_bar.add_theme_stylebox_override("background", bar_bg)
-
-			var bar_fill := StyleBoxFlat.new()
-			bar_fill.bg_color = Color(0.65, 0.50, 0.30) if not leveled_up else Color(0.3, 0.85, 0.4)
-			bar_fill.set_corner_radius_all(3)
-			exp_bar.add_theme_stylebox_override("fill", bar_fill)
-
-			if level < 60:
-				var exp_needed: int  = pd.get_exp_for_next_level(level)
-				var current_exp: int = pd.get_hero_exp(hero_id)
-				var prev_exp: int    = clampi(current_exp - exp_per_hero, 0, exp_needed)
-				exp_bar.max_value = exp_needed
-				exp_bar.value     = prev_exp
-				row.add_child(exp_bar)
-
-				var bar_tween: Tween = create_tween()
-				bar_tween.tween_property(exp_bar, "value", float(current_exp), 0.6).set_ease(Tween.EASE_OUT)
-			else:
-				exp_bar.max_value = 1
-				exp_bar.value     = 1
-				row.add_child(exp_bar)
-
-			# EXP ganada / level-up
-			var exp_lbl := Label.new()
-			if leveled_up:
-				exp_lbl.text = "▲ Lv.%d" % level_up_names[hero_name]
-				exp_lbl.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
-				# Animación de pulso en el level-up
-				var pulse: Tween = create_tween()
-				pulse.set_loops(3)
-				pulse.tween_property(exp_lbl, "scale", Vector2(1.15, 1.15), 0.2)
-				pulse.tween_property(exp_lbl, "scale", Vector2(1.0,  1.0),  0.2)
-			else:
-				exp_lbl.text = "+%d" % exp_per_hero
-				exp_lbl.add_theme_color_override("font_color", Color(0.7, 0.65, 0.55))
-			exp_lbl.custom_minimum_size = Vector2(70, 0)
-			exp_lbl.add_theme_font_size_override("font_size", 15)
-			exp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			row.add_child(exp_lbl)
-
-	# ── Botones ───────────────────────────────────────────────────────────────
-	var sep_final := HSeparator.new()
-	vbox.add_child(sep_final)
-
+	# Botones
 	var btn_hbox := HBoxContainer.new()
 	btn_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	btn_hbox.add_theme_constant_override("separation", 20)
 	vbox.add_child(btn_hbox)
 
 	if victory:
-		var continue_btn := Button.new()
-		continue_btn.text                = "▶  Continuar"
-		continue_btn.custom_minimum_size = Vector2(180, 60)
-		continue_btn.add_theme_font_size_override("font_size", 22)
-		continue_btn.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
-		continue_btn.pressed.connect(_on_continue_pressed)
-		btn_hbox.add_child(continue_btn)
+		var cont_btn := _make_result_button("▶  Continuar", Color(0.25, 0.75, 0.30))
+		cont_btn.pressed.connect(_on_continue_pressed)
+		btn_hbox.add_child(cont_btn)
 
-	var exit_btn := Button.new()
-	exit_btn.text                = "✖  Salir"
-	exit_btn.custom_minimum_size = Vector2(140, 60)
-	exit_btn.add_theme_font_size_override("font_size", 22)
-	exit_btn.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4))
-	exit_btn.pressed.connect(_on_retreat_pressed)
+	var exit_btn := _make_result_button("✖  Salir", Color(0.75, 0.25, 0.20))
+	exit_btn.pressed.connect(func() -> void: _fade_out_and_go("hub_camp"))
 	btn_hbox.add_child(exit_btn)
 
-	# Mostrar el panel con fade-in
+	# Mostrar con animación
 	result_panel.visible  = true
 	result_panel.modulate = Color(1, 1, 1, 0)
-	var panel_tween := create_tween()
-	panel_tween.tween_property(result_panel, "modulate", Color(1, 1, 1, 1), 0.35)
+	var show_t := create_tween().set_parallel(true)
+	show_t.tween_property(result_panel, "modulate:a", 1.0, 0.30)
+	show_t.tween_property(title, "scale", Vector2(1.0, 1.0), 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
-# ─── Velocidad y Auto ─────────────────────────────────────────────────────────
+func _add_reward_label(parent: HBoxContainer, text: String, col: Color) -> void:
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.add_theme_color_override("font_color", col)
+	lbl.add_theme_font_size_override("font_size", 24)
+	parent.add_child(lbl)
+
+func _make_result_button(txt: String, col: Color) -> Button:
+	var btn := Button.new()
+	btn.text = txt
+	btn.custom_minimum_size = Vector2(160.0, 56.0)
+	btn.add_theme_font_size_override("font_size", 22)
+	btn.add_theme_color_override("font_color", col.lightened(0.4))
+	var s := StyleBoxFlat.new()
+	s.bg_color     = Color(col.r * 0.18, col.g * 0.18, col.b * 0.18, 0.95)
+	s.border_color = col
+	s.set_border_width_all(3)
+	s.set_corner_radius_all(8)
+	btn.add_theme_stylebox_override("normal", s)
+	var h := s.duplicate() as StyleBoxFlat
+	h.bg_color = col
+	h.bg_color.a = 0.35
+	btn.add_theme_stylebox_override("hover", h)
+	return btn
+
+# ── Velocidad / Auto (señales del .tscn) ─────────────────────────────────────
 func _on_speed_toggled() -> void:
-	speed_x2          = not speed_x2
-	Engine.time_scale = 2.0 if speed_x2 else 1.0
-	speed_btn.text    = "x2" if speed_x2 else "x1"
+	_speed_index  = (_speed_index + 1) % SPEED_VALUES.size()
+	Engine.time_scale = SPEED_VALUES[_speed_index]
+	speed_btn.text    = SPEED_LABELS[_speed_index]
 
-func _on_auto_toggled() -> void:
-	auto_battle   = not auto_battle
-	auto_btn.text = "Auto ON" if auto_battle else "Auto OFF"
+func _on_auto_toggled(pressed: bool) -> void:
+	_auto_battle  = pressed
+	auto_btn.add_theme_color_override("font_color",
+		Color(0.25, 1.0, 0.35) if pressed else Color(0.75, 0.75, 0.75))
 
+# ── Shake de cámara ───────────────────────────────────────────────────────────
 func _process(delta: float) -> void:
-	if auto_battle and combat_manager.state == CombatManager.BattleState.PLAYER_TURN:
-		if selected_unit and selected_unit.hero_data and selected_unit.hero_data.skill_basic:
-			_on_skill_pressed(selected_unit.hero_data.skill_basic)
-
 	if _shake_intensity > 0.0:
 		_shake_intensity = move_toward(_shake_intensity, 0.0, _shake_decay * delta)
-		camera.offset    = Vector2(
+		camera.offset = Vector2(
 			randf_range(-_shake_intensity, _shake_intensity),
-			randf_range(-_shake_intensity, _shake_intensity)
+			randf_range(-_shake_intensity * 0.6, _shake_intensity * 0.6)
 		)
 	else:
 		camera.offset = Vector2.ZERO
 
-func shake_camera(intensity: float, decay: float = 50.0) -> void:
-	_shake_intensity = intensity
-	_shake_decay     = decay
-
-# ─── Transiciones ─────────────────────────────────────────────────────────────
+# ── Transiciones ─────────────────────────────────────────────────────────────
 func _fade_in() -> void:
 	transition.modulate.a = 1.0
-	var tween := create_tween()
-	tween.tween_property(transition, "modulate:a", 0.0, 0.5)
+	var t := create_tween()
+	t.tween_property(transition, "modulate:a", 0.0, 0.5)
 
 func _fade_out_and_go(scene_key: String) -> void:
 	Engine.time_scale = 1.0
-	var tween := create_tween()
-	tween.tween_property(transition, "modulate:a", 1.0, 0.5)
-	await tween.finished
+	var t := create_tween()
+	t.tween_property(transition, "modulate:a", 1.0, 0.5)
+	await t.finished
 	GameManager.go_to_scene(scene_key)
-
-func _on_retreat_pressed() -> void:
-	_fade_out_and_go("hub_camp")
 
 func _on_continue_pressed() -> void:
 	var pd := GameManager.player_data
@@ -406,4 +587,7 @@ func _on_continue_pressed() -> void:
 		pd.current_stage   = 1
 		pd.current_chapter = mini(pd.current_chapter + 1, pd.max_chapter_unlocked)
 	GameManager.save_game()
+	_fade_out_and_go("hub_camp")
+
+func _on_retreat_pressed() -> void:
 	_fade_out_and_go("hub_camp")

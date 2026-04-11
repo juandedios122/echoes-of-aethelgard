@@ -1,14 +1,15 @@
-## SceneTransition.gd
-## Autoload — Transiciones suaves entre escenas con efectos de juice.
-## Ya existe en el proyecto; esta versión añade tipos y nuevos efectos.
+## SceneTransition.gd — VERSIÓN CORREGIDA
+## RUTA: res://scripts/autoloads/SceneTransition.gd
+## CAMBIO: add_child → add_child.call_deferred para evitar el error
+##         "Parent node is busy setting up children"
 extends Node
 
 enum TransitionType { FADE, WIPE_LEFT, WIPE_RIGHT, CIRCLE }
 
-var _overlay: ColorRect    = null
-var _is_transitioning: bool = false
+var _overlay : ColorRect     = null
+var _is_transitioning : bool = false
 
-const DEFAULT_DURATION: float = 0.35
+const DEFAULT_DURATION : float = 0.35
 
 func _ready() -> void:
 	_overlay             = ColorRect.new()
@@ -16,35 +17,37 @@ func _ready() -> void:
 	_overlay.z_index     = 100
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_overlay.color       = Color(0, 0, 0, 0)
-	get_tree().root.add_child(_overlay)
+	_overlay.color       = Color(0.0, 0.0, 0.0, 0.0)
+
+	# CORRECCIÓN: call_deferred para no chocar con el árbol ocupado
+	get_tree().root.add_child.call_deferred(_overlay)
 
 func is_transitioning() -> bool:
 	return _is_transitioning
 
-## Cambia de escena con transición. type por defecto: FADE.
 func transition_to_scene(
-		path: String,
-		type: TransitionType = TransitionType.FADE,
-		duration: float = DEFAULT_DURATION
+		path      : String,
+		_type     : TransitionType = TransitionType.FADE,
+		duration  : float          = DEFAULT_DURATION
 ) -> void:
 	if _is_transitioning:
 		return
 	_is_transitioning = true
 
-	# Fade OUT
-	var out_tween: Tween = create_tween()
-	out_tween.tween_property(_overlay, "color", Color(0, 0, 0, 1), duration)
+	# Esperar a que _overlay esté en el árbol antes de usarlo
+	if not is_instance_valid(_overlay) or _overlay.get_parent() == null:
+		await get_tree().process_frame
+
+	var out_tween : Tween = create_tween()
+	out_tween.tween_property(_overlay, "color", Color(0.0, 0.0, 0.0, 1.0), duration)
 	await out_tween.finished
 
-	# Cambiar escena
 	get_tree().change_scene_to_file(path)
 	await get_tree().process_frame
 	await get_tree().process_frame
 
-	# Fade IN
-	var in_tween: Tween = create_tween()
-	in_tween.tween_property(_overlay, "color", Color(0, 0, 0, 0), duration)
+	var in_tween : Tween = create_tween()
+	in_tween.tween_property(_overlay, "color", Color(0.0, 0.0, 0.0, 0.0), duration)
 	await in_tween.finished
 
 	_is_transitioning = false

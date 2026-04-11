@@ -4,6 +4,7 @@
 [ext_resource type="SpriteFrames" path="res://resources/aethan_frames.tres" id="2_frames"]
 [ext_resource type="PackedScene" uid="uid://dpyak8m4n6p3s" path="res://scenes/ui/PauseMenu.tscn" id="3_pause"]
 [ext_resource type="TileSet" uid="uid://chfvt5k2a3v01" path="res://resources/forest_tileset.tres" id="4_tileset"]
+[ext_resource type="PackedScene" uid="uid://dpese5l4hxhpg" path="res://DialogBox.tscn" id="5_v4c6a"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 20.0
@@ -18,18 +19,70 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.8, 0.1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bg"]
+bg_color = Color(0.06, 0.04, 0.02, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.35, 0.18, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_fill"]
+bg_color = Color(0.72, 0.14, 0.14, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_fill"]
+bg_color = Color(0.2, 0.62, 0.9, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint_bg"]
+bg_color = Color(0.05, 0.03, 0.01, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.5, 0.22, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="ExplorationMap" type="Node2D" unique_id=398867680]
 script = ExtResource("1_exploration")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=783009746]
-color = Color(0.2, 0.2, 0.4, 1)
-energy = 0.8
+color = Color(0.18, 0.18, 0.35, 1)
+energy = 0.75
 blend_mode = 2
 shadow_enabled = true
 
 [node name="TileMap" type="TileMap" parent="." unique_id=641076527]
 tile_set = ExtResource("4_tileset")
 format = 2
+layer_0/name = "suelo"
+layer_1/name = "obstaculos"
+layer_1/z_index = 1
+layer_2/name = "decoracion"
+layer_2/z_index = 2
+layer_3/name = "encima_heroe"
+layer_3/y_sort_enabled = true
+layer_3/z_index = 4
+
+[node name="Interactables" type="Node2D" parent="." unique_id=111111001]
+
+[node name="NPCs" type="Node2D" parent="." unique_id=111111002]
+
+[node name="Enemies" type="Node2D" parent="." unique_id=906549189]
 
 [node name="Hero" type="CharacterBody2D" parent="." unique_id=918995453 groups=["player_hero"]]
 
@@ -42,35 +95,195 @@ animation = &"idle"
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="PointLight2D" type="PointLight2D" parent="Hero" unique_id=1948676857]
-color = Color(1, 0.8, 0.5, 1)
+color = Color(1, 0.78, 0.42, 1)
+energy = 1.1
 shadow_enabled = true
 shadow_filter = 1
 texture = SubResource("GradientTexture2D_light")
-texture_scale = 20.0
+texture_scale = 22.0
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1958490068]
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
-
-[node name="Enemies" type="Node2D" parent="." unique_id=906549189]
+position_smoothing_speed = 7.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.25
+drag_top_margin = 0.25
+drag_right_margin = 0.25
+drag_bottom_margin = 0.25
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=72500903]
+
+[node name="HUD" type="PanelContainer" parent="UI" unique_id=200000001]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 280.0
+offset_bottom = 120.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hp_bg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HUD" unique_id=200000002]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeroRow" type="HBoxContainer" parent="UI/HUD/VBoxContainer" unique_id=200000003]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HeroIcon" type="Label" parent="UI/HUD/VBoxContainer/HeroRow" unique_id=200000004]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.4, 1)
+theme_override_font_sizes/font_size = 22
+text = "⚔"
+
+[node name="HeroName" type="Label" parent="UI/HUD/VBoxContainer/HeroRow" unique_id=200000005]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.78, 1)
+theme_override_font_sizes/font_size = 18
+text = "Aethan"
+
+[node name="HpContainer" type="VBoxContainer" parent="UI/HUD/VBoxContainer" unique_id=200000006]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HpLabel" type="Label" parent="UI/HUD/VBoxContainer/HpContainer" unique_id=200000007]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 13
+text = "❤ HP"
+
+[node name="HpBar" type="ProgressBar" parent="UI/HUD/VBoxContainer/HpContainer" unique_id=200000008]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp_fill")
+value = 100.0
+show_percentage = false
+
+[node name="StaminaContainer" type="VBoxContainer" parent="UI/HUD/VBoxContainer" unique_id=200000009]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="StaminaLabel" type="Label" parent="UI/HUD/VBoxContainer/StaminaContainer" unique_id=200000010]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.72, 0.95, 1)
+theme_override_font_sizes/font_size = 13
+text = "⚡ Energía"
+
+[node name="StaminaBar" type="ProgressBar" parent="UI/HUD/VBoxContainer/StaminaContainer" unique_id=200000011]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_stamina_fill")
+max_value = 60.0
+value = 60.0
+show_percentage = false
+
+[node name="CurrencyHUD" type="PanelContainer" parent="UI" unique_id=200000020]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 75.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hp_bg")
+
+[node name="VBox" type="VBoxContainer" parent="UI/CurrencyHUD" unique_id=200000021]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="GoldLabel" type="Label" parent="UI/CurrencyHUD/VBox" unique_id=200000022]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.82, 0.32, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 17
+text = "⚙  0 Oro"
+
+[node name="AmberLabel" type="Label" parent="UI/CurrencyHUD/VBox" unique_id=200000023]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.58, 0.12, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 17
+text = "🔶  0 Ámbar"
+
+[node name="InteractHintPanel" type="PanelContainer" parent="UI" unique_id=200000030]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -80.0
+offset_right = 140.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hint_bg")
+
+[node name="HintLabel" type="Label" parent="UI/InteractHintPanel" unique_id=200000031]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.58, 1)
+theme_override_font_sizes/font_size = 20
+text = "[ E ]  Interactuar"
+horizontal_alignment = 1
+
+[node name="AreaNameLabel" type="Label" parent="UI" unique_id=200000040]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -40.0
+offset_right = 300.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 40
+text = "Bosque Susurrante"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Vignette" type="TextureRect" parent="UI" unique_id=200000050]
+modulate = Color(1, 1, 1, 0.55)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="Instructions" type="Label" parent="UI" unique_id=625589671]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -381.0
-offset_top = 20.0
-offset_right = -21.0
-offset_bottom = 120.0
+offset_left = -280.0
+offset_top = 90.0
+offset_right = -20.0
+offset_bottom = 150.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.7)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 20
-text = "Arrastra la zona izquierda para moverte\\nCuidado con los enemigos (!)"
+theme_override_font_sizes/font_size = 16
+text = "WASD / Flechas: Mover
+E / Enter: Interactuar
+ESC: Pausa"
 autowrap_mode = 2
 
 [node name="PauseMenu" parent="." unique_id=634351470 instance=ExtResource("3_pause")]
+
+[node name="DialogBox" parent="." unique_id=47513816 instance=ExtResource("5_v4c6a")]
