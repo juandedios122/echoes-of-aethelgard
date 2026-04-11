@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bg64mmd8ey5gf"]
+
+[ext_resource type="Script" uid="uid://cjmsae6uo77up" path="res://scripts/exploration/NPC.gd" id="1_twre2"]
+
+[node name="NPC" type="Area2D" unique_id=1816561459]
+script = ExtResource("1_twre2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=175127573]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=19200903]
+
+[node name="NameLabel" type="Label" parent="." unique_id=1964137786]
+offset_right = 40.0
+offset_bottom = 23.0

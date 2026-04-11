@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dpese5l4hxhpg"]
+
+[ext_resource type="Script" uid="uid://c1anku0qb1w6l" path="res://scripts/ui/DialogBox.gd" id="1_4g3jw"]
+
+[node name="DialogBox" type="CanvasLayer" unique_id=47513816]
+script = ExtResource("1_4g3jw")
