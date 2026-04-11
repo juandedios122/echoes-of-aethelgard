@@ -1,5 +1,7 @@
-## CombatManager.gd
-## Sistema de combate por turnos con animaciones y distribución de EXP.
+## CombatManager.gd — VERSIÓN COMPLETA CORREGIDA
+## RUTA: res://scripts/systems/CombatManager.gd
+## INSTRUCCIÓN: REEMPLAZA el archivo completo con este
+## CAMBIO: parche de CombatAI ya integrado + corregido error de indentación
 class_name CombatManager
 extends Node
 
@@ -10,15 +12,15 @@ signal unit_defeated(unit: CombatUnit)
 signal battle_ended(victory: bool, rewards: Dictionary)
 
 enum BattleState { IDLE, PLAYER_TURN, ENEMY_TURN, ANIMATING, ENDED }
-var state: BattleState = BattleState.IDLE
+var state : BattleState = BattleState.IDLE
 
-var player_units: Array[CombatUnit] = []
-var enemy_units: Array[CombatUnit]  = []
-var turn_queue: Array[CombatUnit]   = []
-var current_turn_index: int         = 0
-var turn_number: int                = 0
+var player_units : Array[CombatUnit] = []
+var enemy_units  : Array[CombatUnit] = []
+var turn_queue   : Array[CombatUnit] = []
+var current_turn_index : int = 0
+var turn_number        : int = 0
 
-const FACTION_BONUS_THRESHOLD: int = 3
+const FACTION_BONUS_THRESHOLD : int = 3
 
 func initialize(p_units: Array[CombatUnit], e_units: Array[CombatUnit]) -> void:
 	player_units = p_units
@@ -33,12 +35,12 @@ func start_battle() -> void:
 	current_turn_index = 0
 	_next_turn()
 
-# ─── Gestión de Turnos ────────────────────────────────────────────────────────
+# ── Turnos ────────────────────────────────────────────────────────────────────
 func _build_turn_queue() -> void:
 	turn_queue.clear()
 	turn_queue.append_array(player_units)
 	turn_queue.append_array(enemy_units)
-	turn_queue.sort_custom(func(a, b): return a.spd > b.spd)
+	turn_queue.sort_custom(func(a: CombatUnit, b: CombatUnit) -> bool: return a.spd > b.spd)
 
 func _next_turn() -> void:
 	if state == BattleState.ENDED:
@@ -56,13 +58,13 @@ func _next_turn() -> void:
 	if _check_battle_end():
 		return
 
-	var unit: CombatUnit = turn_queue[current_turn_index]
+	var unit : CombatUnit = turn_queue[current_turn_index]
 	turn_started.emit(unit)
 
 	if _is_enemy(unit):
 		state = BattleState.ENEMY_TURN
 		await get_tree().create_timer(0.6).timeout
-		_execute_enemy_ai(unit)
+		await _execute_enemy_ai(unit)
 	else:
 		state = BattleState.PLAYER_TURN
 
@@ -70,17 +72,16 @@ func advance_turn() -> void:
 	current_turn_index += 1
 	_next_turn()
 
-# ─── Ejecución de Habilidades ─────────────────────────────────────────────────
+# ── Habilidades ───────────────────────────────────────────────────────────────
 func execute_skill(attacker: CombatUnit, skill: SkillData, targets: Array[CombatUnit]) -> void:
 	state = BattleState.ANIMATING
 
-	var alive_targets := targets.filter(func(t): return not t.is_dead())
+	var alive_targets := targets.filter(func(t: CombatUnit) -> bool: return not t.is_dead())
 	if alive_targets.is_empty():
 		state = BattleState.IDLE
 		advance_turn()
 		return
 
-	# Mover atacante hacia el objetivo
 	var original_x := attacker.position.x
 	var dir_x      := 70.0 if attacker.is_player_unit else -70.0
 	attacker.play_animation("attack")
@@ -89,7 +90,7 @@ func execute_skill(attacker: CombatUnit, skill: SkillData, targets: Array[Combat
 
 	await get_tree().create_timer(0.20).timeout
 
-	for target in alive_targets:
+	for target : CombatUnit in alive_targets:
 		if target.is_dead():
 			continue
 		for _hit in skill.hit_count:
@@ -130,17 +131,15 @@ func execute_skill(attacker: CombatUnit, skill: SkillData, targets: Array[Combat
 			unit_defeated.emit(target)
 			await get_tree().create_timer(0.4).timeout
 
-	# Volver a posición original
 	var ret_tween := create_tween()
 	ret_tween.tween_property(attacker, "position:x", original_x, 0.20)
 	attacker.play_idle()
 
-	# Ganar energía si es básico
 	if skill.energy_cost == 0:
 		attacker.gain_energy(20)
 
 	attacker.current_energy -= skill.energy_cost
-	attacker.current_energy  = clamp(attacker.current_energy, 0, attacker.max_energy)
+	attacker.current_energy  = clampi(attacker.current_energy, 0, attacker.max_energy)
 
 	await get_tree().create_timer(0.25).timeout
 	state = BattleState.IDLE
@@ -152,12 +151,12 @@ func _apply_damage_with_anim(attacker: CombatUnit, target: CombatUnit, raw_dmg: 
 	if not target.is_dead() and target.sprite and target.sprite.sprite_frames:
 		if target.sprite.sprite_frames.has_animation("hurt"):
 			target.play_animation("hurt")
-			get_tree().create_timer(0.4).timeout.connect(func():
+			get_tree().create_timer(0.4).timeout.connect(func() -> void:
 				if is_instance_valid(target) and not target.is_dead():
 					target.play_idle()
 			)
 
-# ─── Cálculo de Daño ──────────────────────────────────────────────────────────
+# ── Cálculo de daño ───────────────────────────────────────────────────────────
 func _calculate_damage(atk: CombatUnit, def: CombatUnit, skill: SkillData) -> int:
 	var base := atk.atk * skill.power_multiplier
 	base     *= atk.get_status_multiplier("atk")
@@ -173,67 +172,85 @@ func _calculate_damage(atk: CombatUnit, def: CombatUnit, skill: SkillData) -> in
 	dmg *= randf_range(0.92, 1.08)
 	return maxi(1, roundi(dmg))
 
-# ─── IA Enemiga ───────────────────────────────────────────────────────────────
+# ── IA enemiga (VERSIÓN MEJORADA con CombatAI) ────────────────────────────────
 func _execute_enemy_ai(enemy: CombatUnit) -> void:
-	var alive_players := player_units.filter(func(u): return not u.is_dead())
+	var alive_players := get_alive_players()
 	if alive_players.is_empty():
+		advance_turn()
 		return
 
-	alive_players.sort_custom(func(a, b): return a.current_hp < b.current_hp)
-	var target: CombatUnit = alive_players[0]
+	# Cargar CombatAI con preload para evitar problemas de class_name
+	var ai_script := preload("res://scripts/systems/CombatAI.gd")
+	var result : Dictionary = ai_script.decide(
+		enemy,
+		alive_players,
+		get_alive_enemies()
+	)
 
-	var chosen_skill: SkillData
-	if enemy.is_energy_full() and enemy.hero_data and enemy.hero_data.skill_ultimate:
-		chosen_skill         = enemy.hero_data.skill_ultimate
-		enemy.current_energy = 0
-	elif enemy.hero_data and enemy.hero_data.skill_basic:
-		chosen_skill          = enemy.hero_data.skill_basic
-		enemy.current_energy += 25
-
-	if chosen_skill:
-		var targets: Array[CombatUnit] = []
-		if chosen_skill.target_type == SkillData.TargetType.ALL_ENEMIES:
-			targets = alive_players
+	if result.is_empty() or not result.has("skill") or result["skill"] == null:
+		if enemy.hero_data and enemy.hero_data.skill_basic:
+			await execute_skill(enemy, enemy.hero_data.skill_basic, [alive_players[0]])
 		else:
-			targets = [target]
-		await execute_skill(enemy, chosen_skill, targets)
-	else:
-		advance_turn()
+			advance_turn()
+		return
 
-# ─── Sinergias de Facción ─────────────────────────────────────────────────────
+	var skill : SkillData = result["skill"]
+
+	# CORRECCIÓN: convertir Array genérico a Array[CombatUnit] explícitamente
+	var raw_targets : Array  = result["targets"]
+	var targets     : Array[CombatUnit] = []
+	for t in raw_targets:
+		if t is CombatUnit:
+			targets.append(t as CombatUnit)
+
+	if targets.is_empty():
+		advance_turn()
+		return
+
+	if skill.energy_cost == 0:
+		enemy.gain_energy(20)
+	else:
+		enemy.current_energy = clampi(
+			enemy.current_energy - skill.energy_cost, 0, enemy.max_energy
+		)
+
+	await execute_skill(enemy, skill, targets)
+
+
+# ── Sinergias de facción ──────────────────────────────────────────────────────
 func _apply_faction_synergies() -> void:
-	var faction_count := {}
-	for unit in player_units:
+	var faction_count : Dictionary = {}
+	for unit : CombatUnit in player_units:
 		if unit.hero_data:
-			var f := unit.hero_data.faction
+			var f : int = unit.hero_data.faction
 			faction_count[f] = faction_count.get(f, 0) + 1
 	for faction_id in faction_count:
 		if faction_count[faction_id] >= FACTION_BONUS_THRESHOLD:
 			_apply_faction_bonus(faction_id)
 
 func _apply_faction_bonus(faction_id: int) -> void:
-	for unit in player_units:
+	for unit : CombatUnit in player_units:
 		if unit.hero_data and unit.hero_data.faction == faction_id:
 			var hd := unit.hero_data
-			unit.max_hp     = roundi(unit.max_hp   * (1.0 + hd.faction_bonus_hp))
+			unit.max_hp    = roundi(unit.max_hp   * (1.0 + hd.faction_bonus_hp))
 			unit.current_hp = unit.max_hp
-			unit.atk        = roundi(unit.atk      * (1.0 + hd.faction_bonus_atk))
-			unit.def_stat   = roundi(unit.def_stat  * (1.0 + hd.faction_bonus_def))
+			unit.atk       = roundi(unit.atk      * (1.0 + hd.faction_bonus_atk))
+			unit.def_stat  = roundi(unit.def_stat  * (1.0 + hd.faction_bonus_def))
 	print("[CombatManager] Sinergia facción %d aplicada" % faction_id)
 
-# ─── Efectos de Estado ────────────────────────────────────────────────────────
+# ── Estados ───────────────────────────────────────────────────────────────────
 func _tick_status_effects() -> void:
-	for unit in turn_queue:
+	for unit : CombatUnit in turn_queue:
 		if not unit.is_dead():
 			unit.tick_statuses()
 
 func _rebuild_queue_if_needed() -> void:
-	turn_queue = turn_queue.filter(func(u): return not u.is_dead())
+	turn_queue = turn_queue.filter(func(u: CombatUnit) -> bool: return not u.is_dead())
 
-# ─── Victoria / Derrota ───────────────────────────────────────────────────────
+# ── Victoria / derrota ────────────────────────────────────────────────────────
 func _check_battle_end() -> bool:
-	var all_players_dead := player_units.all(func(u): return u.is_dead())
-	var all_enemies_dead  := enemy_units.all(func(u): return u.is_dead())
+	var all_players_dead := player_units.all(func(u: CombatUnit) -> bool: return u.is_dead())
+	var all_enemies_dead  := enemy_units.all(func(u: CombatUnit) -> bool: return u.is_dead())
 	if all_enemies_dead:
 		_end_battle(true)
 		return true
@@ -244,7 +261,7 @@ func _check_battle_end() -> bool:
 
 func _end_battle(victory: bool) -> void:
 	state = BattleState.ENDED
-	var rewards := {}
+	var rewards : Dictionary = {}
 
 	if victory:
 		rewards = _calculate_rewards()
@@ -252,28 +269,22 @@ func _end_battle(victory: bool) -> void:
 		GameManager.add_gold(rewards.get("gold", 0))
 		GameManager.add_amber(rewards.get("amber", 0))
 
-		# ── Distribuir EXP a todos los héroes del equipo ──────────────────────
-		var exp_per_hero: int = rewards.get("exp", 0)
-		var level_ups: Array  = []   # Lista de { hero_name, new_level }
+		var exp_per_hero : int = rewards.get("exp", 0)
+		var level_ups    : Array = []
 
-		for unit in player_units:
-			if unit.hero_data == null:
-				continue
+		for unit : CombatUnit in player_units:
+			if unit.hero_data == null: continue
 			var hero_id := unit.hero_data.hero_id
-			if not GameManager.player_data.has_hero(hero_id):
-				continue
-
+			if not GameManager.player_data.has_hero(hero_id): continue
 			var old_level := GameManager.player_data.get_hero_level(hero_id)
 			var leveled   := GameManager.player_data.add_hero_exp(hero_id, exp_per_hero)
 			var new_level := GameManager.player_data.get_hero_level(hero_id)
-
 			if leveled:
 				level_ups.append({
 					"hero_name" : unit.hero_data.hero_name,
 					"old_level" : old_level,
 					"new_level" : new_level,
 				})
-				print("[CombatManager] %s subió al nivel %d" % [unit.hero_data.hero_name, new_level])
 
 		rewards["exp_per_hero"] = exp_per_hero
 		rewards["level_ups"]    = level_ups
@@ -282,25 +293,23 @@ func _end_battle(victory: bool) -> void:
 
 	GameManager.save_game()
 	battle_ended.emit(victory, rewards)
-	print("[CombatManager] Batalla terminada. Victoria: %s" % str(victory))
 
 func _calculate_rewards() -> Dictionary:
 	var chapter := GameManager.player_data.current_chapter
 	var stage   := GameManager.player_data.current_stage
-	# EXP escala con capítulo y etapa, con un poco de varianza
 	var base_exp := 150 + (chapter - 1) * 80 + stage * 20
 	return {
-		"gold"    : 80 + (chapter * 40) + stage * 10 + randi() % 40,
-		"amber"   : 1 if randi() % 3 == 0 else 0,   # ~33% de obtener 1 ámbar
-		"exp"     : base_exp + randi() % 50,
+		"gold"  : 80 + (chapter * 40) + stage * 10 + randi() % 40,
+		"amber" : 1 if randi() % 3 == 0 else 0,
+		"exp"   : base_exp + randi() % 50,
 	}
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
+# ── Helpers ───────────────────────────────────────────────────────────────────
 func _is_enemy(unit: CombatUnit) -> bool:
 	return unit in enemy_units
 
 func get_alive_enemies() -> Array[CombatUnit]:
-	return enemy_units.filter(func(u): return not u.is_dead())
+	return enemy_units.filter(func(u: CombatUnit) -> bool: return not u.is_dead())
 
 func get_alive_players() -> Array[CombatUnit]:
-	return player_units.filter(func(u): return not u.is_dead())
+	return player_units.filter(func(u: CombatUnit) -> bool: return not u.is_dead())
