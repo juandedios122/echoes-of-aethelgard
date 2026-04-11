@@ -297,7 +297,7 @@ func _create_hero_portrait(hero: HeroData, is_owned: bool) -> void:
 	var portrait_rect := TextureRect.new()
 	portrait_rect.texture = hero.portrait
 	portrait_rect.custom_minimum_size = Vector2(256, 256)
-	portrait_rect.expand = true
+	portrait_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 	portrait_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	portrait_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

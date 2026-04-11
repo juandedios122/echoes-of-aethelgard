@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://xg4wh8k2gvtd"]
 
 [ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://b56xv8rer7q6i" path="res://assets/sprites/Aldric/frames/idle_00.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Aldric/portrait.png" id="2"]
 [ext_resource type="Resource" path="res://resources/skills/aldric_basic.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/skills/aldric_active.tres" id="4"]
 [ext_resource type="Resource" path="res://resources/skills/aldric_ultimate.tres" id="5"]
@@ -21,6 +21,9 @@ base_hp = 950
 base_atk = 160
 base_def = 45
 base_spd = 85
+hp_growth = 0.06
+atk_growth = 0.06
+def_growth = 0.04
 skill_basic = ExtResource("3")
 skill_active = ExtResource("4")
 skill_ultimate = ExtResource("5")

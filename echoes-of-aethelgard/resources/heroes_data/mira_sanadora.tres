@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://cypls6vjkmlwf"]
 
 [ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://dqhowiju23l4c" path="res://assets/sprites/Mira/frames/idle_00.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Mira/portrait.png" id="2"]
 [ext_resource type="Resource" path="res://resources/skills/mira_basic.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/skills/mira_active.tres" id="4"]
 [ext_resource type="Resource" path="res://resources/skills/mira_ultimate.tres" id="5"]

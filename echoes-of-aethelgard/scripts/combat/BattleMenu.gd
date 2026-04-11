@@ -1,6 +1,7 @@
-## BattleMenu.gd — VERSIÓN MEJORADA
+## BattleMenu.gd — VERSIÓN ÚNICA CORREGIDA
 ## RUTA: res://scripts/combat/BattleMenu.gd
-## ASEGÚRATE de que NO existe res://scripts/ui/BattleMenu.gd (bórralo si hay)
+## INSTRUCCIÓN: BORRA res://scripts/ui/BattleMenu.gd si existe. Solo debe existir ESTE archivo.
+## Bug 5 corregido: eliminado conflicto de class_name entre dos archivos BattleMenu.
 class_name BattleMenu
 extends Control
 
@@ -12,12 +13,11 @@ var _btn_attack  : Button
 var _btn_skill   : Button
 var _btn_item    : Button
 var _btn_run     : Button
-var _desc_label  : Label        # descripción del ataque básico al hover
+var _desc_label  : Label
 
 var _selected_index : int = 0
 const _ACTIONS : Array[String] = ["attack", "skill", "item", "run"]
 
-# [texto, color_borde, color_texto, descripción]
 const _BTN_DATA : Array = [
 	["⚔  ATACAR",    Color(0.75, 0.22, 0.10), Color(1.0, 0.75, 0.70), "Ataque básico.\nGana energía."],
 	["✨  HABILIDAD", Color(0.22, 0.38, 0.82), Color(0.70, 0.82, 1.0), "Seleccionar habilidad."],
@@ -30,7 +30,6 @@ func _ready() -> void:
 	hide()
 
 func _build_ui() -> void:
-	# Panel principal
 	_panel = PanelContainer.new()
 	_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	_panel.offset_left   = 630.0
@@ -58,7 +57,6 @@ func _build_ui() -> void:
 	vbox.add_theme_constant_override("separation", 8)
 	margin.add_child(vbox)
 
-	# Hint de quién actúa
 	_hint_label = Label.new()
 	_hint_label.text = "¿Qué harás?"
 	_hint_label.add_theme_color_override("font_color", Color(0.95, 0.88, 0.62))
@@ -69,7 +67,6 @@ func _build_ui() -> void:
 	_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vbox.add_child(_hint_label)
 
-	# Separador
 	var sep := HSeparator.new()
 	var sep_style := StyleBoxLine.new()
 	sep_style.color     = Color(0.45, 0.35, 0.15, 0.5)
@@ -77,7 +74,6 @@ func _build_ui() -> void:
 	sep.add_theme_stylebox_override("separator", sep_style)
 	vbox.add_child(sep)
 
-	# Grid de botones 2x2
 	var grid := GridContainer.new()
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", 8)
@@ -93,7 +89,6 @@ func _build_ui() -> void:
 		btn.add_theme_font_size_override("font_size", 20)
 		btn.add_theme_color_override("font_color", data[2])
 
-		# Estilo normal
 		var s := StyleBoxFlat.new()
 		s.bg_color     = Color(data[1].r * 0.12, data[1].g * 0.12, data[1].b * 0.12, 0.98)
 		s.border_color = data[1]
@@ -102,7 +97,6 @@ func _build_ui() -> void:
 		s.set_corner_radius_all(8)
 		btn.add_theme_stylebox_override("normal", s)
 
-		# Estilo hover/focus
 		var h := StyleBoxFlat.new()
 		h.bg_color     = Color(data[1].r * 0.30, data[1].g * 0.30, data[1].b * 0.30, 1.0)
 		h.border_color = data[1].lightened(0.25)
@@ -128,7 +122,6 @@ func _build_ui() -> void:
 	_btn_item   = btns[2]
 	_btn_run    = btns[3]
 
-	# Descripción de acción (debajo de los botones)
 	_desc_label = Label.new()
 	_desc_label.text = ""
 	_desc_label.add_theme_color_override("font_color", Color(0.70, 0.65, 0.52))
@@ -161,7 +154,6 @@ func _refresh_cursor() -> void:
 			btns[i].grab_focus()
 
 func _emit(action: String) -> void:
-	# Animación de salida
 	var t := create_tween()
 	t.tween_property(_panel, "modulate:a", 0.0, 0.12)
 	await t.finished
@@ -169,10 +161,9 @@ func _emit(action: String) -> void:
 	hide()
 	_panel.modulate.a = 1.0
 
-## Muestra el menú con animación de entrada
 func show_for_unit(unit: CombatUnit) -> void:
 	_hint_label.text    = "¿Qué hará  %s?" % unit.unit_name
-	_desc_label.text    = _BTN_DATA[0][3]  # descripción del ataque por defecto
+	_desc_label.text    = _BTN_DATA[0][3]
 	_selected_index     = 0
 	_refresh_cursor()
 	_panel.modulate.a   = 0.0

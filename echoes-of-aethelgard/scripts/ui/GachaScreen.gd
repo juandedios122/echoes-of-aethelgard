@@ -1,10 +1,9 @@
 ## GachaScreen.gd
 ## Pantalla de invocaciones con animaciones completas procedurales.
-## No requiere assets de audio ni SpriteFrames nuevos.
+## CORRECCIÓN Bug 3: Usa GameManager.gacha_system en vez de GachaSystem global.
 class_name GachaScreen
 extends Control
 
-# ─── Nodos de la escena ───────────────────────────────────────────────────────
 @onready var amber_label: Label              = $TopBar/AmberLabel
 @onready var pity_bar: ProgressBar           = $PityBar
 @onready var pity_label: Label               = $TopBar/PityLabel
@@ -16,18 +15,15 @@ extends Control
 
 const HeroCardScene: PackedScene = preload("res://scenes/ui/HeroCard.tscn")
 
-# ─── Estado ───────────────────────────────────────────────────────────────────
 var is_animating: bool       = false
 var _skip_requested: bool    = false
 var _pending_results: Array  = []
 
-# ─── Nodos creados en código ──────────────────────────────────────────────────
-var _overlay: ColorRect      = null   # Flash de pantalla completa
-var _rift_container: Node2D  = null   # Grieta animada
+var _overlay: ColorRect      = null
+var _rift_container: Node2D  = null
 var _particles: CPUParticles2D = null
-var _center_label: Label     = null   # "¡Legendario!" etc.
+var _center_label: Label     = null
 
-# ─── Inicialización ───────────────────────────────────────────────────────────
 func _ready() -> void:
 	_build_overlay()
 	_build_rift()
@@ -35,18 +31,18 @@ func _ready() -> void:
 	_refresh_pity_ui()
 	_style_buttons()
 
-	pull_1x_btn.text  = "Invocar  ×1\n🔶 %d" % GachaSystem.COST_SINGLE
-	pull_10x_btn.text = "Invocar ×10\n🔶 %d" % GachaSystem.COST_MULTI
+	# CORRECCIÓN Bug 3: acceder a las constantes a través de la instancia
+	var gacha := GameManager.gacha_system
+	pull_1x_btn.text  = "Invocar  ×1\n🔶 %d" % gacha.COST_SINGLE
+	pull_10x_btn.text = "Invocar ×10\n🔶 %d" % gacha.COST_MULTI
 
 	GameManager.currency_changed.connect(_on_currency_changed)
-	GameManager.gacha_system.pity_updated.connect(_on_pity_updated)
-	GameManager.gacha_system.pull_completed.connect(_on_pull_completed)
+	gacha.pity_updated.connect(_on_pity_updated)
+	gacha.pull_completed.connect(_on_pull_completed)
 
 	AudioManager.play_music("gacha_theme", 1.5)
 
-# ─── Construcción de elementos procedurales ───────────────────────────────────
 func _build_overlay() -> void:
-	## Overlay negro/dorado que cubre toda la pantalla para los flashes.
 	_overlay = ColorRect.new()
 	_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_overlay.z_index   = 10
@@ -65,14 +61,12 @@ func _build_overlay() -> void:
 	add_child(_center_label)
 
 func _build_rift() -> void:
-	## La grieta se dibuja completamente con código: un Node2D con _draw().
 	_rift_container = Node2D.new()
 	_rift_container.z_index = 5
-	_rift_container.position = Vector2(960, 480)   # Centro de 1920×1080
+	_rift_container.position = Vector2(960, 480)
 	_rift_container.visible  = false
 	add_child(_rift_container)
 
-	# Partículas de la grieta
 	_particles = CPUParticles2D.new()
 	_particles.emitting              = false
 	_particles.amount                = 60
@@ -107,20 +101,19 @@ func _style_buttons() -> void:
 		btn.add_theme_color_override("font_color", Color(0.9, 0.8, 1.0))
 		btn.add_theme_font_size_override("font_size", 24)
 
-# ─── UI ───────────────────────────────────────────────────────────────────────
 func _refresh_currency_ui() -> void:
 	amber_label.text = "🔶 %d" % GameManager.player_data.amber_shards
 
 func _refresh_pity_ui() -> void:
+	var gacha := GameManager.gacha_system
 	var pity: int = GameManager.player_data.pull_pity
-	pity_bar.max_value = GachaSystem.PITY_CAP
+	pity_bar.max_value = gacha.PITY_CAP
 	pity_bar.value     = pity
 	pity_label.text    = "Pity: %d/%d  (%.1f%%)" % [
-		pity, GachaSystem.PITY_CAP,
-		GameManager.gacha_system.get_current_leg_rate() * 100.0
+		pity, gacha.PITY_CAP,
+		gacha.get_current_leg_rate() * 100.0
 	]
 
-# ─── Botones de invocación ────────────────────────────────────────────────────
 func _on_pull_1x_pressed() -> void:
 	if is_animating:
 		return
@@ -137,7 +130,6 @@ func _on_pull_10x_pressed() -> void:
 		_show_not_enough_amber()
 		_set_buttons_enabled(true)
 
-# ─── SECUENCIA PRINCIPAL DE ANIMACIÓN ────────────────────────────────────────
 func _on_pull_completed(results: Array) -> void:
 	is_animating     = true
 	_skip_requested  = false
@@ -147,13 +139,11 @@ func _on_pull_completed(results: Array) -> void:
 	_clear_results()
 	await _animate_rift_open()
 
-	# Detectar si hay Legendario en los resultados
 	var has_legendary: bool = results.any(func(h: HeroData): return h.rarity == HeroData.Rarity.LEGENDARIO)
 
 	if has_legendary:
 		await _flash_legendary_intro()
 
-	# Instanciar todas las cartas boca abajo
 	var cards: Array[HeroCard] = []
 	for hero in results:
 		var card := HeroCardScene.instantiate() as HeroCard
@@ -163,7 +153,6 @@ func _on_pull_completed(results: Array) -> void:
 		card.scale = Vector2(0.0, 1.0)
 		cards.append(card)
 
-	# Cartas entran desde abajo y se agrandan
 	for card in cards:
 		if _skip_requested:
 			card.scale = Vector2(1, 1)
@@ -174,7 +163,6 @@ func _on_pull_completed(results: Array) -> void:
 
 	await get_tree().create_timer(0.3).timeout
 
-	# Revelar cartas una a una con el volteo
 	for i in cards.size():
 		var card := cards[i]
 		var hero := results[i] as HeroData
@@ -185,7 +173,6 @@ func _on_pull_completed(results: Array) -> void:
 
 		await card.reveal()
 
-		# Efectos por rareza al revelar
 		match hero.rarity:
 			HeroData.Rarity.LEGENDARIO:
 				await _flash_on_reveal(Color(1.0, 0.85, 0.1, 0.7), 0.5)
@@ -206,19 +193,16 @@ func _on_pull_completed(results: Array) -> void:
 	skip_btn.visible = false
 	_set_buttons_enabled(true)
 
-# ─── Animación de la grieta ───────────────────────────────────────────────────
 func _animate_rift_open() -> void:
 	_rift_container.visible = true
 	_particles.color        = Color(0.6, 0.3, 1.0, 1.0)
 	_particles.emitting     = true
 
-	# Flash oscuro de entrada
 	_overlay.color = Color(0.05, 0.0, 0.10, 0.0)
 	var fade_in: Tween = create_tween()
 	fade_in.tween_property(_overlay, "color", Color(0.05, 0.0, 0.10, 0.88), 0.3)
 	await fade_in.finished
 
-	# Vibración de la cámara (escalar el overlay)
 	for i in 4:
 		var shake: Tween = create_tween()
 		shake.tween_property(_overlay, "position", Vector2(randf_range(-6, 6), randf_range(-4, 4)), 0.06)
@@ -227,7 +211,6 @@ func _animate_rift_open() -> void:
 
 	await get_tree().create_timer(0.25).timeout
 
-	# Abrir: fade parcial para ver las cartas
 	var open: Tween = create_tween()
 	open.tween_property(_overlay, "color", Color(0.05, 0.0, 0.10, 0.55), 0.35)
 	await open.finished
@@ -239,9 +222,7 @@ func _animate_rift_close() -> void:
 	await close.finished
 	_rift_container.visible = false
 
-# ─── Flashes de rareza ────────────────────────────────────────────────────────
 func _flash_legendary_intro() -> void:
-	## Flash dorado épico antes de revelar cartas
 	_center_label.text    = "✨ LEGENDARIO ✨"
 	_center_label.add_theme_color_override("font_color", Color(1.0, 0.88, 0.1))
 	_center_label.modulate = Color(1, 1, 1, 0)
@@ -264,7 +245,6 @@ func _flash_legendary_intro() -> void:
 	_center_label.visible = false
 
 func _flash_on_reveal(color: Color, duration: float) -> void:
-	## Flash rápido de pantalla completa al revelar una carta de rareza alta.
 	var old_color: Color = _overlay.color
 	var t1: Tween = create_tween()
 	t1.tween_property(_overlay, "color", color, duration * 0.35)
@@ -273,10 +253,8 @@ func _flash_on_reveal(color: Color, duration: float) -> void:
 	t2.tween_property(_overlay, "color", old_color, duration * 0.65)
 	await t2.finished
 
-# ─── Partículas por rareza ────────────────────────────────────────────────────
 func _spawn_rarity_particles(card: Control, color: Color, count: int) -> void:
 	var p := CPUParticles2D.new()
-	# Posicionar en el centro global de la carta
 	var card_center: Vector2 = card.global_position + card.size * 0.5
 	p.global_position       = card_center
 	p.z_index               = 12
@@ -302,16 +280,13 @@ func _spawn_rarity_particles(card: Control, color: Color, count: int) -> void:
 			p.queue_free()
 	)
 
-# ─── No enough amber ─────────────────────────────────────────────────────────
 func _show_not_enough_amber() -> void:
-	# Sacudir el label de ámbar
 	var original_pos: Vector2 = amber_label.position
 	var shake: Tween = create_tween()
 	for i in 5:
 		shake.tween_property(amber_label, "position:x", original_pos.x + (6.0 if i % 2 == 0 else -6.0), 0.06)
 	shake.tween_property(amber_label, "position", original_pos, 0.06)
 
-	# Flash rojo del label
 	amber_label.add_theme_color_override("font_color", Color(1, 0.2, 0.2))
 	var restore: Tween = create_tween()
 	restore.tween_interval(0.5)
@@ -319,7 +294,6 @@ func _show_not_enough_amber() -> void:
 		amber_label.add_theme_color_override("font_color", Color(1, 0.8, 0.3))
 	)
 
-	# Popup de texto
 	var popup := Label.new()
 	popup.text = "¡Ámbar insuficiente!"
 	popup.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
@@ -339,11 +313,9 @@ func _show_not_enough_amber() -> void:
 	await hide_tween.finished
 	popup.queue_free()
 
-# ─── Skip ─────────────────────────────────────────────────────────────────────
 func _on_skip_pressed() -> void:
 	_skip_requested = true
 
-# ─── Helpers ─────────────────────────────────────────────────────────────────
 func _clear_results() -> void:
 	for child in result_container.get_children():
 		child.queue_free()

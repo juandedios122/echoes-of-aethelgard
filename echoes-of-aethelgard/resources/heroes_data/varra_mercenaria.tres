@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://dscq6wgxsb3x7"]
 
 [ext_resource type="Script" uid="uid://dqnxgksmuwcj2" path="res://scripts/resources/HeroData.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://bdrbtc5w3hquo" path="res://assets/sprites/Varra/frames/idle_00.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Varra/portrait.png" id="2"]
 [ext_resource type="Resource" path="res://resources/skills/varra_basic.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/skills/varra_active.tres" id="4"]
 [ext_resource type="Resource" path="res://resources/skills/varra_ultimate.tres" id="5"]
@@ -15,11 +15,15 @@ lore_text = "Sin lealtades ni causa, Varra lucha por quien pague más. O eso dic
 faction = 3
 rarity = 2
 role = 5
+element = 5
 portrait = ExtResource("2")
 base_hp = 1050
 base_atk = 125
 base_def = 55
 base_spd = 85
+hp_growth = 0.07
+atk_growth = 0.05
+def_growth = 0.04
 skill_basic = ExtResource("3")
 skill_active = ExtResource("4")
 skill_ultimate = ExtResource("5")
