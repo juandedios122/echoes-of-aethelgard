@@ -1,145 +1,128 @@
-; BattleScene.tscn — VERSIÓN MEJORADA Y REDISEÑADA
-; RUTA: res://scenes/combat/BattleScene.tscn
 [gd_scene format=3 uid="uid://bj8636t51uxn0"]
 
 [ext_resource type="Script" uid="uid://b4wv4tvdenoum" path="res://scripts/combat/BattleScene.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://cugo6etcy6xe7" path="res://scripts/systems/CombatManager.gd" id="2_manager"]
-
-; ── Estilos reutilizables ─────────────────────────────────────────────────────
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_dark"]
-bg_color       = Color(0.06, 0.04, 0.02, 0.95)
-border_color   = Color(0.55, 0.43, 0.22, 1)
-border_width_left   = 3
-border_width_top    = 3
-border_width_right  = 3
-border_width_bottom = 3
-corner_radius_top_left     = 10
-corner_radius_top_right    = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left  = 10
+[ext_resource type="Script" uid="uid://33vwx6otxj1c" path="res://scripts/ForestBackground.gd" id="3_aj11y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]
-bg_color       = Color(0.05, 0.03, 0.01, 0.88)
-border_color   = Color(0.40, 0.32, 0.15, 1)
-border_width_left   = 0
-border_width_top    = 0
-border_width_right  = 0
+bg_color = Color(0.05, 0.03, 0.01, 0.88)
 border_width_bottom = 2
-corner_radius_top_left     = 0
-corner_radius_top_right    = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left  = 0
+border_color = Color(0.4, 0.32, 0.15, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_speed"]
-bg_color       = Color(0.10, 0.07, 0.03, 0.95)
-border_color   = Color(0.55, 0.43, 0.22, 1)
-border_width_left   = 2
-border_width_top    = 2
-border_width_right  = 2
+bg_color = Color(0.1, 0.07, 0.03, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
 border_width_bottom = 2
-corner_radius_top_left     = 6
-corner_radius_top_right    = 6
+border_color = Color(0.55, 0.43, 0.22, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 corner_radius_bottom_right = 6
-corner_radius_bottom_left  = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_speed_hover"]
-bg_color       = Color(0.22, 0.16, 0.06, 1)
-border_color   = Color(0.80, 0.65, 0.28, 1)
-border_width_left   = 2
-border_width_top    = 2
-border_width_right  = 2
+bg_color = Color(0.22, 0.16, 0.06, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
 border_width_bottom = 2
-corner_radius_top_left     = 6
-corner_radius_top_right    = 6
+border_color = Color(0.8, 0.65, 0.28, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 corner_radius_bottom_right = 6
-corner_radius_bottom_left  = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_auto_on"]
-bg_color       = Color(0.08, 0.22, 0.08, 1)
-border_color   = Color(0.25, 0.75, 0.25, 1)
-border_width_left   = 2
-border_width_top    = 2
-border_width_right  = 2
+bg_color = Color(0.08, 0.22, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
 border_width_bottom = 2
-corner_radius_top_left     = 6
-corner_radius_top_right    = 6
+border_color = Color(0.25, 0.75, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
 corner_radius_bottom_right = 6
-corner_radius_bottom_left  = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_dark"]
+bg_color = Color(0.06, 0.04, 0.02, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.55, 0.43, 0.22, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_result"]
-bg_color       = Color(0.07, 0.05, 0.03, 0.97)
-border_color   = Color(0.75, 0.60, 0.25, 1)
-border_width_left   = 4
-border_width_top    = 4
-border_width_right  = 4
+bg_color = Color(0.07, 0.05, 0.03, 0.97)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
 border_width_bottom = 4
-corner_radius_top_left     = 12
-corner_radius_top_right    = 12
+border_color = Color(0.75, 0.6, 0.25, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
 corner_radius_bottom_right = 12
-corner_radius_bottom_left  = 12
+corner_radius_bottom_left = 12
 
-; ── Escena raíz ───────────────────────────────────────────────────────────────
 [node name="BattleScene" type="Node2D" unique_id=306271127]
 script = ExtResource("1_script")
 
-; ── Cámara ────────────────────────────────────────────────────────────────────
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1068441581]
 zoom = Vector2(1.1, 1.1)
 
-; ── Fondo (ParallaxBackground sin textura obligatoria) ────────────────────────
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=204555546]
 
 [node name="Layer1" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1444552227]
 motion_scale = Vector2(0.6, 0.6)
 
 [node name="Background" type="ColorRect" parent="ParallaxBackground/Layer1" unique_id=1565996881]
-offset_left   = -1920.0
-offset_top    = -1080.0
-offset_right  = 1920.0
+offset_left = -1920.0
+offset_top = -1080.0
+offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.06, 0.04, 0.08, 1)
 
-; ── Línea de tierra visual ────────────────────────────────────────────────────
 [node name="GroundLine" type="ColorRect" parent="." unique_id=999001]
-offset_left   = -960.0
-offset_top    = 140.0
-offset_right  = 960.0
+offset_left = -960.0
+offset_top = 140.0
+offset_right = 960.0
 offset_bottom = 148.0
 color = Color(0.35, 0.28, 0.14, 0.5)
 
 [node name="GroundShadow" type="ColorRect" parent="." unique_id=999002]
-offset_left   = -960.0
-offset_top    = 148.0
-offset_right  = 960.0
+offset_left = -960.0
+offset_top = 148.0
+offset_right = 960.0
 offset_bottom = 200.0
-color = Color(0.0, 0.0, 0.0, 0.0)
+color = Color(0, 0, 0, 0)
 
-; ── CombatManager ─────────────────────────────────────────────────────────────
 [node name="CombatManager" type="Node" parent="." unique_id=1786775055]
 script = ExtResource("2_manager")
 
-; ── Contenedores de unidades ──────────────────────────────────────────────────
 [node name="PlayerUnitsContainer" type="Node2D" parent="." unique_id=1406137598]
 
 [node name="EnemyUnitsContainer" type="Node2D" parent="." unique_id=1653085099]
 
-; ── UI de batalla ─────────────────────────────────────────────────────────────
 [node name="BattleUI" type="CanvasLayer" parent="." unique_id=1389708026]
 
 [node name="Control" type="Control" parent="BattleUI" unique_id=615125532]
-layout_mode     = 3
-anchors_preset  = 15
-anchor_right    = 1.0
-anchor_bottom   = 1.0
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical   = 2
+grow_vertical = 2
 
-; ── Barra superior (velocidad, auto, turno) ───────────────────────────────────
 [node name="TopBar" type="PanelContainer" parent="BattleUI/Control" unique_id=700001]
-layout_mode    = 1
+layout_mode = 1
 anchors_preset = 10
-anchor_right   = 1.0
-offset_bottom  = 56.0
+anchor_right = 1.0
+offset_bottom = 56.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_topbar")
 
@@ -150,146 +133,137 @@ theme_override_constants/separation = 8
 [node name="SpeedToggle" type="Button" parent="BattleUI/Control/TopBar/TopBarHBox" unique_id=110220183]
 custom_minimum_size = Vector2(70, 36)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_speed")
-theme_override_styles/hover  = SubResource("StyleBoxFlat_btn_speed_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_speed_hover")
-theme_override_colors/font_color = Color(0.90, 0.80, 0.55, 1)
+theme_override_colors/font_color = Color(0.9, 0.8, 0.55, 1)
 theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_speed")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_speed_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_speed_hover")
 text = "⏩ x1"
 
 [node name="AutoToggle" type="Button" parent="BattleUI/Control/TopBar/TopBarHBox" unique_id=506371814]
 custom_minimum_size = Vector2(110, 36)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_speed")
-theme_override_styles/hover  = SubResource("StyleBoxFlat_btn_speed_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_auto_on")
 theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_font_sizes/font_size = 16
-text = "🤖 Auto"
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_speed")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_auto_on")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_speed_hover")
 toggle_mode = true
+text = "🤖 Auto"
 
-; Spacer central
 [node name="TopSpacer" type="Control" parent="BattleUI/Control/TopBar/TopBarHBox" unique_id=700003]
-layout_mode         = 2
+layout_mode = 2
 size_flags_horizontal = 3
 
-; Turno actual (centro barra superior)
 [node name="TurnLabel" type="Label" parent="BattleUI/Control/TopBar/TopBarHBox" unique_id=700004]
 layout_mode = 2
-text = ""
-theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.95, 0.88, 0.62, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
 [node name="TopSpacer2" type="Control" parent="BattleUI/Control/TopBar/TopBarHBox" unique_id=700005]
-layout_mode         = 2
+layout_mode = 2
 size_flags_horizontal = 3
 
-; ── Cola de turnos (iconos pequeños) ─────────────────────────────────────────
 [node name="TurnQueueBar" type="HBoxContainer" parent="BattleUI/Control" unique_id=700010]
-layout_mode    = 1
+layout_mode = 1
 anchors_preset = 10
-anchor_right   = 1.0
-offset_top     = 56.0
-offset_bottom  = 90.0
+anchor_right = 1.0
+offset_top = 56.0
+offset_bottom = 90.0
 grow_horizontal = 2
-alignment = 1
 theme_override_constants/separation = 6
+alignment = 1
 
-; ── HUD de unidades (inferior) ────────────────────────────────────────────────
-; Panel jugadores (inferior izquierda)
 [node name="PlayerHUDPanel" type="PanelContainer" parent="BattleUI/Control" unique_id=800001]
-layout_mode    = 1
-anchors_preset = 6
-anchor_left    = 0.0
-anchor_top     = 1.0
-anchor_right   = 0.55
-anchor_bottom  = 1.0
-offset_top     = -130.0
-offset_bottom  = -8.0
-offset_left    = 8.0
-offset_right   = -8.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 0.55
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -130.0
+offset_right = -8.0
+offset_bottom = -8.0
 grow_horizontal = 2
-grow_vertical   = 0
+grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel_dark")
 
 [node name="PlayerHUDBox" type="HBoxContainer" parent="BattleUI/Control/PlayerHUDPanel" unique_id=800002]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-; ── Panel de enemigos (inferior derecha) ──────────────────────────────────────
 [node name="EnemyHUDPanel" type="PanelContainer" parent="BattleUI/Control" unique_id=800010]
-layout_mode    = 1
-anchors_preset = 7
-anchor_left    = 0.55
-anchor_top     = 1.0
-anchor_right   = 1.0
-anchor_bottom  = 1.0
-offset_top     = -130.0
-offset_bottom  = -8.0
-offset_left    = 8.0
-offset_right   = -8.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.55
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -130.0
+offset_right = -8.0
+offset_bottom = -8.0
 grow_horizontal = 2
-grow_vertical   = 0
+grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel_dark")
 
 [node name="EnemyHUDBox" type="HBoxContainer" parent="BattleUI/Control/EnemyHUDPanel" unique_id=800011]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-; ── Panel de efectividad elemental (centro, aparece brevemente) ───────────────
 [node name="EffectLabel" type="Label" parent="BattleUI/Control" unique_id=900001]
-visible      = false
-layout_mode  = 1
+visible = false
+layout_mode = 1
 anchors_preset = 8
-anchor_left   = 0.5
-anchor_top    = 0.5
-anchor_right  = 0.5
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left   = -200.0
-offset_top    = -60.0
-offset_right  = 200.0
+offset_left = -200.0
+offset_top = -60.0
+offset_right = 200.0
 offset_bottom = -10.0
 grow_horizontal = 2
-grow_vertical   = 2
-text = "¡Es muy efectivo!"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 32
-theme_override_colors/font_color = Color(1.0, 0.88, 0.10, 1)
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
 theme_override_constants/shadow_offset_x = 3
 theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 32
+text = "¡Es muy efectivo!"
+horizontal_alignment = 1
 
-; ── Panel de resultado (oculto por defecto) ───────────────────────────────────
 [node name="ResultPanel" type="Panel" parent="BattleUI/Control" unique_id=1093168689]
-visible        = false
-layout_mode    = 1
+visible = false
+layout_mode = 1
 anchors_preset = 8
-anchor_left    = 0.5
-anchor_top     = 0.5
-anchor_right   = 0.5
-anchor_bottom  = 0.5
-offset_left    = -340.0
-offset_top     = -250.0
-offset_right   = 340.0
-offset_bottom  = 250.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -250.0
+offset_right = 340.0
+offset_bottom = 250.0
 grow_horizontal = 2
-grow_vertical   = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_result")
 
-; ── Rectángulo de transición ──────────────────────────────────────────────────
 [node name="Transition" type="ColorRect" parent="." unique_id=1536150126]
-z_index       = 100
-offset_left   = -1920.0
-offset_top    = -1080.0
-offset_right  = 1920.0
+z_index = 100
+offset_left = -1920.0
+offset_top = -1080.0
+offset_right = 1920.0
 offset_bottom = 1080.0
-mouse_filter  = 2
-color         = Color(0, 0, 0, 1)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
-; ── Conexiones de señales ─────────────────────────────────────────────────────
-[connection signal="pressed"  from="BattleUI/Control/TopBar/TopBarHBox/SpeedToggle" to="." method="_on_speed_toggled"]
-[connection signal="toggled"  from="BattleUI/Control/TopBar/TopBarHBox/AutoToggle"  to="." method="_on_auto_toggled"]
+[node name="Node" type="Node" parent="." unique_id=739306384]
+script = ExtResource("3_aj11y")
+
+[connection signal="pressed" from="BattleUI/Control/TopBar/TopBarHBox/SpeedToggle" to="." method="_on_speed_toggled"]
+[connection signal="toggled" from="BattleUI/Control/TopBar/TopBarHBox/AutoToggle" to="." method="_on_auto_toggled"]

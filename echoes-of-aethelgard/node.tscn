@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://kurhwcffu1xq"]
+
+[ext_resource type="Script" uid="uid://du5wdtap31frv" path="res://scripts/martial_hero_frames_builder.gd" id="1_sy5k4"]
+
+[node name="Node" type="Node" unique_id=1682597536]
+script = ExtResource("1_sy5k4")
