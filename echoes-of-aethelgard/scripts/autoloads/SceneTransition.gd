@@ -1,7 +1,3 @@
-## SceneTransition.gd — VERSIÓN CORREGIDA
-## RUTA: res://scripts/autoloads/SceneTransition.gd
-## CAMBIO: add_child → add_child.call_deferred para evitar el error
-##         "Parent node is busy setting up children"
 extends Node
 
 enum TransitionType { FADE, WIPE_LEFT, WIPE_RIGHT, CIRCLE }
@@ -19,7 +15,6 @@ func _ready() -> void:
 	_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_overlay.color       = Color(0.0, 0.0, 0.0, 0.0)
 
-	# CORRECCIÓN: call_deferred para no chocar con el árbol ocupado
 	get_tree().root.add_child.call_deferred(_overlay)
 
 func is_transitioning() -> bool:
@@ -34,7 +29,6 @@ func transition_to_scene(
 		return
 	_is_transitioning = true
 
-	# Esperar a que _overlay esté en el árbol antes de usarlo
 	if not is_instance_valid(_overlay) or _overlay.get_parent() == null:
 		await get_tree().process_frame
 

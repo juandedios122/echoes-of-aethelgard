@@ -1,17 +1,7 @@
-## BattleScene.gd — VERSIÓN CORREGIDA
-## CORRECCIONES:
-##   - ui_control eliminado (variable no usada)
-##   - is_player → _is_player (parámetro no usado)
-##   - mx → _mx (parámetro no usado en lambda)
-##   - max_ep → _max_ep (parámetro no usado)
-##   - Standalone ternary corregido (línea 332)
-##   - TurnLabel ahora tiene tamaño mínimo para no colapsar verticalmente
-##   - BattleMessageBox reposicionado para no tapar el centro de pantalla
-##   - BattleMenu visible correctamente
+## BattleScene.gd — VERSIÓN CORREGIDA VISUAL
 class_name BattleScene
 extends Node2D
 
-# ── Referencias a nodos de la escena ──────────────────────────────────────────
 @onready var combat_manager   : CombatManager = $CombatManager
 @onready var player_container : Node2D        = $PlayerUnitsContainer
 @onready var enemy_container  : Node2D        = $EnemyUnitsContainer
@@ -27,14 +17,12 @@ extends Node2D
 @onready var enemy_hud_box    : HBoxContainer = $BattleUI/Control/EnemyHUDPanel/EnemyHUDBox
 @onready var turn_queue_bar   : HBoxContainer = $BattleUI/Control/TurnQueueBar
 
-# ── UI creada por código ───────────────────────────────────────────────────────
 var _message_box  : BattleMessageBox
 var _battle_menu  : BattleMenu
 var _skill_panel  : SkillSelectPanel
 
 const CombatUnitScene := preload("res://scenes/combat/CombatUnit.tscn")
 
-# ── Estado ────────────────────────────────────────────────────────────────────
 var _speed_index    : int  = 0
 var _auto_battle    : bool = false
 var _selected_unit  : CombatUnit = null
@@ -51,10 +39,10 @@ const ENEMY_POSITIONS : Array[Vector2] = [
 const SPEED_VALUES : Array[float] = [1.0, 1.5, 2.0]
 const SPEED_LABELS : Array[String] = ["⏩ x1", "⏩ x1.5", "⏩ x2"]
 
-# ═════════════════════════════════════════════════════════════════════════════
 func _ready() -> void:
 	_battle_config = GameManager.current_battle_config
-	_fix_turn_label()        # CORRECCIÓN: asegurar que TurnLabel no colapse
+	_fix_turn_label()
+	_fix_background()
 	_build_code_ui()
 	_fade_in()
 	_spawn_units()
@@ -62,38 +50,45 @@ func _ready() -> void:
 	combat_manager.start_battle()
 	AudioManager.play_music("battle_theme", 1.0)
 
-# ── FIX: TurnLabel necesita tamaño mínimo para no colapsar letra a letra ──────
+# ── FIX: TurnLabel horizontal ─────────────────────────────────────────────────
 func _fix_turn_label() -> void:
-	# El label dentro de un HBoxContainer sin tamaño mínimo colapsa a ancho 0
-	# y las letras caen verticalmente. Forzamos tamaño mínimo horizontal.
 	if turn_label:
-		turn_label.custom_minimum_size = Vector2(300, 0)
-		turn_label.clip_text = false
-		turn_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		turn_label.custom_minimum_size = Vector2(320, 36)
+		turn_label.clip_text           = false
+		turn_label.autowrap_mode       = TextServer.AUTOWRAP_OFF
+		turn_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+# ── FIX: Fondo oscuro para que no sea negro puro ──────────────────────────────
+func _fix_background() -> void:
+	# ColorRect de fondo ya existe en la escena pero por si acaso
+	var bg := get_node_or_null("ParallaxBackground/Layer1/Background") as ColorRect
+	if bg:
+		bg.color = Color(0.08, 0.05, 0.12, 1)  # Morado muy oscuro (ambiente de batalla)
 
 # ── Construcción de UI por código ─────────────────────────────────────────────
 func _build_code_ui() -> void:
-	# CORRECCIÓN: eliminada variable ui_control no usada (era: var ui_control := ...)
-
-	# Message box — inferior izquierda, NO ocupa el centro de pantalla
+	# Message box — esquina inferior izquierda
 	_message_box = BattleMessageBox.new()
+	_message_box.name = "BattleMessageBox"
 	battle_ui.add_child(_message_box)
 	_message_box.skip_requested.connect(_on_skip_message)
 
-	# Battle menu — inferior derecha
+	# Battle menu — esquina inferior derecha
 	_battle_menu = BattleMenu.new()
+	_battle_menu.name = "BattleMenu"
 	battle_ui.add_child(_battle_menu)
 	_battle_menu.connect("action_selected", _on_menu_action)
 
 	# Skill panel
 	_skill_panel = SkillSelectPanel.new()
+	_skill_panel.name = "SkillSelectPanel"
 	battle_ui.add_child(_skill_panel)
 	_skill_panel.connect("skill_chosen",    _on_skill_chosen)
 	_skill_panel.connect("panel_cancelled", func() -> void:
 		if _selected_unit: _battle_menu.show_for_unit(_selected_unit)
 	)
 
-# ── Spawn de unidades + creación del HUD ──────────────────────────────────────
+# ── Spawn de unidades ─────────────────────────────────────────────────────────
 func _spawn_units() -> void:
 	var pd   := GameManager.player_data
 	var team : Array[String] = pd.active_team
@@ -124,8 +119,7 @@ func _spawn_units() -> void:
 
 	combat_manager.initialize(p_units, e_units)
 
-# ── Tarjeta HUD para cada unidad ──────────────────────────────────────────────
-# CORRECCIÓN: is_player → _is_player (parámetro no usado)
+# ── Tarjeta HUD ───────────────────────────────────────────────────────────────
 func _create_unit_hud_card(unit: CombatUnit, container: HBoxContainer, _is_player: bool) -> void:
 	var card := PanelContainer.new()
 	card.name = "Card_" + unit.unit_name
@@ -153,11 +147,11 @@ func _create_unit_hud_card(unit: CombatUnit, container: HBoxContainer, _is_playe
 	vbox.add_child(name_lbl)
 
 	var hp_bar := ProgressBar.new()
-	hp_bar.name          = "HPBar"
+	hp_bar.name               = "HPBar"
 	hp_bar.custom_minimum_size = Vector2(0, 12)
-	hp_bar.max_value     = float(unit.max_hp)
-	hp_bar.value         = float(unit.current_hp)
-	hp_bar.show_percentage = false
+	hp_bar.max_value          = float(unit.max_hp)
+	hp_bar.value              = float(unit.current_hp)
+	hp_bar.show_percentage    = false
 	_style_hp_bar(hp_bar)
 	vbox.add_child(hp_bar)
 
@@ -169,11 +163,11 @@ func _create_unit_hud_card(unit: CombatUnit, container: HBoxContainer, _is_playe
 	vbox.add_child(hp_txt)
 
 	var ep_bar := ProgressBar.new()
-	ep_bar.name          = "EPBar"
+	ep_bar.name               = "EPBar"
 	ep_bar.custom_minimum_size = Vector2(0, 8)
-	ep_bar.max_value     = float(unit.max_energy)
-	ep_bar.value         = float(unit.current_energy)
-	ep_bar.show_percentage = false
+	ep_bar.max_value          = float(unit.max_energy)
+	ep_bar.value              = float(unit.current_energy)
+	ep_bar.show_percentage    = false
 	_style_energy_bar(ep_bar)
 	vbox.add_child(ep_bar)
 
@@ -182,7 +176,6 @@ func _create_unit_hud_card(unit: CombatUnit, container: HBoxContainer, _is_playe
 	status_row.add_theme_constant_override("separation", 4)
 	vbox.add_child(status_row)
 
-	# CORRECCIÓN: mx → _mx (parámetro no usado en lambda)
 	unit.hp_changed.connect(func(cur: int, _mx: int) -> void:
 		_update_unit_hud_card(card, cur, unit.max_hp, unit.current_energy, unit.max_energy)
 	)
@@ -211,7 +204,6 @@ func _style_energy_bar(bar: ProgressBar) -> void:
 	fill.set_corner_radius_all(3)
 	bar.add_theme_stylebox_override("fill", fill)
 
-# CORRECCIÓN: max_ep → _max_ep (parámetro no usado)
 func _update_unit_hud_card(card: PanelContainer, cur_hp: int, max_hp: int, cur_ep: int, _max_ep: int) -> void:
 	if not is_instance_valid(card): return
 	var hp_bar  : ProgressBar = card.get_node_or_null("VBoxContainer/HPBar")
@@ -306,7 +298,7 @@ func _on_turn_started(unit: CombatUnit) -> void:
 
 	if unit.is_player_unit:
 		_combo_count = 0
-		turn_label.text = "⚔ %s" % unit.unit_name
+		turn_label.text = "⚔ Tu turno: %s" % unit.unit_name
 		_message_box.push("%s — ¡Tu turno!" % unit.unit_name)
 		await _message_box.wait_done()
 		if _auto_battle:
@@ -315,7 +307,7 @@ func _on_turn_started(unit: CombatUnit) -> void:
 		else:
 			_battle_menu.show_for_unit(unit)
 	else:
-		turn_label.text = "👹 %s" % unit.unit_name
+		turn_label.text = "👹 Enemigo: %s" % unit.unit_name
 
 func _on_menu_action(action: String) -> void:
 	match action:
@@ -544,9 +536,8 @@ func _on_auto_toggled(pressed: bool) -> void:
 	auto_btn.add_theme_color_override("font_color",
 		Color(0.25, 1.0, 0.35) if pressed else Color(0.75, 0.75, 0.75))
 
-# ── Shake de cámara ───────────────────────────────────────────────────────────
 func _process(_delta: float) -> void:
-	pass   # JuiceManager maneja el shake de cámara
+	pass
 
 # ── Transiciones ─────────────────────────────────────────────────────────────
 func _fade_in() -> void:

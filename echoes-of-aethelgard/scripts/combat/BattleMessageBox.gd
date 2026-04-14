@@ -1,32 +1,35 @@
-## BattleMessageBox.gd — VERSIÓN MEJORADA
+## BattleMessageBox.gd — VERSIÓN CORREGIDA
 ## RUTA: res://scripts/combat/BattleMessageBox.gd
 class_name BattleMessageBox
 extends Control
 
 signal all_done()
-signal skip_requested()   # emitido al tocar la caja durante escritura
+signal skip_requested()
 
-var _panel  : PanelContainer
-var _label  : Label
-var _hint   : Label
-var _skip_btn : Button        # botón "Saltar" visible al escribir
+var _panel        : PanelContainer
+var _label        : Label
+var _hint         : Label
+var _skip_btn     : Button
 
 var _queue      : Array[String] = []
 var _writing    : bool  = false
-var _skip_now   : bool  = false   # true cuando el jugador quiere saltar
+var _skip_now   : bool  = false
 const CHAR_DELAY := 0.022
 
 func _ready() -> void:
 	_build_ui()
 
 func _build_ui() -> void:
-	# Panel con posición ajustada para no tapar el menú de batalla
+	# Anclar al fondo izquierdo, NO al centro
+	set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	# Tamaño fijo: 580px ancho, 130px alto, pegado a la esquina inf-izq
+	offset_left   = 0.0
+	offset_top    = -140.0
+	offset_right  = 590.0
+	offset_bottom = 0.0
+
 	_panel = PanelContainer.new()
-	_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	_panel.offset_left   = 14.0
-	_panel.offset_top    = -148.0
-	_panel.offset_right  = -610.0   # termina antes del BattleMenu (que empieza en 630)
-	_panel.offset_bottom = -14.0
+	_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
 
 	var bg := StyleBoxFlat.new()
 	bg.bg_color     = Color(0.05, 0.03, 0.01, 0.97)
@@ -38,7 +41,6 @@ func _build_ui() -> void:
 	_panel.add_theme_stylebox_override("panel", bg)
 	add_child(_panel)
 
-	# Permitir clic en el panel para saltar
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_panel.gui_input.connect(_on_panel_gui_input)
 
@@ -53,7 +55,6 @@ func _build_ui() -> void:
 	vbox.add_theme_constant_override("separation", 4)
 	margin.add_child(vbox)
 
-	# Texto del mensaje
 	_label = Label.new()
 	_label.custom_minimum_size = Vector2(0.0, 58.0)
 	_label.add_theme_color_override("font_color", Color(0.96, 0.93, 0.83))
@@ -64,7 +65,6 @@ func _build_ui() -> void:
 	_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(_label)
 
-	# Fila inferior: hint + botón saltar
 	var bottom_row := HBoxContainer.new()
 	bottom_row.add_theme_constant_override("separation", 8)
 	vbox.add_child(bottom_row)
@@ -78,7 +78,7 @@ func _build_ui() -> void:
 	bottom_row.add_child(_hint)
 
 	_skip_btn = Button.new()
-	_skip_btn.text   = "⏭ Saltar"
+	_skip_btn.text    = "⏭ Saltar"
 	_skip_btn.visible = false
 	_skip_btn.custom_minimum_size = Vector2(80, 24)
 	_skip_btn.add_theme_font_size_override("font_size", 14)
@@ -92,20 +92,17 @@ func _build_ui() -> void:
 	_skip_btn.pressed.connect(_request_skip)
 	bottom_row.add_child(_skip_btn)
 
-	# Animación de parpadeo del hint
 	var blink : Tween = create_tween()
 	blink.set_loops()
 	blink.tween_property(_hint, "modulate:a", 0.2, 0.55)
 	blink.tween_property(_hint, "modulate:a", 1.0, 0.55)
 
-## Añade texto a la cola y lo escribe letra a letra
 func push(text: String) -> void:
 	if text.is_empty(): return
 	_queue.append(text)
 	if not _writing:
 		_write_next()
 
-## Muestra texto instantáneamente (para victoria/derrota)
 func push_instant(text: String) -> void:
 	_queue.clear()
 	_skip_now     = true
@@ -114,7 +111,6 @@ func push_instant(text: String) -> void:
 	_hint.visible = false
 	_skip_btn.visible = false
 
-## Espera a que la cola se vacíe
 func wait_done() -> void:
 	while _writing or not _queue.is_empty():
 		await get_tree().create_timer(0.05).timeout
@@ -143,7 +139,6 @@ func _write_next() -> void:
 	var msg : String = _queue.pop_front()
 	_label.text      = ""
 
-	# Animar entrada del panel
 	_panel.modulate.a = 0.8
 	var entry := create_tween()
 	entry.tween_property(_panel, "modulate:a", 1.0, 0.15)
